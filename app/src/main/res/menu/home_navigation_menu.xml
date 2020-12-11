@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/now_page_fragment"
+        android:icon="@drawable/ic_account_balance"
+        android:title="@string/balance"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/month_page_fragment"
+        android:icon="@drawable/ic_calendar_month_outline"
+        android:title="@string/this_month"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/forward_page_fragment"
+        android:icon="@drawable/ic_fast_forward"
+        android:title="@string/this_year"
+        app:showAsAction="ifRoom" />
+
+</menu>

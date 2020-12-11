@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/movement_title_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/quicksand_bold"
+            android:lines="1"
+            android:textColor="@color/colorAmountNegative"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/movement_amount_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Nafta" />
+
+        <TextView
+            android:id="@+id/movement_amount_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:lines="1"
+            android:maxWidth="150dp"
+            android:textColor="@color/colorAmountNegative"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="ARS -600,00" />
+
+        <TextView
+            android:id="@+id/movement_account_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/quicksand_bold"
+            android:lines="1"
+            android:maxWidth="150dp"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/colorAmountNegative"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/movement_amount_tv"
+            app:layout_constraintTop_toBottomOf="@id/movement_amount_tv"
+            tools:text="BaPro" />
+
+        <TextView
+            android:id="@+id/movement_category_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/quicksand_medium"
+            android:lines="1"
+            android:textColor="@color/colorAmountNegative"
+            app:drawableStartCompat="@drawable/category_sports_esports"
+            app:drawableTint="@color/colorAmountNegative"
+            app:layout_constraintEnd_toStartOf="@+id/movement_amount_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movement_title_tv"
+            tools:text="Transporte" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

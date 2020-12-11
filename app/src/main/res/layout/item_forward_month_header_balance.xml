@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="15dp">
+
+    <TextView
+        android:id="@+id/currency_and_amount_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/quicksand_medium"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        app:autoSizeMaxTextSize="48sp"
+        app:autoSizeMinTextSize="28sp"
+        app:autoSizeTextType="uniform"
+        app:drawableEndCompat="@drawable/ic_arrow_right"
+        app:drawableTint="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="ARS 13.587 54" />
+
+</androidx.cardview.widget.CardView>

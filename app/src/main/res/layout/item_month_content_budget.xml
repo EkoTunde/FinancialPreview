@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/movement_title_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/quicksand_bold"
+            android:lines="1"
+            android:textColor="@color/colorAmountNegative"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/movement_category_tv"
+            app:layout_constraintEnd_toStartOf="@+id/movement_category_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Nafta" />
+
+        <TextView
+            android:id="@+id/budget_spent_amount_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:lines="1"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorAmountNegative"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/budget_starting_amount_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/budget_progress"
+            tools:text="ARS -300,00" />
+
+        <TextView
+            android:id="@+id/budget_starting_amount_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:lines="1"
+            android:textColor="@color/colorLightGrey"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/budget_progress"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="ARS -600,00" />
+
+        <TextView
+            android:id="@+id/movement_category_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/quicksand_medium"
+            android:lines="1"
+            android:maxWidth="150dp"
+            android:textColor="@color/colorAmountNegative"
+            app:drawableStartCompat="@drawable/category_transport"
+            app:drawableTint="@color/colorAmountNegative"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Transporte" />
+
+        <ProgressBar
+            android:id="@+id/budget_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:max="100"
+            android:progress="50"
+            android:progressTint="@color/colorAmountNegative"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movement_title_tv" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

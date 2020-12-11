@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/category_image"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintBottom_toBottomOf="@+id/movement_date_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/movement_title_tv"
+            app:srcCompat="@drawable/category_biotech"
+            app:tint="@color/colorAmountNegative" />
+
+        <TextView
+            android:id="@+id/movement_title_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/quicksand_bold"
+            android:lines="1"
+            android:textColor="@color/colorAmountNegative"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/movement_amount_tv"
+            app:layout_constraintStart_toEndOf="@+id/category_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Farmacia" />
+
+        <TextView
+            android:id="@+id/movement_amount_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:lines="1"
+            android:maxWidth="150dp"
+            android:textColor="@color/colorAmountNegative"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="ARS -2000,00" />
+
+        <TextView
+            android:id="@+id/movement_date_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/quicksand_medium"
+            android:lines="1"
+            android:textColor="@color/colorAmountNegative"
+            app:layout_constraintEnd_toStartOf="@+id/movement_amount_tv"
+            app:layout_constraintStart_toEndOf="@+id/category_image"
+            app:layout_constraintTop_toBottomOf="@id/movement_title_tv"
+            tools:text="27/09/2020" />
+
+        <TextView
+            android:id="@+id/movement_account_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/quicksand_bold"
+            android:lines="1"
+            android:maxWidth="150dp"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/colorAmountNegative"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/movement_amount_tv"
+            app:layout_constraintTop_toBottomOf="@id/movement_amount_tv"
+            tools:text="BaPro" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

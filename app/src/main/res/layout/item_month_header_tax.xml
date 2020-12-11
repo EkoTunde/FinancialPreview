@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/taxes_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/quicksand_semi_bold"
+            android:lines="1"
+            android:maxWidth="150dp"
+            android:text="@string/taxes"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            app:drawableEndCompat="@drawable/ic_arrow_right"
+            app:drawableStartCompat="@drawable/ic_taxes"
+            app:drawableTint="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
