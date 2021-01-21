@@ -10,7 +10,7 @@ class LocalDataSource @Inject constructor(
     private val accountDao: AccountDao,
     private val categoryDao: CategoryDao,
     private val currencyConversionDao: CurrencyConversionDao,
-    private val registryDao: RegistryDao,
+    private val recordDao: RecordDao,
     private val movementDao: MovementDao,
     private val settleGroupDao: SettleGroupDao
 ) {
@@ -19,16 +19,11 @@ class LocalDataSource @Inject constructor(
     fun getAccountBalances() = accountDao.getAccounts()
 
     // Traer una lista de movimientos
-    fun getMovements(fromDate: Date, toDate: Date, limit: Int) =
-        registryDao.getMovements(fromDate, toDate, limit)
+    /*fun getMovements(fromDate: Date, toDate: Date, limit: Int) =
+        recordDao.getMovements(fromDate, toDate, limit)*/
 
     // Saldos totales para diferentes monedas (corriente mes)
-    fun getTotalForMonth(currencyId: String, from: Int, to: Int) =
-        movementDao.getScheduledSummaryBetweenLapse(
-            currencyId,
-            from,
-            to
-        )
+
 
     // Gastos programadas limitados a lo indicado
 
@@ -80,7 +75,7 @@ class LocalDataSource @Inject constructor(
     // Buscar movimientos por cuenta, limitado por dias
 
     // Insertar movimientos
-    suspend fun insertMovement(vararg record: Record) = registryDao.insertMovement(*record)
+    suspend fun insertMovement(vararg record: Record) = recordDao.insertRecord(*record)
 
     // Modificar movimientos
 

@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.core.Resource
-import com.ekosoftware.financialpreview.data.model.Balance
+import com.ekosoftware.financialpreview.data.model.summary.Balance
 import com.ekosoftware.financialpreview.data.model.summary.QuickViewSummary
 import com.ekosoftware.financialpreview.data.model.summary.MonthSummary
 import com.ekosoftware.financialpreview.databinding.FragmentHomeBinding
@@ -57,7 +57,7 @@ class HomeFragment : Fragment() {
         loadBalanceData()
         setUpActions()
         loadPendingSummaryData()
-        loadProjectionData()
+        //loadProjectionData()
         loadQuickViewData()
     }
 
@@ -90,6 +90,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun selectCurrencyDialog() {
+
+    }
+
+    private fun settle() {
+
+    }
+
+    private fun addPreview() {
+
+    }
+
+    private fun addRecord() {
+
+    }
+
+    private fun transfer() {
 
     }
 
@@ -138,7 +154,7 @@ class HomeFragment : Fragment() {
         )
     }
 
-    private fun loadProjectionData() =
+    /*private fun loadProjectionData() =
         homeViewModel.quickViewSummary.observe(viewLifecycleOwner, { result ->
             when (result) {
                 is Resource.Loading -> {
@@ -162,7 +178,7 @@ class HomeFragment : Fragment() {
                 }
                 else -> throw IllegalStateException("loadProjectionData should not output a loading resource.")
             }
-        })
+        })*/
 
     private fun setUpProjection(quickViewSummary: QuickViewSummary) = binding.projection.apply {
         thisMonthSavingAmount.applyMoneyFormat(
@@ -183,6 +199,10 @@ class HomeFragment : Fragment() {
         homeViewModel.quickViewSummary.observe(viewLifecycleOwner, { result ->
             when (result) {
                 is Resource.Loading -> {
+                    binding.projection.item04ProgressBar.show()
+                    binding.projection.topLayout.hide()
+                    binding.projection.timelineLayout.hide()
+                    binding.projection.buttonRetry.hide()
                     binding.quickView.item05ProgressBar.show()
                     binding.quickView.quickViewChart.hide()
                     binding.quickView.detail.hide()
@@ -194,12 +214,22 @@ class HomeFragment : Fragment() {
                     binding.quickView.quickViewChart.show()
                     binding.quickView.detail.show()
                     binding.quickView.buttonRetry.hide()
+                    setUpProjection(result.data)
+                    binding.projection.item04ProgressBar.hide()
+                    binding.projection.topLayout.show()
+                    binding.projection.timelineLayout.show()
+                    binding.projection.buttonRetry.hide()
                 }
                 is Resource.Failure -> {
                     binding.quickView.item05ProgressBar.hide()
                     binding.quickView.quickViewChart.hide()
                     binding.quickView.detail.hide()
                     binding.quickView.buttonRetry.show()
+                    binding.projection.item04ProgressBar.hide()
+                    binding.projection.topLayout.hide()
+                    binding.projection.timelineLayout.hide()
+                    binding.projection.buttonRetry.show()
+                    Log.d(TAG, "loadQuickViewData: ERROR = ${result.exception}")
                 }
                 else -> throw IllegalStateException("loadOneYearSummaryData should not output a loading resource.")
             }
@@ -219,9 +249,17 @@ class HomeFragment : Fragment() {
                     1 -> (e as BarEntry).yVals[1]
                     else -> h?.y
                 }
+                val type = when (h?.stackIndex) {
+                    0 -> context.getString(R.string.from_income)
+                    1 -> context.getString(R.string.from_expense)
+                    else -> when (h?.dataSetIndex) {
+                        0 -> context.getString(R.string.from_accumulated)
+                        else -> context.getString(R.string.from_balance)
+                    }
+                }
                 val output =
-                    context.getString(R.string.chart_description_output, amount, e?.data)
-                detail.text = output
+                    context.getString(R.string.chart_description_output, quickViewSummary.currencyCode, amount, type ,e?.data)
+                binding.quickView.detail.text = output
             }
 
             override fun onNothingSelected() = Unit
@@ -243,6 +281,7 @@ class HomeFragment : Fragment() {
         invalidate()
 
         // Apply UI settings
+        this@setUpChart.description = null
         applyXAxisSettings(resources.getStringArray(R.array.months_abr).toList())
         applyLegendSettings()
 

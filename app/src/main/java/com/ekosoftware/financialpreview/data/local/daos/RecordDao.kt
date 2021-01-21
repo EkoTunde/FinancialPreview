@@ -7,9 +7,9 @@ import org.joda.time.LocalDate
 import java.util.*
 
 @Dao
-interface RegistryDao {
+interface RecordDao {
 
-    @Query(
+    /*@Query(
         """
         SELECT * 
         FROM registryTable 
@@ -23,7 +23,7 @@ interface RegistryDao {
         limit: Int
     ): LiveData<List<Record>>
 
-    /**
+    *//*
      * Performs a query on [Record]s with multiple conditions.
      *
      * @param accountIds query condition.
@@ -33,7 +33,7 @@ interface RegistryDao {
      * @param search string indicating movement's name or description, or person's name to condition query's result.
      *
      * @return a live list of movements.
-     */
+     *//*
     @Query(
         """
         SELECT * 
@@ -54,15 +54,15 @@ interface RegistryDao {
         from: Date = LocalDate().minusDays(30).toDate(),
         to: Date = Date(),
         search: String,
-    ): LiveData<List<Record>>
+    ): LiveData<List<Record>>*/
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovement(vararg record: Record)
+    suspend fun insertRecord(vararg record: Record)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateMovement(vararg record: Record)
+    suspend fun updateRecord(vararg record: Record)
 
     @Delete
-    suspend fun deleteMovement(vararg record: Record)
+    suspend fun deleteRecord(vararg record: Record)
 
 }

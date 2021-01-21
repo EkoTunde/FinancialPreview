@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.databinding.FragmentPendingBinding
-import com.ekosoftware.financialpreview.presentation.ui.pending.tabs.PendingPagerAdapter
+import com.ekosoftware.financialpreview.presentation.ui.pending.tabs.adapters.PendingPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 class PendingFragment : Fragment() {
@@ -41,6 +41,9 @@ class PendingFragment : Fragment() {
                     tab.text = getString(R.string.movements)
                 }
                 2 -> {
+                    tab.text = getString(R.string.budgets)
+                }
+                3 -> {
                     tab.text = getString(R.string.groups)
                 }
             }

@@ -1,3 +1,6 @@
 package com.ekosoftware.financialpreview.data.model.summary
 
-data class Balance(var month: Int?, var balance: Double?)
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+data class Balance(val total: Double, val currency: String)

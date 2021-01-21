@@ -1,13 +1,13 @@
 package com.ekosoftware.financialpreview.data.local
 
 import com.ekosoftware.financialpreview.data.local.daos.CurrencyConversionDao
-import com.ekosoftware.financialpreview.data.local.daos.RegistryDao
+import com.ekosoftware.financialpreview.data.local.daos.RecordDao
 import com.ekosoftware.financialpreview.data.local.daos.MovementDao
 import javax.inject.Inject
 
 class CurrentMonthDataSource @Inject constructor(
     private val currencyConversionDao: CurrencyConversionDao,
-    private val registryDao: RegistryDao,
+    private val recordDao: RecordDao,
     private val movementDao: MovementDao,
 ) {
 

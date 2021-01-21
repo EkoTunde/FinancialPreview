@@ -34,11 +34,11 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideMovementDao(db: AppDatabase) = db.movementDao()
+    fun provideMovementDao(db: AppDatabase) = db.recordDao()
 
     @Singleton
     @Provides
-    fun provideScheduledDao(db: AppDatabase) = db.scheduledDao()
+    fun provideScheduledDao(db: AppDatabase) = db.movementDao()
 
     @Singleton
     @Provides

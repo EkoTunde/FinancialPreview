@@ -5,7 +5,7 @@
     <string name="do_">Hacer</string>
     <string name="add_record">Agregar\nregistro</string>
     <string name="transferir">Transferir</string>
-    <string name="example_already_used_percentage">75 %</string>
+    <string name="example_already_used_percentage">75% utilizado.</string>
     <string name="now">Ahora</string>
     <string name="this_month">Este mes</string>
     <string name="your_scheduled_movements">Tus movimientos programados</string>
@@ -167,13 +167,26 @@
     <string name="example_account">Caja de ahorro BaPro</string>
     <string name="example_date">26-mar-2020</string>
     <string name="add_pending">Agregar\npendiente</string>
-    <string name="chart_description_output">"Aprox. $ %1$d, data is: %2$s"</string>
+    <string name="chart_description_output">"%1$s %2$.2f %3$s en %4$s"</string>
+    <string name="from_accumulated">de acumulado</string>
+    <string name="from_income">de ingreso</string>
+    <string name="from_expense">de gasto</string>
+    <string name="from_balance">de balance</string>
     <string name="balance_acummulated">Acumulado</string>
     <string name="error_loading_something">Error al cargar %1$s</string>
     <string name="pending_summary_balance">el resumen de cuentas pendientes</string>
     <string name="retry">Reintentar</string>
     <string name="movements">Moviemientos</string>
     <string name="groups">Grupos</string>
+    <string name="budget_percent">%1$d\% restante</string>
+    <string name="amount_holder">%1$s %2$.2f</string>
+    <string name="example_settle_group_item_name">MasterCard</string>
+    <string name="example_settle_group_item_description">Engloba todos los gastos de la tarjeta de crédito MasterCard</string>
+    <string name="example_settle_group_item_percent">Aplica un 0.28% sobre el total</string>
+    <string name="example_settle_group_item_movements_amount">Incluye 7 movimientos</string>
+    <string name="example_settle_group_item_aprox_amount">ARS -3360.45</string>
+    <string name="settle_group_percent">Aplica %.2f\% sobre el total</string>
+    <string name="settle_group_percent_0">No aplica ningún interés sobre el total</string>
 
     <string-array name="currencies">
         <item>@string/ars</item>
@@ -194,5 +207,15 @@
         <item>@string/month_noc</item>
         <item>@string/month_dec</item>
     </string-array>
+
+    <plurals name="amountOfSettleGroupPercent">
+        <item quantity="zero">No aplica ningún interés sobre el total</item>
+        <item quantity="other">Aplica un %.2f sobre el total</item>
+    </plurals>
+
+    <plurals name="amountOfMovementsInSettleGroup">
+        <item quantity="one">Incluye %d movimiento</item>
+        <item quantity="other">Incluye $d movimientos</item>
+    </plurals>
 
 </resources>

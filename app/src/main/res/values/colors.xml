@@ -16,8 +16,8 @@
     <color name="colorAmountNegativeGradient3">#F57C00</color>
     <color name="colorAmountPositive">#388E3C</color>
     <color name="colorAmountPositiveGradient1">#388E3C</color>
-    <color name="colorAmountPositiveGradient2">#0288D1</color>
-    <color name="colorAmountPositiveGradient3">#689F38</color>
+    <color name="colorAmountPositiveGradient2">#689F38</color>
+    <color name="colorAmountPositiveGradient3">#0288D1</color>
 
     <color name="colorTextPrimary">#969696</color>
 

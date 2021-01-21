@@ -10,11 +10,14 @@ import kotlinx.android.parcel.Parcelize
 data class SettleGroup(
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "settleGroupId")
+    @ColumnInfo(name = "settleGroupId", index = true)
     var id: Int,
 
     @ColumnInfo(name = "settleGroupName")
     var name: String,
+
+    @ColumnInfo(name = "settleGroupDescription")
+    var description: String,
 
     @ColumnInfo(name = "settleGroupPercentage")
     var percentage: Double,
@@ -22,5 +25,5 @@ data class SettleGroup(
     @ColumnInfo(name = "settleGroupCurrencyCode")
     var currencyCode: String
 
-) : Parcelable
+    ) : Parcelable
 

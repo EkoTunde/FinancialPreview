@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-@Entity(tableName = "registryTable")
+@Entity(tableName = "recordTable")
 data class Record(
 
     @PrimaryKey(autoGenerate = true)
