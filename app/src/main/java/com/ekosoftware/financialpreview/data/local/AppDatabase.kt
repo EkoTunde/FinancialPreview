@@ -4,21 +4,24 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.ekosoftware.financialpreview.data.local.daos.*
-import com.ekosoftware.financialpreview.data.model.*
+import com.ekosoftware.financialpreview.data.model.Category
+import com.ekosoftware.financialpreview.data.model.CurrencyConversion
+import com.ekosoftware.financialpreview.data.model.Record
 import com.ekosoftware.financialpreview.data.model.account.Account
-import com.ekosoftware.financialpreview.data.model.scheduled.Scheduled
-import com.ekosoftware.financialpreview.data.model.tax.Tax
+import com.ekosoftware.financialpreview.data.model.movement.Movement
+import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
+import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCrossRef
 
 @Database(
     entities = [
         Account::class,
         Category::class,
         CurrencyConversion::class,
+        Record::class,
         Movement::class,
-        Scheduled::class,
-        Tax::class,
-        TaxScheduledCrossRef::class
-    ], version = 1, exportSchema = false
+        SettleGroup::class,
+        SettleGroupMovementsCrossRef::class
+    ], version = 5, exportSchema = false
 )
 @TypeConverters(RoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -26,8 +29,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun accountDao(): AccountDao
     abstract fun categoryDao(): CategoryDao
     abstract fun currencyConversionDao(): CurrencyConversionDao
-    abstract fun movementDao(): MovementDao
-    abstract fun scheduledDao(): ScheduledDao
-    abstract fun taxDao(): TaxDao
-    abstract fun taxScheduledCrossRefDao(): TaxScheduledCrossRefDao
+    abstract fun movementDao(): RegistryDao
+    abstract fun scheduledDao(): MovementDao
+    abstract fun settleGroupDao(): SettleGroupDao
 }

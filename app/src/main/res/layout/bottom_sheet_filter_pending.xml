@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/quicksand_semi_bold"
+        android:text="@string/filter"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/quicksand_semi_bold"
+        android:text="@string/select_type" />
+
+    <HorizontalScrollView
+        android:id="@+id/chip_group_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/type_chip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:selectionRequired="true"
+            app:singleLine="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_income"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:fontFamily="@font/quicksand_regular"
+                android:text="@string/incomes"
+                android:textSize="16sp"
+                app:checkedIcon="@drawable/ic_check"
+                app:checkedIconEnabled="true"
+                app:checkedIconTint="@color/colorPrimary" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_expense"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:fontFamily="@font/quicksand_regular"
+                android:text="@string/expenses"
+                android:textSize="16sp"
+                app:checkedIcon="@drawable/ic_check"
+                app:checkedIconEnabled="true"
+                app:checkedIconTint="@color/colorPrimary" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_budgets"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:fontFamily="@font/quicksand_regular"
+                android:text="@string/budgets"
+                android:textSize="16sp"
+                app:checkedIcon="@drawable/ic_check"
+                app:checkedIconEnabled="true"
+                app:checkedIconTint="@color/colorPrimary" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_taxes"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:fontFamily="@font/quicksand_regular"
+                android:text="@string/taxes"
+                android:textSize="16sp"
+                app:checkedIcon="@drawable/ic_check"
+                app:checkedIconEnabled="true"
+                app:checkedIconTint="@color/colorPrimary" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:checked="true"
+        android:fontFamily="@font/quicksand_semi_bold"
+        android:paddingHorizontal="8dp"
+        android:text="@string/show_settle_groups" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/quicksand_semi_bold"
+        android:paddingHorizontal="8dp"
+        android:text="@string/select_accounts" />
+
+    <HorizontalScrollView
+        android:id="@+id/accounts_chip_group_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/accounts_chip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:selectionRequired="true"
+            app:singleLine="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/example"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:fontFamily="@font/quicksand_regular"
+                android:text="@string/example_chip_text"
+                android:textSize="16sp"
+                app:checkedIcon="@drawable/ic_check"
+                app:checkedIconEnabled="true"
+                app:checkedIconTint="@color/colorPrimary" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/order_by"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:hint="@string/order_by"
+        android:labelFor="@id/actv_2"
+        app:boxCornerRadiusTopEnd="4dp"
+        app:boxCornerRadiusTopStart="4dp"
+        app:endIconMode="dropdown_menu"
+        app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
+        app:startIconDrawable="@drawable/ic_sort">
+
+        <AutoCompleteTextView
+            android:id="@+id/actv_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_regular"
+            android:inputType="none"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/filledEditTextLightWhite" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/quicksand_semi_bold"
+        android:text="@string/amount_range" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp">
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/range_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/slider_indicator_max"
+            android:layout_toEndOf="@id/slider_indicator_min"
+            android:valueFrom="0.0"
+            android:valueTo="10000.0"
+            app:values="@array/initial_slider_values" />
+
+        <TextView
+            android:id="@+id/slider_indicator_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/slider_edit_text_indicator_background"
+            android:fontFamily="@font/quicksand_bold"
+            android:padding="8dp"
+            android:text="@string/slider_example_1" />
+
+        <TextView
+            android:id="@+id/slider_indicator_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/slider_edit_text_indicator_background"
+            android:fontFamily="@font/quicksand_bold"
+            android:padding="8dp"
+            android:text="@string/slider_example_2" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_select_categories"
+        style="@style/EditTextAlikeMaterialButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:elevation="0dp"
+        android:text="@string/select_categories" />
+
+</LinearLayout>

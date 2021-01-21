@@ -7,17 +7,20 @@ import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@Entity(tableName = "category_table")
+@Entity(tableName = "categoryTable")
 data class Category (
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "category_id")
+    @ColumnInfo(name = "categoryId")
     var id: Int,
 
-    @ColumnInfo(name = "category_name")
+    @ColumnInfo(name = "categoryName")
     var name: String,
 
-    @ColumnInfo(name = "category_icon_res_id")
-    var iconResId: Int
+    @ColumnInfo(name = "categoryIconResId")
+    var iconResId: Int,
+
+    @ColumnInfo(name = "categoryColorResId")
+    var colorResId: Int
 
 ) : Parcelable

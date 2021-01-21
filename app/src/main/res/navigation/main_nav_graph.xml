@@ -3,50 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/now_page_fragment">
+    app:startDestination="@id/home_page_fragment">
 
     <fragment
-        android:id="@+id/now_page_fragment"
-        android:name="com.ekosoftware.financialpreview.presentation.ui.home.now.NowFragment"
+        android:id="@+id/home_page_fragment"
+        android:name="com.ekosoftware.financialpreview.presentation.ui.home.HomeFragment"
         android:label="fragment_now"
-        tools:layout="@layout/fragment_now" >
-        <action
-            android:id="@+id/action_nowFragment_to_historicMovementFragment"
-            app:destination="@id/historicMovementFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/month_page_fragment"
-        android:name="com.ekosoftware.financialpreview.presentation.ui.home.month.MonthFragment"
-        android:label="fragment_this_month"
-        tools:layout="@layout/fragment_month" />
-    <fragment
-        android:id="@+id/forward_page_fragment"
-        android:name="com.ekosoftware.financialpreview.presentation.ui.home.forward.ForwardFragment"
-        android:label="fragment_this_year"
-        tools:layout="@layout/fragment_year" >
-        <action
-            android:id="@+id/action_thisYearFragment_to_thisMontFragment"
-            app:destination="@id/month_page_fragment" />
-        <action
-            android:id="@+id/action_thisYearFragment_to_scheduledMovementFragment"
-            app:destination="@id/scheduledMovementFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/historicMovementFragment"
-        android:name="com.ekosoftware.financialpreview.presentation.ui.movement.HistoricMovementDialogFragment"
-        android:label="fragment_historic_movement"
-        tools:layout="@layout/dialog_fragment_historic_movement" >
-        <action
-            android:id="@+id/action_re_schedule"
-            app:destination="@id/scheduledMovementFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/scheduledMovementFragment"
-        android:name="com.ekosoftware.financialpreview.presentation.ui.movement.ScheduledMovementDialogFragment"
-        android:label="fragment_scheduled_movement"
-        tools:layout="@layout/dialog_fragment_scheduled_movement" >
-        <action
-            android:id="@+id/action_move"
-            app:destination="@id/historicMovementFragment" />
-    </fragment>
+        android:id="@+id/pending_page_fragment"
+        android:name="com.ekosoftware.financialpreview.presentation.ui.pending.PendingFragment"
+        android:label="fragment_pending"
+        tools:layout="@layout/fragment_pending" />
 </navigation>

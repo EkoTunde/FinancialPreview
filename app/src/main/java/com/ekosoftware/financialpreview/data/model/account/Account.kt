@@ -1,32 +1,35 @@
 package com.ekosoftware.financialpreview.data.model.account
 
-import android.os.Parcelable
-import androidx.room.*
-import kotlinx.android.parcel.Parcelize
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Entity(tableName = "account_table")
+@Entity(tableName = "accountTable")
 data class Account(
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "account_id")
+    @ColumnInfo(name = "accountId")
     var id: Int = 0,
 
-    @ColumnInfo(name = "account_currency_code")
+    @ColumnInfo(name = "accountCurrencyCode")
     var currencyCode: String = "",
 
-    @ColumnInfo(name = "account_name")
+    @ColumnInfo(name = "accountName")
     var name: String,
 
-    @ColumnInfo(name = "account_balance")
+    @ColumnInfo(name = "accountBalance")
     var balance: Double = 0.0,
 
-    @ColumnInfo(name = "account_description")
+    @ColumnInfo(name = "accountDescription")
     var description: String? = null,
 
-    @ColumnInfo(name = "account_number")
+    @ColumnInfo(name = "accountNumber")
     var number: String? = null,
 
-    @ColumnInfo(name = "account_bank")
-    var bank: String? = null
+    @ColumnInfo(name = "accountBank")
+    var bank: String? = null,
+
+    @ColumnInfo(name = "accountColorResId")
+    var colorResId: Int?
 
 )

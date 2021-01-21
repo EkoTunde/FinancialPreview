@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">FinancialPreview</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Inicio</string>
+    <string name="will_save_this_month">Ahorrarás este mes</string>
+    <string name="do_">Hacer</string>
+    <string name="add_record">Agregar\nregistro</string>
+    <string name="transferir">Transferir</string>
+    <string name="example_already_used_percentage">75 %</string>
     <string name="now">Ahora</string>
     <string name="this_month">Este mes</string>
     <string name="your_scheduled_movements">Tus movimientos programados</string>
@@ -10,9 +15,184 @@
     <string name="view_all_accounts">Ver todos cuentas</string>
     <string name="scheduled_movements_left_this_month">Pendiente este mes</string>
     <string name="balance">Ahora</string>
-    <string name="select_all">Seleccionar todas</string>
+    <string name="select_all"><u>Seleccionar todas</u></string>
+    <string name="unselect_all"><u>Quitar selección</u></string>
     <string name="taxes">Impuestos</string>
-
     <string name="preference_file_key">com.ekosoftware.financialpreview.PREFERENCE_FILE_KEY</string>
+    <string name="pending">Pendiente</string>
+    <string name="pending_this_month">Pendiente este mes</string>
+    <string name="incomes">Ingresos</string>
+    <string name="expenses">Gastos</string>
+    <string name="budgets">Presupuestos</string>
+    <string name="accumulated">Presupuestos</string>
+    <string name="balances">Diferencias</string>
+    <string name="projection_timeline">Proyección: línea de tiempo</string>
+    <string name="actions">Acciones</string>
+    <string name="add_preview">agregar\npreview</string>
+    <string name="add_budget">Agregar\npresupuesto</string>
+    <string name="settle">Liquidar</string>
+    <string name="example_money_small">ARS 13.587 <sup><small><small><small>54</small></small></small></sup></string>
+    <string name="example_money_small_2">ARS 13.587,54</string>
+    <string name="example_money_large">ARS 23.493.587 <sup><small><small><small>27</small></small></small></sup></string>
+    <string name="ars">ARS</string>
+    <string name="usd">USD</string>
+    <string name="btn_change_currency"><u>Cambiar moneda</u></string>
+    <string name="current_currency_title">Tu saldo actual</string>
+    <string name="sneak_peak">Hechar un vistazo</string>
+    <string name="in_six_months">6 meses</string>
+    <string name="in_twelve_months">En 12 meses</string>
+    <string name="quick_view">Vista rápida</string>
+    <string name="nothing_selected">Nada seleccionado</string>
+    <string name="month_jan_extended">Enero</string>
+    <string name="month_feb_extended">Febrero</string>
+    <string name="month_mar_extended">Marzo</string>
+    <string name="month_apr_extended">Abril</string>
+    <string name="month_may_extended">Mayo</string>
+    <string name="month_jun_extended">Junio</string>
+    <string name="month_jul_extended">Julio</string>
+    <string name="month_aug_extended">Agosto</string>
+    <string name="month_sep_extended">Septiembre</string>
+    <string name="month_oct_extended">Octubre</string>
+    <string name="month_nov_extended">Noviembre</string>
+    <string name="month_dec_extended">Diciembre</string>
+    <string name="month_jan">Ene</string>
+    <string name="month_feb">Feb</string>
+    <string name="month_mar">Mar</string>
+    <string name="month_apr">Abr</string>
+    <string name="month_may">May</string>
+    <string name="month_jun">Jun</string>
+    <string name="month_jul">Jul</string>
+    <string name="month_aug">Ago</string>
+    <string name="month_sep">Sep</string>
+    <string name="month_oct">Oct</string>
+    <string name="month_noc">Nov</string>
+    <string name="month_dec">Dic</string>
+    <string name="amount">Importe</string>
+    <string name="details">DETALLES</string>
+    <string name="expense">Gasto</string>
+    <string name="income">Ingreso</string>
+    <string name="transfer">Transferencia</string>
+    <string name="account">Cuenta</string>
+    <string name="_7">7</string>
+    <string name="_8">8</string>
+    <string name="_9">9</string>
+    <string name="div">÷</string>
+    <string name="clear">C</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="mult">×</string>
+    <string name="perc">%</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="minus">-</string>
+    <string name="plus_minus">±</string>
+    <string name="_0">0</string>
+    <string name="comma">,</string>
+    <string name="plus">+</string>
+    <string name="equal">=</string>
+    <string name="category">Categoría</string>
+    <string name="backspace">⌫</string>
+    <string name="error">Error</string>
+    <string name="name">Nombre</string>
+    <string name="description">Descripción</string>
+    <string name="tax_category">Categoría impositiva</string>
+    <string name="from_and_to">Desde y hasta (inc.)</string>
+    <string name="from">Desde</string>
+    <string name="to">Hasta</string>
+    <string name="frequency">Frecuencia</string>
+    <string name="initial_amount">Importe inicial</string>
+    <string name="left_amount">Importe restante</string>
+    <string name="not_repeats">No se repite</string>
+    <string name="currency">Moneda</string>
+    <string name="starting_amount">Importe inicial</string>
+    <string name="add">Agregar</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movement_type">Tipo de movimiento:</string>
+    <string name="loan">Préstamo</string>
+    <string name="budget">Presupuesto</string>
+    <string name="movement">Moviemiento</string>
+    <string name="month">Mes</string>
+    <string name="year">Año</string>
+    <string name="cancel">Cancelar</string>
+    <string name="edit">Editar</string>
+    <string name="reestablish">Reestablecer</string>
+    <string name="save">Guardar</string>
+    <string name="select_type">Seleccionar tipo</string>
+    <string name="select_movement_type">Seleccionar tipo de movimiento</string>
+    <string name="beneficiary">Beneficiario</string>
+    <string name="direction">Dirección</string>
+    <string name="pay_off_month">Mes de devolución</string>
+    <string name="is_budget">Es presupuesto</string>
+    <string name="ask_before_paying">Ajustar saldo antes de liquidar</string>
+    <string name="repeats_yes">Se repite</string>
+    <string name="repeats_no">No se repite</string>
+    <string name="installments_yes">Son cuotas</string>
+    <string name="interest">Interés</string>
+    <string name="start">Inicio</string>
+    <string name="end">Fin</string>
+    <string name="when">Cuando</string>
+    <string name="months">Meses</string>
+    <string name="every">Cada</string>
+    <string name="quotas">Cuotas</string>
+    <string name="example_quotas_total_amount">3 cuotas x ARS 900,00 = ARS 2700,00</string>
+    <string name="quantity">Cantidad</string>
+    <string name="ok">OK</string>
+    <string name="select_month_and_year">Seleccionar mes y año</string>
+    <string name="search">Search</string>
+    <string name="text">Texto</string>
+    <string name="is_banck_account">Es una cuenta bancaria</string>
+    <string name="owner">Titular</string>
+    <string name="id_types">DNI, CUIL o CUIT</string>
+    <string name="bank_unique_key">CBU o CVU</string>
+    <string name="alias">Alias</string>
+    <string name="delete">Eliminar</string>
+    <string name="change_icon">Cambiar ícono</string>
+    <string name="change_color">Cambiar color</string>
+    <string name="percentage">Porcentaje</string>
+    <string name="select_movements">Seleccionar movimientos:</string>
+    <string name="texto_de_prueba">Texto de prueba</string>
+    <string name="filter">Filtro</string>
+    <string name="order_by">Ordenar por</string>
+    <string name="amount_range">Rango de montos</string>
+    <string name="select_accounts">Seleccionar cuentas</string>
+    <string name="example_chip_text">This is example text</string>
+    <string name="show_settle_groups">Mostrar grupos de liquidación</string>
+    <string name="select_categories">Seleccionar categorías</string>
+    <string name="slider_example_1">2k</string>
+    <string name="slider_example_2">7k</string>
+    <string name="example_pending_item_name">Comida de perro</string>
+    <string name="example_pending_item_category">Compras</string>
+    <string name="example_account">Caja de ahorro BaPro</string>
+    <string name="example_date">26-mar-2020</string>
+    <string name="add_pending">Agregar\npendiente</string>
+    <string name="chart_description_output">"Aprox. $ %1$d, data is: %2$s"</string>
+    <string name="balance_acummulated">Acumulado</string>
+    <string name="error_loading_something">Error al cargar %1$s</string>
+    <string name="pending_summary_balance">el resumen de cuentas pendientes</string>
+    <string name="retry">Reintentar</string>
+    <string name="movements">Moviemientos</string>
+    <string name="groups">Grupos</string>
+
+    <string-array name="currencies">
+        <item>@string/ars</item>
+        <item>@string/usd</item>
+    </string-array>
+
+    <string-array name="months_abr">
+        <item>@string/month_jan</item>
+        <item>@string/month_feb</item>
+        <item>@string/month_mar</item>
+        <item>@string/month_apr</item>
+        <item>@string/month_may</item>
+        <item>@string/month_jun</item>
+        <item>@string/month_jul</item>
+        <item>@string/month_aug</item>
+        <item>@string/month_sep</item>
+        <item>@string/month_oct</item>
+        <item>@string/month_noc</item>
+        <item>@string/month_dec</item>
+    </string-array>
 
 </resources>

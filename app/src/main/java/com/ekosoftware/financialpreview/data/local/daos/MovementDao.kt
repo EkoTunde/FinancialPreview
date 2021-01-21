@@ -2,69 +2,71 @@ package com.ekosoftware.financialpreview.data.local.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.ekosoftware.financialpreview.data.model.Movement
-import org.joda.time.LocalDate
-import java.util.*
+import com.ekosoftware.financialpreview.data.model.movement.Movement
+import com.ekosoftware.financialpreview.data.model.movement.MovementSummary
+import com.ekosoftware.financialpreview.data.model.summary.Balance
+import com.ekosoftware.financialpreview.data.model.summary.MonthSummary
 
 @Dao
 interface MovementDao {
 
     @Query(
         """
-        SELECT * 
-        FROM movement_table 
-        WHERE movement_date BETWEEN :fromDate AND :toDate
-        ORDER BY movement_date DESC 
-        LIMIT :limit"""
+        SELECT 
+            :currencyCode AS currencyCode,
+            :fromTo AS yearMonth,
+            (SELECT SUM(movementLeftAmount) 
+            FROM movementTable 
+            WHERE movementLeftAmount >= 0 AND movementCurrencyCode = :currencyCode AND movementFrom >= :fromTo AND movementTo <= :fromTo         
+            ) AS totalIncome,
+            (SELECT SUM(movementLeftAmount)
+            FROM movementTable 
+            WHERE movementLeftAmount < 0 AND movementCurrencyCode = :currencyCode AND movementFrom >= :fromTo AND movementTo <= :fromTo
+            ) AS totalExpense
+        """
     )
-    fun getMovements(
-        fromDate: Date,
-        toDate: Date,
-        limit: Int
-    ): LiveData<List<Movement>>
+    fun getPendingSummaryWithoutTaxes(fromTo: Int, currencyCode: String): LiveData<MonthSummary>
 
-    /**
-     * Performs a query on [Movement]s with multiple conditions.
-     *
-     * @param accountIds query condition.
-     * @param currenciesCodes query condition.
-     * @param from starting date to condition query's result.
-     * @param to ending date to condition query's result.
-     * @param search string indicating movement's name or description, or person's name to condition query's result.
-     *
-     * @return a live list of movements.
-     */
     @Query(
         """
-        SELECT * 
-        FROM movement_table 
-        WHERE movement_account_id IN (:accountIds)
-        AND movement_currency_code IN (:currenciesCodes)
-        AND (movement_date BETWEEN :from AND :to)
-        AND (
-          movement_old_scheduled_name LIKE '%' || :search || '%' 
-            OR movement_old_scheduled_description LIKE '%' || :search || '%' 
-            OR movement_old_scheduled_debtor LIKE '%' || :search || '%' 
-            OR movement_old_scheduled_creditor LIKE '%' || :search || '%'
-        )
-        ORDER BY movement_date
+        SELECT :currencyCode AS currencyCode,
+        :fromTo AS yearMonth, 
+        (SELECT SUM(movementLeftAmount) FROM movementTable WHERE movementLeftAmount >= 0 AND movementCurrencyCode = :currencyCode AND movementFrom >= :fromTo AND movementTo <= :fromTo) AS totalIncome,
+        (SELECT SUM(movementLeftAmount) FROM movementTable WHERE movementLeftAmount < 0 AND movementCurrencyCode = :currencyCode AND movementFrom >= :fromTo AND movementTo <= :fromTo) AS totalExpense
         """
     )
-    fun searchMovements(
-        accountIds: List<Int>,
-        currenciesCodes: List<String>,
-        from: Date = LocalDate().minusDays(30).toDate(),
-        to: Date = Date(),
-        search: String,
-    ): LiveData<List<Movement>>
+    fun getMonthPendingSummary(fromTo: Int, currencyCode: String): MonthSummary
+
+    @Query(
+        """
+        SELECT :fromTo AS month,
+            (SELECT SUM(movementLeftAmount) FROM movementTable WHERE movementCurrencyCode = :currencyCode AND movementFrom >= :fromTo AND movementTo <= :fromTo) AS balance"""
+    )
+    fun getBalance(currencyCode: String, fromTo: Int): LiveData<Balance>
+
+    @Query(
+        """
+        SELECT movementId, movementLeftAmount, movementCurrencyCode, categoryName, categoryIconResId, accountName  
+        FROM movementTable
+        INNER JOIN categoryTable ON categoryTable.categoryId = movementTable.movementCategoryId
+        INNER JOIN accountTable ON accountTable.accountId = movementTable.movementAccountId
+        WHERE movementFrom >= :from AND movementTo <= :to AND movementCurrencyCode = :currencyCode
+        ORDER BY categoryName ASC, movementCurrencyCode, accountName"""
+    )
+    fun getScheduledSummaryBetweenLapse(
+        currencyCode: String,
+        from: Int,
+        to: Int
+    ): LiveData<List<MovementSummary>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovement(vararg movement: Movement)
+    suspend fun insertScheduled(vararg movement: Movement)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateMovement(vararg movement: Movement)
+    suspend fun updateScheduled(vararg movement: Movement)
 
     @Delete
-    suspend fun deleteMovement(vararg movement: Movement)
+    suspend fun deleteScheduled(vararg movement: Movement)
 
 }
+

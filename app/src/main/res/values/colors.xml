@@ -1,11 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#512DA8</color>
+    <color name="colorPrimaryDark">#402385</color>
+    <color name="colorAccent">#C9A81B</color>
     <color name="colorPlainBackground">#CCCCCC</color>
     <color name="colorLightGrey">#DBDBDB</color>
     <color name="colorWhite">#fff</color>
+    <color name="colorBlack">#000</color>
+
+
+    <color name="colorTransparent">@android:color/transparent</color>
     <color name="colorAmountNegative">#D32F2F</color>
-    <color name="colorAmountPositive">#2E7D32</color>
+    <color name="colorAmountNegativeGradient1">#D32F2F</color>
+    <color name="colorAmountNegativeGradient2">#E64A19</color>
+    <color name="colorAmountNegativeGradient3">#F57C00</color>
+    <color name="colorAmountPositive">#388E3C</color>
+    <color name="colorAmountPositiveGradient1">#388E3C</color>
+    <color name="colorAmountPositiveGradient2">#0288D1</color>
+    <color name="colorAmountPositiveGradient3">#689F38</color>
+
+    <color name="colorTextPrimary">#969696</color>
+
+    <!-- Scheduled Dialog Filled Edit Texts -->
+    <color name="filledEditTextBackground">#B3512DA8</color>
+    <color name="filledEditTextLightWhite">#80FFFFFF</color>
+
+
+    <color name="editTextBackground">#E0E0E0</color>
+
+
+    // Categories and accounts colors
+    <color name="materialColor1">#D32F2F</color>
+    <color name="materialColor2">#C2185B</color>
+    <color name="materialColor3">#7B1FA2</color>
+    <color name="materialColor4">#512DA8</color>
+    <color name="materialColor5">#303F9F</color>
+    <color name="materialColor6">#1976D2</color>
+    <color name="materialColor7">#0288D1</color>
+    <color name="materialColor8">#0097A7</color>
+    <color name="materialColor9">#00796B</color>
+    <color name="materialColor10">#388E3C</color>
+    <color name="materialColor11">#689F38</color>
+    <color name="materialColor12">#AFB42B</color>
+    <color name="materialColor13">#FBC02D</color>
+    <color name="materialColor14">#FFA000</color>
+    <color name="materialColor15">#F57C00</color>
+    <color name="materialColor16">#E64A19</color>
 </resources>

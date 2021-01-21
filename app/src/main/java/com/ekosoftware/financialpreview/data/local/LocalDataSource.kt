@@ -1,7 +1,7 @@
 package com.ekosoftware.financialpreview.data.local
 
 import com.ekosoftware.financialpreview.data.local.daos.*
-import com.ekosoftware.financialpreview.data.model.Movement
+import com.ekosoftware.financialpreview.data.model.Record
 import com.ekosoftware.financialpreview.data.model.account.Account
 import java.util.*
 import javax.inject.Inject
@@ -10,10 +10,9 @@ class LocalDataSource @Inject constructor(
     private val accountDao: AccountDao,
     private val categoryDao: CategoryDao,
     private val currencyConversionDao: CurrencyConversionDao,
+    private val registryDao: RegistryDao,
     private val movementDao: MovementDao,
-    private val scheduledDao: ScheduledDao,
-    private val taxDao: TaxDao,
-    private val taxScheduledCrossRefDao: TaxScheduledCrossRefDao
+    private val settleGroupDao: SettleGroupDao
 ) {
 
     // Traer una lista de cuentas
@@ -21,11 +20,11 @@ class LocalDataSource @Inject constructor(
 
     // Traer una lista de movimientos
     fun getMovements(fromDate: Date, toDate: Date, limit: Int) =
-        movementDao.getMovements(fromDate, toDate, limit)
+        registryDao.getMovements(fromDate, toDate, limit)
 
     // Saldos totales para diferentes monedas (corriente mes)
     fun getTotalForMonth(currencyId: String, from: Int, to: Int) =
-        scheduledDao.getScheduledSummaryBetweenLapse(
+        movementDao.getScheduledSummaryBetweenLapse(
             currencyId,
             from,
             to
@@ -81,7 +80,7 @@ class LocalDataSource @Inject constructor(
     // Buscar movimientos por cuenta, limitado por dias
 
     // Insertar movimientos
-    suspend fun insertMovement(vararg movement: Movement) = movementDao.insertMovement(*movement)
+    suspend fun insertMovement(vararg record: Record) = registryDao.insertMovement(*record)
 
     // Modificar movimientos
 

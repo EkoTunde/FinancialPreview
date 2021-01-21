@@ -1,14 +1,14 @@
 package com.ekosoftware.financialpreview.data.local
 
 import com.ekosoftware.financialpreview.data.local.daos.CurrencyConversionDao
+import com.ekosoftware.financialpreview.data.local.daos.RegistryDao
 import com.ekosoftware.financialpreview.data.local.daos.MovementDao
-import com.ekosoftware.financialpreview.data.local.daos.ScheduledDao
 import javax.inject.Inject
 
 class CurrentMonthDataSource @Inject constructor(
     private val currencyConversionDao: CurrencyConversionDao,
+    private val registryDao: RegistryDao,
     private val movementDao: MovementDao,
-    private val scheduledDao: ScheduledDao,
 ) {
 
     // Saldos totales para diferentes monedas

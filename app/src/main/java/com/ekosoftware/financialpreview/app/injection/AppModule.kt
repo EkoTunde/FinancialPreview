@@ -42,10 +42,6 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideTaxDao(db: AppDatabase) = db.taxDao()
-
-    @Singleton
-    @Provides
-    fun provideTaxScheduledCrossRefDao(db: AppDatabase) = db.taxScheduledCrossRefDao()
+    fun provideSettleGroupDao(db: AppDatabase) = db.settleGroupDao()
 
 }

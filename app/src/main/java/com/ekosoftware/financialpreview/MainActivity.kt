@@ -1,6 +1,5 @@
 package com.ekosoftware.financialpreview
 
-import android.icu.util.Currency
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -10,8 +9,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.ekosoftware.financialpreview.databinding.ActivityMainBinding
-import com.ekosoftware.financialpreview.presentation.ui.movement.HistoricMovementDialogFragment
-import com.ekosoftware.financialpreview.presentation.ui.movement.ScheduledMovementDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,8 +31,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val c = Currency.getInstance(ars)
-*/
+        val c = Currency.getInstance(ars)*/
 
 
         val navHostFragment =
@@ -49,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
-    fun showAddEditMovementDialog() {
+ /*   fun showAddEditMovementDialog() {
         val fragmentManager = supportFragmentManager
         val newFragment = HistoricMovementDialogFragment()
         // The device is smaller, so show the fragment fullscreen
@@ -66,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
     fun showAddEditScheduledDialog() {
         val fragmentManager = supportFragmentManager
-        val newFragment = ScheduledMovementDialogFragment()
+        val newFragment = MovementDialogFragment()
         // The device is smaller, so show the fragment fullscreen
         val transaction = fragmentManager.beginTransaction()
         // For a little polish, specify a transition animation
@@ -78,5 +74,5 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(null)
             .commit()
     }
-
+*/
 }

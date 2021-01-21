@@ -2,13 +2,13 @@ package com.ekosoftware.financialpreview.data.model.account
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.ekosoftware.financialpreview.data.model.Movement
+import com.ekosoftware.financialpreview.data.model.Record
 
 data class AccountWithMovements(
     @Embedded val account: Account,
     @Relation(
-        parentColumn = "account_id",
-        entityColumn = "movement_account_id"
+        parentColumn = "accountId",
+        entityColumn = "recordAccountId"
     )
-    val movements: List<Movement>
+    val records: List<Record>
 )

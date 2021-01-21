@@ -8,11 +8,14 @@ import com.ekosoftware.financialpreview.data.model.account.AccountWithMovements
 @Dao
 interface AccountDao {
 
-    @Query("SELECT * FROM account_table")
-    fun getAccounts(): LiveData<List<Account>>
+    @Query("SELECT SUM(accountBalance) FROM accountTable WHERE accountCurrencyCode = :currency")
+    fun getAccountsTotalForCurrency(currency: String) : LiveData<Double?>
+
+    @Query("SELECT * FROM accountTable")
+    fun getAccounts(): LiveData<List<Account>?>
 
     @Transaction
-    @Query("SELECT * FROM account_table WHERE account_id = :accountId")
+    @Query("SELECT * FROM accountTable WHERE accountId = :accountId")
     fun getAccountWithMovements(accountId: Int): LiveData<List<AccountWithMovements>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

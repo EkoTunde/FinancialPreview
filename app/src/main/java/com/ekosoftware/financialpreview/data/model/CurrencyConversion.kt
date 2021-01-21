@@ -6,19 +6,19 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "currency_table", primaryKeys = ["currency_code"])
+@Entity(tableName = "currencyTable", primaryKeys = ["currencyCodeId"])
 data class CurrencyConversion(
 
-    @ColumnInfo(name = "currency_code")
+    @ColumnInfo(name = "currencyCodeId")
     var code: String = "",
 
-    @ColumnInfo(name = "currency_name")
+    @ColumnInfo(name = "currencyName")
     var name: String = "",
 
-    @ColumnInfo(name = "currency_factor")
+    @ColumnInfo(name = "currencyFactor")
     var factor: Double = 0.0,
 
-    @ColumnInfo(name = "currency_last_update")
+    @ColumnInfo(name = "currencyLastUpdate")
     var lastUpdate: Date?
 )
 

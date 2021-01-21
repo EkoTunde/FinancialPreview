@@ -7,7 +7,7 @@ import com.ekosoftware.financialpreview.data.model.CurrencyConversion
 @Dao
 interface CurrencyConversionDao {
 
-    @Query("SELECT * FROM currency_table")
+    @Query("SELECT * FROM currencyTable")
     fun getCurrencies() : LiveData<List<CurrencyConversion>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

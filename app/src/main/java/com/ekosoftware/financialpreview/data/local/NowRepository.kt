@@ -2,9 +2,9 @@ package com.ekosoftware.financialpreview.data.local
 
 import androidx.lifecycle.LiveData
 import com.ekosoftware.financialpreview.data.local.daos.*
-import com.ekosoftware.financialpreview.data.model.Movement
+import com.ekosoftware.financialpreview.data.model.Record
 import com.ekosoftware.financialpreview.data.model.account.Account
-import com.ekosoftware.financialpreview.data.model.scheduled.ScheduledSummary
+import com.ekosoftware.financialpreview.data.model.movement.MovementSummary
 import java.util.*
 import javax.inject.Inject
 
@@ -12,22 +12,21 @@ class NowRepository @Inject constructor(
     private val accountDao: AccountDao,
     private val categoryDao: CategoryDao,
     private val currencyConversionDao: CurrencyConversionDao,
+    private val registryDao: RegistryDao,
     private val movementDao: MovementDao,
-    private val scheduledDao: ScheduledDao,
-    private val taxDao: TaxDao,
-    private val taxScheduledCrossRefDao: TaxScheduledCrossRefDao
+    private val settleGroupDao: SettleGroupDao
 ) {
 
     // Traer una lista de cuentas
     fun getAccountBalances() = accountDao.getAccounts()
 
     // Traer una lista de movimientos
-    fun getMovements(fromDate: Date, toDate: Date, limit: Int): LiveData<List<Movement>> =
-        movementDao.getMovements(fromDate, toDate, limit)
+    fun getMovements(fromDate: Date, toDate: Date, limit: Int): LiveData<List<Record>> =
+        registryDao.getMovements(fromDate, toDate, limit)
 
     // Saldos totales para diferentes monedas (corriente mes)
-    fun getTotalForMonth(currencyId: String, from: Int, to: Int): LiveData<List<ScheduledSummary>> =
-        scheduledDao.getScheduledSummaryBetweenLapse(
+    fun getTotalForMonth(currencyId: String, from: Int, to: Int): LiveData<List<MovementSummary>> =
+        movementDao.getScheduledSummaryBetweenLapse(
             currencyId,
             from,
             to
@@ -40,9 +39,9 @@ class NowRepository @Inject constructor(
 
     suspend fun deleteAccount(vararg account: Account) : Unit = accountDao.deleteAccounts(*account)
 
-    suspend fun insertMovement(vararg movement: Movement) : Unit = movementDao.insertMovement(*movement)
+    suspend fun insertMovement(vararg record: Record) : Unit = registryDao.insertMovement(*record)
 
-    suspend fun updateMovement(vararg movement: Movement) : Unit = movementDao.updateMovement(*movement)
+    suspend fun updateMovement(vararg record: Record) : Unit = registryDao.updateMovement(*record)
 
-    suspend fun deleteMovement(vararg movement: Movement) : Unit = movementDao.deleteMovement(*movement)
+    suspend fun deleteMovement(vararg record: Record) : Unit = registryDao.deleteMovement(*record)
 }

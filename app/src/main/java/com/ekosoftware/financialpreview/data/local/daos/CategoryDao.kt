@@ -7,7 +7,7 @@ import com.ekosoftware.financialpreview.data.model.Category
 @Dao
 interface CategoryDao {
 
-    @Query("SELECT * FROM category_table")
+    @Query("SELECT * FROM categoryTable")
     fun getCategories(): LiveData<List<Category>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

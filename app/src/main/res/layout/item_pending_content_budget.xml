@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/budget_color_category"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:tint="@color/colorTransparent"
+        app:civ_circle_background_color="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/transparent_drawable" />
+
+    <ImageView
+        android:id="@+id/budget_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="@+id/budget_color_category"
+        app:layout_constraintEnd_toEndOf="@+id/budget_color_category"
+        app:layout_constraintStart_toStartOf="@+id/budget_color_category"
+        app:layout_constraintTop_toTopOf="@+id/budget_color_category"
+        app:srcCompat="@drawable/category_apartment"
+        app:tint="@color/colorWhite" />
+
+    <TextView
+        android:id="@+id/budget_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/quicksand_semi_bold"
+        android:textColor="@color/colorBlack"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/budget_color_category"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/example_pending_item_name" />
+
+    <TextView
+        android:id="@+id/budget_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/quicksand_semi_bold"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/budget_color_category"
+        app:layout_constraintTop_toBottomOf="@+id/budget_name"
+        tools:text="@string/example_pending_item_category" />
+
+    <ProgressBar
+        android:id="@+id/budget_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:max="100"
+        android:progress="50"
+        android:progressTint="@color/colorAmountNegative"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/budget_category" />
+
+    <TextView
+        android:id="@+id/budget_spent_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:lines="1"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorAmountNegative"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/budget_starting_amount"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/budget_progress"
+        tools:text="ARS -300,00" />
+
+    <TextView
+        android:id="@+id/budget_starting_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:lines="1"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorLightGrey"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/budget_spent_amount"
+        app:layout_constraintTop_toBottomOf="@+id/budget_progress"
+        tools:text="ARS -600,00" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
