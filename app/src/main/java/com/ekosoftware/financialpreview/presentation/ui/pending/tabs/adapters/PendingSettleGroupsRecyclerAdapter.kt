@@ -14,7 +14,7 @@ import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovemen
 import com.ekosoftware.financialpreview.databinding.ItemPendingSettleGroupBinding
 import kotlinx.android.synthetic.main.item_pending_settle_group.view.*
 
-class PendingSettleGroupsAdapter(
+class PendingSettleGroupsRecyclerAdapter(
     private val context: Context,
     private val interaction: Interaction? = null
 ) :

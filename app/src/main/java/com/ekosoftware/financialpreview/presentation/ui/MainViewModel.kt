@@ -1,10 +1,12 @@
-package com.ekosoftware.financialpreview.presentation.ui.home
+package com.ekosoftware.financialpreview.presentation.ui
 
 import android.content.Context
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.Resource
+import com.ekosoftware.financialpreview.data.model.budget.Budget
+import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
 import com.ekosoftware.financialpreview.data.model.summary.Balance
 import com.ekosoftware.financialpreview.data.model.summary.MonthSummary
 import com.ekosoftware.financialpreview.data.model.summary.MovementSummary
@@ -18,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class HomeViewModel @ViewModelInject constructor(
+class MainViewModel @ViewModelInject constructor(
     @ApplicationContext private val appContext: Context,
     private val homeRepository: HomeRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
@@ -85,11 +87,35 @@ class HomeViewModel @ViewModelInject constructor(
             }
         }
 
+    val settleGroupsWithMovements = pendingBalanceWithoutTaxes.switchMap { oldSummary ->
+        liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
+            emitSource(homeRepository.getSettleGroupsWithMovements().map { oldSummary to it })
+        }
+    }
+
     val pendingSummaryWithTaxes: LiveData<MonthSummary> =
-        pendingBalanceWithoutTaxes.switchMap { oldSummary ->
+        settleGroupsWithMovements.switchMap { pair ->
             liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
-                emitSource(
-                    homeRepository.getTaxesForSettleGroups().map { groups ->
+                val oldSummary = pair.first
+                val groups = pair.second
+                emit(
+                    MonthSummary(
+                        currencyCode = oldSummary.currencyCode,
+                        yearMonth = oldSummary.yearMonth,
+                        totalIncome = oldSummary.totalIncome?.plus(groups.sumOf { group ->
+                            group.taxes(currentYearMonth(), oldSummary.currencyCode) {
+                                it.leftAmount >= 0
+                            }
+                        }) ?: 0.0,
+                        totalExpense = oldSummary.totalExpense?.plus(groups.sumOf { group ->
+                            group.taxes(currentYearMonth(), oldSummary.currencyCode) {
+                                it.leftAmount < 0
+                            }
+                        }) ?: 0.0
+                    )
+                )
+                /*emitSource(
+                    homeRepository.getSettleGroupsWithMovements().map { groups ->
                         MonthSummary(
                             oldSummary.currencyCode,
                             oldSummary.yearMonth,
@@ -105,7 +131,7 @@ class HomeViewModel @ViewModelInject constructor(
                             }) ?: 0.0
                         )
                     }
-                )
+                )*/
             }
         }
 
@@ -175,11 +201,9 @@ class HomeViewModel @ViewModelInject constructor(
         liveData<Resource<List<MovementSummary>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading())
             try {
-                val result = homeRepository.getMovementsSummaries(
+                emitSource(homeRepository.getMovementsSummaries(
                     config.searchPhrase, config.currency, config.currentMonth
-                )
-                TODO("REVISAR")
-                emitSource(result.map {
+                ).map {
                     Resource.Success(it)
                 })
             } catch (e: Exception) {
@@ -189,104 +213,31 @@ class HomeViewModel @ViewModelInject constructor(
     }
 
     val budgets = selectedConfiguration.switchMap { config ->
-        liveData<Resource<List<MovementSummary>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
+        liveData<Resource<List<Budget>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading())
             try {
-                val result = homeRepository.getMovementsSummaries(
-                    config.searchPhrase, config.currency, config.currentMonth
-                )
-                TODO("REVISAR")
-                emitSource(result.map {
-                    Resource.Success(it)
-                })
+                emitSource(
+                    homeRepository.getBudgets(
+                        config.searchPhrase,
+                        config.currency,
+                        config.currentMonth
+                    ).map {
+                        Resource.Success(it)
+                    })
             } catch (e: Exception) {
                 emit(Resource.Failure(e))
             }
         }
     }
 
-    val settleGroups = selectedConfiguration.switchMap { config ->
-        liveData<Resource<List<MovementSummary>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
+    val settleGroups = settleGroupsWithMovements.switchMap { result ->
+        liveData<Resource<List<SettleGroupWithMovements>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading())
             try {
-                val result = homeRepository.getMovementsSummaries(
-                    config.searchPhrase, config.currency, config.currentMonth
-                )
-                TODO("REVISAR")
-                emitSource(result.map {
-                    Resource.Success(it)
-                })
+                emit(Resource.Success(result.second))
             } catch (e: Exception) {
                 emit(Resource.Failure(e))
             }
         }
     }
 }
-
-/*val dataLoadingFlags = MutableLiveData<DataLoadingFlags>()
-
-    fun updateDataLoadingFlags(
-        balanceFlag: Boolean? = false,
-        pendingFlag: Boolean? = false,
-        projectionsFlag: Boolean? = false,
-        quickViewFlag: Boolean? = false
-    ) {
-        val currentState = dataLoadingFlags.value ?: DataLoadingFlags()
-        val newState = DataLoadingFlags(
-            balanceFlag ?: currentState.balanceFlag,
-            pendingFlag ?: currentState.pendingFlag,
-            projectionsFlag ?: currentState.projectionsFlag,
-            quickViewFlag ?: currentState.quickViewFlag
-        )
-        dataLoadingFlags.value = newState
-    }
-
-    val isLoadingComplete = dataLoadingFlags.distinctUntilChanged().switchMap { dataFlags ->
-        liveData { if (dataFlags.isLoadingComplete()) emit(true) }
-    }
-
-data class MovementsOptions(
-    var fromDate: Date = LocalDate().minusDays(30).toDate(),
-    var toDate: Date = Date(),
-    var resultAmountLimit: Int = 20
-)
-
-data class DataLoadingFlags(
-    var balanceFlag: Boolean = false,
-    var pendingFlag: Boolean = false,
-    var projectionsFlag: Boolean = false,
-    var quickViewFlag: Boolean = false
-) {
-    fun isLoadingComplete(): Boolean =
-        balanceFlag && pendingFlag && projectionsFlag && quickViewFlag
-}*/
-
-/*
-val pendingTaxTotal = selectedCurrency.switchMap { currency ->
-        liveData<PendingSummary>(viewModelScope.coroutineContext + Dispatchers.IO) {
-            homeRepository.getTaxesForSettleGroups().map {
-                it.summary(currentYearMonth(), currency)
-            }
-        }
-    }
-
-    val pendingIncomesTotal = selectedCurrency.switchMap { currency ->
-        liveData<Double>(viewModelScope.coroutineContext + Dispatchers.IO) {
-            homeRepository.getCurrentPendingIncome(currentYearMonth(), currency)
-        }
-    }
-
-    val pendingExpensesTotal = selectedCurrency.switchMap { currency ->
-        liveData<Double>(viewModelScope.coroutineContext + Dispatchers.IO) {
-            val s = homeRepository.getTaxesForSettleGroups().map {
-                it.sumOf { groupWithMovements ->
-                    groupWithMovements.taxes(currentYearMonth(), currency) { movement ->
-                        movement.leftAmount >= 0
-                    }
-                }
-            }
-
-            homeRepository.getCurrentPendingExpense(currentYearMonth(), currency)
-        }
-    }
- */

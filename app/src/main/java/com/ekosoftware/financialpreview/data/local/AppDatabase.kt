@@ -23,15 +23,16 @@ import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCr
         Movement::class,
         SettleGroup::class,
         SettleGroupMovementsCrossRef::class
-    ], version = 7, exportSchema = false
+    ], version = 8, exportSchema = false
 )
 @TypeConverters(RoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun accountDao(): AccountDao
+    abstract fun budgetDao(): BudgetDao
     abstract fun categoryDao(): CategoryDao
     abstract fun currencyConversionDao(): CurrencyConversionDao
-    abstract fun recordDao(): RecordDao
     abstract fun movementDao(): MovementDao
+    abstract fun recordDao(): RecordDao
     abstract fun settleGroupDao(): SettleGroupDao
 }

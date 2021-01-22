@@ -185,8 +185,11 @@
     <string name="example_settle_group_item_percent">Aplica un 0.28% sobre el total</string>
     <string name="example_settle_group_item_movements_amount">Incluye 7 movimientos</string>
     <string name="example_settle_group_item_aprox_amount">ARS -3360.45</string>
-    <string name="settle_group_percent">Aplica %.2f\% sobre el total</string>
+    <string name="settle_group_percent">Aplica %1$.2f\% sobre el total</string>
     <string name="settle_group_percent_0">No aplica ningún interés sobre el total</string>
+    <string name="no_items_found">No hay nada por aquí…</string>
+    <string name="an_error_ocurred">Ha ocurrido un error.</string>
+    <string name="example_this_is_a_title">Esto es un título</string>
 
     <string-array name="currencies">
         <item>@string/ars</item>

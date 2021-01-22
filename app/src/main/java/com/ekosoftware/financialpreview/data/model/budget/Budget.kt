@@ -27,7 +27,7 @@ data class Budget(
     var startingAmount: Double,
 
     @ColumnInfo(name = "budgetUUID")
-    var budgetId: Int,
+    var budgetUUID: Int,
 
     @ColumnInfo(name = "budgetFrom")
     var from: Int,

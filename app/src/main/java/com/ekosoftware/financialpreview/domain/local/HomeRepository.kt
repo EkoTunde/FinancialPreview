@@ -2,6 +2,7 @@ package com.ekosoftware.financialpreview.domain.local
 
 import androidx.lifecycle.LiveData
 import com.ekosoftware.financialpreview.data.local.daos.*
+import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
 import com.ekosoftware.financialpreview.data.model.summary.MonthSummary
 import com.ekosoftware.financialpreview.data.model.summary.MovementSummary
@@ -9,6 +10,7 @@ import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
     private val accountDao: AccountDao,
+    private val budgetDao: BudgetDao,
     private val categoryDao: CategoryDao,
     private val currencyConversionDao: CurrencyConversionDao,
     private val recordDao: RecordDao,
@@ -25,12 +27,23 @@ class HomeRepository @Inject constructor(
             currencyCode
         )
 
-    fun getTaxesForSettleGroups(): LiveData<List<SettleGroupWithMovements>> =
+    fun getSettleGroupsWithMovements(): LiveData<List<SettleGroupWithMovements>> =
         settleGroupDao.getSettleGroupsWithMovements()
 
     fun getMonthPendingSummary(fromTo: Int, currencyCode: String): MonthSummary =
         movementDao.getMonthPendingSummary(fromTo, currencyCode)
 
-    fun getMovementsSummaries(searchPhrase: String, currencyCode: String, fromTo: Int) : LiveData<List<MovementSummary>> = movementDao.getMovementsSummaries(searchPhrase, currencyCode, fromTo)
+    fun getMovementsSummaries(
+        searchPhrase: String,
+        currencyCode: String,
+        fromTo: Int
+    ): LiveData<List<MovementSummary>> =
+        movementDao.getMovementsSummaries(searchPhrase, currencyCode, fromTo)
+
+    fun getBudgets(
+        searchPhrase: String,
+        currencyCode: String,
+        fromTo: Int
+    ) : LiveData<List<Budget>> = budgetDao.getBudgets(searchPhrase, currencyCode, fromTo)
 
 }

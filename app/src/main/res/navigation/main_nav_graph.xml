@@ -9,10 +9,18 @@
         android:id="@+id/home_page_fragment"
         android:name="com.ekosoftware.financialpreview.presentation.ui.home.HomeFragment"
         android:label="fragment_now"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home_page_fragment_to_accountsFragment"
+            app:destination="@id/accountsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/pending_page_fragment"
         android:name="com.ekosoftware.financialpreview.presentation.ui.pending.PendingFragment"
         android:label="fragment_pending"
         tools:layout="@layout/fragment_pending" />
+    <fragment
+        android:id="@+id/accountsFragment"
+        android:name="com.ekosoftware.financialpreview.presentation.ui.accounts.AccountsFragment"
+        android:label="AccountsFragment" />
 </navigation>

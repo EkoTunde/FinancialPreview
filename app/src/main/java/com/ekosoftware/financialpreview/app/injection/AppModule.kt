@@ -26,6 +26,10 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideBudgetGroupDao(db: AppDatabase) = db.budgetDao()
+
+    @Singleton
+    @Provides
     fun provideCategoryDao(db: AppDatabase) = db.categoryDao()
 
     @Singleton
@@ -34,14 +38,13 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideMovementDao(db: AppDatabase) = db.recordDao()
+    fun provideMovementDao(db: AppDatabase) = db.movementDao()
 
     @Singleton
     @Provides
-    fun provideScheduledDao(db: AppDatabase) = db.movementDao()
+    fun provideRecordDao(db: AppDatabase) = db.recordDao()
 
     @Singleton
     @Provides
     fun provideSettleGroupDao(db: AppDatabase) = db.settleGroupDao()
-
 }

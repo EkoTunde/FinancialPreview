@@ -6,7 +6,6 @@ import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +13,6 @@ import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.data.local.ColorsResourceInts
 import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.databinding.ItemPendingBudgetBinding
-import kotlinx.android.synthetic.main.item_pending_movement.view.*
 
 class PendingBudgetsRecyclerAdapter(
     private val context: Context,
@@ -25,7 +23,7 @@ class PendingBudgetsRecyclerAdapter(
     private val diffCallback = object : DiffUtil.ItemCallback<Budget>() {
 
         override fun areItemsTheSame(oldItem: Budget, newItem: Budget): Boolean {
-            return oldItem.budgetId == newItem.budgetId
+            return oldItem.budgetUUID == newItem.budgetUUID
         }
 
         override fun areContentsTheSame(oldItem: Budget, newItem: Budget): Boolean {

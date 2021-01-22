@@ -15,6 +15,7 @@ import com.ekosoftware.financialpreview.data.model.summary.Balance
 import com.ekosoftware.financialpreview.data.model.summary.QuickViewSummary
 import com.ekosoftware.financialpreview.data.model.summary.MonthSummary
 import com.ekosoftware.financialpreview.databinding.FragmentHomeBinding
+import com.ekosoftware.financialpreview.presentation.ui.MainViewModel
 import com.ekosoftware.financialpreview.util.*
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.components.Legend
@@ -35,7 +36,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val homeViewModel by activityViewModels<HomeViewModel>()
+    private val mainViewModel by activityViewModels<MainViewModel>()
 
     private lateinit var tf: Typeface
 
@@ -61,7 +62,7 @@ class HomeFragment : Fragment() {
         loadQuickViewData()
     }
 
-    private fun loadBalanceData() = homeViewModel.balance.observe(viewLifecycleOwner, { result ->
+    private fun loadBalanceData() = mainViewModel.balance.observe(viewLifecycleOwner, { result ->
         when (result) {
             is Resource.Loading -> {
                 binding.progressBar.show()
@@ -117,7 +118,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadPendingSummaryData() =
-        homeViewModel.monthSummary.observe(viewLifecycleOwner, { result ->
+        mainViewModel.monthSummary.observe(viewLifecycleOwner, { result ->
             when (result) {
                 is Resource.Loading -> {
                     binding.pending.item03ProgressBar.show()
@@ -196,7 +197,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadQuickViewData() =
-        homeViewModel.quickViewSummary.observe(viewLifecycleOwner, { result ->
+        mainViewModel.quickViewSummary.observe(viewLifecycleOwner, { result ->
             when (result) {
                 is Resource.Loading -> {
                     binding.projection.item04ProgressBar.show()
