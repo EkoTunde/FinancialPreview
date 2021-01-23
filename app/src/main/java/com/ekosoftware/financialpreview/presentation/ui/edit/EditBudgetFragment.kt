@@ -1,15 +1,14 @@
 package com.ekosoftware.financialpreview.presentation.ui.edit
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ekosoftware.financialpreview.R
-import com.ekosoftware.financialpreview.databinding.DialogFragmentEditBudgetBinding
+import androidx.fragment.app.Fragment
+import com.ekosoftware.financialpreview.databinding.EditFragmentBudgetBinding
 
-class EditBudgetDialogFragment : Fragment() {
-    private var _binding: DialogFragmentEditBudgetBinding? = null
+class EditBudgetFragment : Fragment() {
+    private var _binding: EditFragmentBudgetBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +23,7 @@ class EditBudgetDialogFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogFragmentEditBudgetBinding.inflate(inflater, container, false)
+        _binding = EditFragmentBudgetBinding.inflate(inflater, container, false)
         return binding.root
     }
 

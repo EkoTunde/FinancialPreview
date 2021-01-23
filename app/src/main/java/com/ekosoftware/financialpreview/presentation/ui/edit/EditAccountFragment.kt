@@ -1,29 +1,25 @@
-package com.ekosoftware.financialpreviewdesign
+package com.ekosoftware.financialpreview.presentation.ui.edit
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import com.ekosoftware.financialpreview.R
-import com.ekosoftware.financialpreview.databinding.FragmentEditAccountBinding
+import com.ekosoftware.financialpreview.databinding.EditFragmentAccountBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class EditAccountDialogFragment : DialogFragment() {
+class EditAccountFragment : Fragment() {
 
-    private var _binding: FragmentEditAccountBinding? = null
+    private var _binding: EditFragmentAccountBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
-        return dialog
-    }
-
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentEditAccountBinding.inflate(inflater, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = EditFragmentAccountBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -49,7 +45,8 @@ class EditAccountDialogFragment : DialogFragment() {
             // Delete
         }.show()
 
-    private fun extraOptionsVisible(visible: Boolean) = listOf(binding.owner, binding.bankUniqueKey, binding.alias, binding.ownersId)
-        .forEach { it.visibility = if (visible) View.VISIBLE else View.GONE }
+    private fun extraOptionsVisible(visible: Boolean) =
+        listOf(binding.owner, binding.bankUniqueKey, binding.alias, binding.ownersId)
+            .forEach { it.visibility = if (visible) View.VISIBLE else View.GONE }
 
 }

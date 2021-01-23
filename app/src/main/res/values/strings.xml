@@ -190,6 +190,7 @@
     <string name="no_items_found">No hay nada por aquí…</string>
     <string name="an_error_ocurred">Ha ocurrido un error.</string>
     <string name="example_this_is_a_title">Esto es un título</string>
+    <string name="example_options">ARS - Ene 2021</string>
 
     <string-array name="currencies">
         <item>@string/ars</item>

@@ -1,15 +1,16 @@
 package com.ekosoftware.financialpreview.presentation.ui.edit
 
+
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ekosoftware.financialpreview.databinding.DialogFragmentEditRecordBinding
+import androidx.fragment.app.Fragment
+import com.ekosoftware.financialpreview.R
+import com.ekosoftware.financialpreview.databinding.EditFragmentCategoryBinding
 
-
-class EditRecordDialogFragment : Fragment() {
-    private var _binding: DialogFragmentEditRecordBinding? = null
+class EditCategoryFragment : Fragment() {
+    private var _binding: EditFragmentCategoryBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +25,7 @@ class EditRecordDialogFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogFragmentEditRecordBinding.inflate(inflater, container, false)
+        _binding = EditFragmentCategoryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -37,4 +38,6 @@ class EditRecordDialogFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
+    var iconResId = R.drawable.ic_category
 }

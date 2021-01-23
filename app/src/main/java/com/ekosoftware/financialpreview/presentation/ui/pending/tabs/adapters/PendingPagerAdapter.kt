@@ -8,11 +8,12 @@ import com.ekosoftware.financialpreview.presentation.ui.pending.tabs.PendingMove
 import com.ekosoftware.financialpreview.presentation.ui.pending.tabs.PendingSettleGroupsFragment
 import java.lang.IllegalArgumentException
 
-class PendingPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {
+class PendingPagerAdapter(fragment: FragmentActivity, private val interaction: Interaction?) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
+        interaction?.onTabSelected(position)
         return when (position) {
             0 -> PendingMovementsFragment()
             1 -> PendingBudgetsFragment()
@@ -20,4 +21,9 @@ class PendingPagerAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fra
             else -> throw IllegalArgumentException("${this.javaClass.name}: position doesn't exists")
         }
     }
+
+    interface Interaction {
+        fun onTabSelected(position: Int)
+    }
+
 }

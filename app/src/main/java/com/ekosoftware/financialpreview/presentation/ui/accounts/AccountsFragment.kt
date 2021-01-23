@@ -5,6 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.databinding.FragmentAccountsBinding
 
 class AccountsFragment : Fragment() {
@@ -30,6 +34,10 @@ class AccountsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        binding.toolbar.toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     override fun onDestroy() {

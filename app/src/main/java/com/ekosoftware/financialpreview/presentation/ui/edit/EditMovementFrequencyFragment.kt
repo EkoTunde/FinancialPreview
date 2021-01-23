@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.ekosoftware.financialpreview.databinding.DialogFragmentEditTaxBinding
+import com.ekosoftware.financialpreview.databinding.EditFragmentMovementFrequencyBinding
 
-class EditTaxDialogFragment : Fragment() {
-    private var _binding: DialogFragmentEditTaxBinding? = null
+class EditMovementFrequencyFragment : Fragment() {
+
+    private var _binding: EditFragmentMovementFrequencyBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +24,7 @@ class EditTaxDialogFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogFragmentEditTaxBinding.inflate(inflater, container, false)
+        _binding = EditFragmentMovementFrequencyBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -36,4 +37,5 @@ class EditTaxDialogFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
 }

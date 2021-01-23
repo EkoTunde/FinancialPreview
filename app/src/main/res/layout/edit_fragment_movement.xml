@@ -1,60 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    style="@style/Theme.AppCompat.Light.NoActionBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar_dialog_saving"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/left_amount"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:hint="@string/left_amount"
-        android:labelFor="@id/actv_3"
-        android:textColorHint="@color/filledEditTextLightWhite"
-        app:boxBackgroundColor="@color/filledEditTextBackground"
-        app:boxCornerRadiusTopEnd="4dp"
-        app:boxCornerRadiusTopStart="4dp"
-        app:boxStrokeColor="@color/filledEditTextLightWhite"
-        app:endIconDrawable="@drawable/ic_edit"
-        app:endIconMode="custom"
-        app:endIconTint="@color/colorWhite"
-        app:hintTextColor="@color/filledEditTextLightWhite"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:prefixTextColor="@color/filledEditTextLightWhite"
-        app:startIconTint="@color/colorWhite">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <androidx.appcompat.widget.Toolbar
+            app:navigationIcon="@drawable/ic_close"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/left_amount"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:fontFamily="@font/quicksand_regular"
-            android:imeOptions="actionNext"
-            android:inputType="numberDecimal"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/filledEditTextLightWhite" />
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/left_amount"
+            android:labelFor="@id/actv_3"
+            android:textColorHint="@color/filledEditTextLightWhite"
+            app:boxBackgroundColor="@color/filledEditTextBackground"
+            app:boxCornerRadiusTopEnd="4dp"
+            app:boxCornerRadiusTopStart="4dp"
+            app:boxStrokeColor="@color/filledEditTextLightWhite"
+            app:endIconDrawable="@drawable/ic_edit"
+            app:endIconMode="custom"
+            app:endIconTint="@color/colorWhite"
+            app:hintTextColor="@color/filledEditTextLightWhite"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:prefixTextColor="@color/filledEditTextLightWhite"
+            app:startIconTint="@color/colorWhite">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:fontFamily="@font/quicksand_regular"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/filledEditTextLightWhite"
+                android:transitionName="btn_add" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         android:background="@color/colorWhite"
         android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/left_amount">
+        app:layout_constraintTop_toBottomOf="@id/app_bar_layout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -304,14 +318,6 @@
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/check_is_budget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:fontFamily="@font/quicksand_regular"
-                android:text="@string/is_budget" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/check_ask_before_pay_off"

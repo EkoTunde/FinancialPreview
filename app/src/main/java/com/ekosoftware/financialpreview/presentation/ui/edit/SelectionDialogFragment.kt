@@ -2,35 +2,24 @@ package com.ekosoftware.financialpreview.presentation.ui.edit
 
 import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.widget.FrameLayout
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.databinding.DialogFragmentSelectionPlaceholderBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class SelectionDialogFragment : DialogFragment() {
+class SelectionDialogFragment : Fragment() {
 
     private var _binding: DialogFragmentSelectionPlaceholderBinding? = null
     private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        // The only reason you might override this method when using onCreateView() is
-        // to modify any dialog characteristics. For example, the dialog includes a
-        // title by default, but your custom layout might not need it. So here you can
-        // remove the dialog title, but you must call the superclass to get the Dialog.
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
-        return dialog
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,6 +27,10 @@ class SelectionDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = DialogFragmentSelectionPlaceholderBinding.inflate(inflater, container, false)
+        binding.toolbar.inflateMenu(R.menu.only_search_menu)
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
         return binding.root
     }
 
@@ -46,7 +39,22 @@ class SelectionDialogFragment : DialogFragment() {
 
         val drawable =
             ResourcesCompat.getDrawable(resources, R.drawable.ic_calendar_month_outline, null)
+        setHasOptionsMenu(true)
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.only_search_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_item_search -> {
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onDestroy() {

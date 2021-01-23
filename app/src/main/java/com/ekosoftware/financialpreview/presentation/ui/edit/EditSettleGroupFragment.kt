@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.ekosoftware.financialpreview.databinding.DialogFragmentEditSettleGroupBinding
+import com.ekosoftware.financialpreview.databinding.EditFragmentSettleGroupBinding
 
-class EditSettleGroupDialogFragment : Fragment() {
-    private var _binding: DialogFragmentEditSettleGroupBinding? = null
+class EditSettleGroupFragment : Fragment() {
+    private var _binding: EditFragmentSettleGroupBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class EditSettleGroupDialogFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogFragmentEditSettleGroupBinding.inflate(inflater, container, false)
+        _binding = EditFragmentSettleGroupBinding.inflate(inflater, container, false)
         return binding.root
     }
 

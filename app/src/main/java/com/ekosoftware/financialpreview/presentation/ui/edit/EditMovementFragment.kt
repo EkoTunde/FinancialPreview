@@ -1,29 +1,31 @@
 package com.ekosoftware.financialpreview.presentation.ui.edit
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat.getColor
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.core.ImageAdapter
 import com.ekosoftware.financialpreview.data.local.CategoriesResourceInts
 import com.ekosoftware.financialpreview.data.local.ColorsResourceInts
-import com.ekosoftware.financialpreview.databinding.DialogFragmentEditMovementBinding
+import com.ekosoftware.financialpreview.databinding.EditFragmentMovementBinding
+import com.ekosoftware.financialpreview.presentation.ui.ShareViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.*
 
 
-class EditMovementDialogFragment : DialogFragment() {
+class EditMovementFragment : Fragment() {
 
-    private var _binding: DialogFragmentEditMovementBinding? = null
+    private var _binding: EditFragmentMovementBinding? = null
     private val binding get() = _binding!!
+
+    private val shareViewModel by activityViewModels<ShareViewModel>()
 
     private lateinit var dateResult: String
 
@@ -32,62 +34,45 @@ class EditMovementDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogFragmentEditMovementBinding.inflate(inflater, container, false)
+        _binding = EditFragmentMovementBinding.inflate(inflater, container, false)
+        binding.toolbar.inflateMenu(R.menu.save_menu)
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
         return binding.root
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        // The only reason you might override this method when using onCreateView() is
-        // to modify any dialog characteristics. For example, the dialog includes a
-        // title by default, but your custom layout might not need it. So here you can
-        // remove the dialog title, but you must call the superclass to get the Dialog.
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
-        return dialog
-    }
-
-    private var leftAmountEnable = false
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        dateResult = ""
-
-        binding.leftAmount.prefixText = "ARS "
-        binding.startingAmount.prefixText = "ARS "
-
-        binding.leftAmount.setEndIconOnClickListener {
-            if (!binding.leftAmount.editText!!.isEnabled) {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle("Esta acción no se puede deshacer")
-                    .setMessage("Editar el saldo restante de este movimiento no crea ni quita un registro.")
-                    .setNegativeButton(resources.getString(R.string.cancel)) { _, _ -> }
-                    .setNeutralButton(resources.getString(R.string.reestablish)) { _, _ ->
-                        Toast.makeText(
-                            requireContext(),
-                            "El saldo se equiparó al original.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    .setPositiveButton(resources.getString(R.string.edit)) { _, _ ->
-                        binding.leftAmount.editText?.apply {
-                            if (!isEnabled) {
-                                isEnabled = true
-                                requestFocus()
-                            }
-                        }
-                    }.show()
+        setHasOptionsMenu(true)
+        binding.account.apply {
+            setEndIconOnClickListener {
+                findNavController().navigate(R.id.action_EditMovement_to_Selection)
             }
-            binding.leftAmount.editText!!.setOnFocusChangeListener { v, hasFocus ->
-                if (!hasFocus) {
-                    v.apply {
-                        isEnabled = false
-                        clearFocus()
-                    }
+            arrayListOf(this, editText).forEach {
+                it?.setOnClickListener {
+                    findNavController().navigate(R.id.action_EditMovement_to_Selection)
                 }
             }
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.save_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_item_save -> {
+                findNavController().navigateUp()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private var leftAmountEnable = false
 
     private fun showDialog() {
         val fragmentManager = requireActivity().supportFragmentManager
@@ -137,11 +122,6 @@ class EditMovementDialogFragment : DialogFragment() {
             //(binding.account2.editText as? AutoCompleteTextView)?.clearFocus()
         }
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
     var iconResId = R.drawable.ic_category
@@ -201,6 +181,11 @@ class EditMovementDialogFragment : DialogFragment() {
         builder.setView(gridView).setTitle("Select an icon")
         iconDialog = builder.create()
         iconDialog.show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
 

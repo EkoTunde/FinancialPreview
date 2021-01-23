@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context=".presentation.ui.pending.tabs.PendingMovementsFragment">
 
     <ProgressBar
@@ -90,7 +91,7 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -98,8 +99,8 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/app_name"
         android:text="@string/add"
-        android:visibility="visible"
+
         app:layout_dodgeInsetEdges="bottom"
-        app:srcCompat="@drawable/ic_add" />
+        app:srcCompat="@drawable/ic_add" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

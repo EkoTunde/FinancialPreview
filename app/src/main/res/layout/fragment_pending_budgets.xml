@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorWhite"
     tools:context=".presentation.ui.pending.tabs.PendingBudgetsFragment">
 
     <ProgressBar
@@ -83,6 +84,7 @@
         android:layout_margin="16dp"
         android:contentDescription="@string/app_name"
         android:text="@string/add"
+        android:visibility="gone"
         app:layout_dodgeInsetEdges="bottom"
         app:srcCompat="@drawable/ic_add" />
 

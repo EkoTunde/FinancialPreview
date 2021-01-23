@@ -16,6 +16,7 @@ class ShareViewModel @ViewModelInject constructor(
         private const val KEY_SELECTED_MOVEMENT_ID = "selectedMovementId"
         private const val KEY_SELECTED_BUDGET_ID = "selectedBudgetId"
         private const val KEY_SELECTED_SETTLE_GROUP_ID = "selectedSettleGroupId"
+        private const val KEY_SELECTED_CALCULATOR_AMOUNT = "selectedCalculatorAmount"
     }
 
     val selectedMovementId = savedStateHandle.getLiveData<Int>(KEY_SELECTED_MOVEMENT_ID, 0)
@@ -30,11 +31,17 @@ class ShareViewModel @ViewModelInject constructor(
         selectedBudgetId.value = id
     }
 
-    val selectedSettleGroup = savedStateHandle.getLiveData<SettleGroupWithMovements>(KEY_SELECTED_SETTLE_GROUP_ID)
+    val selectedSettleGroup =
+        savedStateHandle.getLiveData<SettleGroupWithMovements>(KEY_SELECTED_SETTLE_GROUP_ID)
 
     fun selectSettleGroup(settleGroupWithMovements: SettleGroupWithMovements) {
         selectedSettleGroup.value = settleGroupWithMovements
     }
 
+    val calculatorAmount = savedStateHandle.getLiveData<Double>(KEY_SELECTED_CALCULATOR_AMOUNT, .0)
+
+    fun selectCalculatorAmount(amount: Double) {
+        calculatorAmount.value = amount
+    }
 
 }

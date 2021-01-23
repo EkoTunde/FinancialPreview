@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.summary.Balance
@@ -60,6 +61,10 @@ class HomeFragment : Fragment() {
         loadPendingSummaryData()
         //loadProjectionData()
         loadQuickViewData()
+
+        binding.balance.currentTotal.setOnClickListener {
+            findNavController().navigate(R.id.action_home_page_fragment_to_accountsFragment)
+        }
     }
 
     private fun loadBalanceData() = mainViewModel.balance.observe(viewLifecycleOwner, { result ->
@@ -85,9 +90,9 @@ class HomeFragment : Fragment() {
         currentTotal.applyMoneyFormat(data.currency, data.total)
 
         // Cambiar moneda!!
-        btnChangeCurrency.setOnClickListener {
+        /*btnChangeCurrency.setOnClickListener {
 
-        }
+        }*/
     }
 
     private fun selectCurrencyDialog() {

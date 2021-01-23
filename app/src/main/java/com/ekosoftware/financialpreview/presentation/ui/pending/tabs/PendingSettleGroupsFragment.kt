@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
@@ -48,7 +49,9 @@ class PendingSettleGroupsFragment : Fragment() {
             this@PendingSettleGroupsFragment.requireContext(),
             object : PendingSettleGroupsRecyclerAdapter.Interaction {
                 override fun onItemSelected(item: SettleGroupWithMovements) {
-                    navigateEditFragment(item)
+                    val directions =
+                        PendingSettleGroupsFragmentDirections.actionSettleGroupsToEditGroup(item)
+                    findNavController().navigate(directions)
                 }
             })
         adapter = rvAdapter
@@ -82,9 +85,6 @@ class PendingSettleGroupsFragment : Fragment() {
             }
         }
     }
-
-    private fun navigateEditFragment(item: SettleGroupWithMovements) =
-        shareViewModel.selectSettleGroup(item)
 
 
     override fun onDestroy() {

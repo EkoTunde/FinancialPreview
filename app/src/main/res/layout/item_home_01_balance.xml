@@ -13,7 +13,8 @@
         android:background="@color/colorPrimary"
         android:orientation="vertical"
         android:paddingTop="16dp"
-        android:paddingBottom="4dp">
+        android:paddingBottom="16dp" >
+        <!--android:paddingBottom="4dp">-->
 
         <TextView
             android:id="@+id/title"
@@ -47,7 +48,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
-        <com.google.android.material.button.MaterialButton
+        <!--<com.google.android.material.button.MaterialButton
             android:id="@+id/btn_change_currency"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
@@ -63,7 +64,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/current_total" />
+            app:layout_constraintTop_toBottomOf="@id/current_total" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

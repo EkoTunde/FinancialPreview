@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.summary.MovementSummary
 import com.ekosoftware.financialpreview.databinding.FragmentPendingMovementsBinding
@@ -48,7 +50,8 @@ class PendingMovementsFragment : Fragment() {
             this@PendingMovementsFragment.requireContext(),
             object : PendingMovementsRecyclerAdapter.Interaction {
                 override fun onItemSelected(item: MovementSummary) {
-                    navigateEditFragment(item)
+                    val directions = PendingMovementsFragmentDirections.actionPendingMovementsToEditMovement(item.movementId)
+                    findNavController().navigate(directions)
                 }
             })
         adapter = rvAdapter
@@ -81,10 +84,6 @@ class PendingMovementsFragment : Fragment() {
                 binding.rvPending.hide()
             }
         }
-    }
-
-    private fun navigateEditFragment(item: MovementSummary) {
-        shareViewModel.selectMovementId(item.movementId)
     }
 
     override fun onDestroy() {

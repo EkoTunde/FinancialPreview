@@ -3,12 +3,12 @@ package com.ekosoftware.financialpreview
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.ekosoftware.financialpreview.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,11 +33,44 @@ class MainActivity : AppCompatActivity() {
 
         val c = Currency.getInstance(ars)*/
 
+      /*  supportActionBar?.apply {
+            //setDisplayHomeAsUpEnabled((destination.id in NO_HOME_ICON_FRAGMENTS).not())
+            setHomeAsUpIndicator(*//*if (destination.id in arrayOf(
+                        R.id.editMovementDialogFragment,
+                        R.id.editBudgetDialogFragment,
+                        R.id.editSettleGroupDialogFragment,
+                        R.id.editAccountDialogFragment
+                    )) *//*R.drawable.ic_close*//* else R.drawable.ic_back*//*
+            )
+        }*/
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-        binding.bottomNavigation.setupWithNavController(navController)
+
+        val navView: BottomNavigationView = binding.bottomNavigationView
+
+        val navController = findNavController(R.id.nav_host_fragment)
+
+        val appBarConfiguration =
+            AppBarConfiguration(setOf(R.id.home_page_fragment, R.id.pending_page_fragment))
+
+        //setupActionBarWithNavController(this, navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+        /*NavigationUI.setupWithNavController(navView, navController, appBarConfiguration)*/
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.editMovement) {
+                //supportActionBar!!.setHomeAsUpIndicator( R.drawable.ic_close)
+                //supportActionBar!!.title = "Add movement"
+                //supportActionBar!!.show()
+            } else {
+                //supportActionBar!!.setHomeAsUpIndicator(0)
+                if (destination.id in arrayOf(R.id.selection)) {
+                   //supportActionBar!!.show()
+                } else {
+                    //supportActionBar!!.title = getString(R.string.app_name)
+                    //supportActionBar!!.hide()
+                }
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -45,34 +78,7 @@ class MainActivity : AppCompatActivity() {
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
- /*   fun showAddEditMovementDialog() {
-        val fragmentManager = supportFragmentManager
-        val newFragment = HistoricMovementDialogFragment()
-        // The device is smaller, so show the fragment fullscreen
-        val transaction = fragmentManager.beginTransaction()
-        // For a little polish, specify a transition animation
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        // To make it fullscreen, use the 'content' root view as the container
-        // for the fragment, which is always the root view for the activity
-        transaction
-            .add(android.R.id.content, newFragment)
-            .addToBackStack(null)
-            .commit()
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.nav_host_fragment).navigateUp() || super.onSupportNavigateUp()
     }
-
-    fun showAddEditScheduledDialog() {
-        val fragmentManager = supportFragmentManager
-        val newFragment = MovementDialogFragment()
-        // The device is smaller, so show the fragment fullscreen
-        val transaction = fragmentManager.beginTransaction()
-        // For a little polish, specify a transition animation
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        // To make it fullscreen, use the 'content' root view as the container
-        // for the fragment, which is always the root view for the activity
-        transaction
-            .add(android.R.id.content, newFragment)
-            .addToBackStack(null)
-            .commit()
-    }
-*/
 }

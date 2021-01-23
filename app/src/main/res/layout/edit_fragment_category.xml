@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorWhite"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.edit.EditTaxDialogFragment">
+    tools:context=".presentation.ui.edit.EditCategoryFragment">
 
     <include
         android:id="@+id/toolbar"
@@ -22,6 +23,31 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="16dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <ImageView
+                    android:id="@+id/icon_container"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_category" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_change_icon"
+                    style="@style/EditTextAlikeMaterialButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/icon_container"
+                    android:text="@string/change_icon" />
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -46,68 +72,6 @@
                     android:layout_toEndOf="@id/color_container"
                     android:text="@string/change_color" />
             </RelativeLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/percentage"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:hint="@string/percentage"
-                    android:labelFor="@id/actv_3"
-                    app:boxCornerRadiusTopEnd="4dp"
-                    app:boxCornerRadiusTopStart="4dp"
-                    app:endIconMode="clear_text"
-                    app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="9"
-                    app:layout_constraintStart_toEndOf="@+id/currency"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:suffixText="@string/perc">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand_regular"
-                        android:imeOptions="actionNext"
-                        android:inputType="numberDecimal" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/currency"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:hint="@string/currency"
-                    android:labelFor="@id/actv_1"
-                    app:boxCornerRadiusTopEnd="4dp"
-                    app:boxCornerRadiusTopStart="4dp"
-                    app:endIconMode="dropdown_menu"
-                    app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
-                    app:layout_constraintEnd_toStartOf="@+id/percentage"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintHorizontal_weight="5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/actv_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand_regular"
-                        android:inputType="none" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/name"

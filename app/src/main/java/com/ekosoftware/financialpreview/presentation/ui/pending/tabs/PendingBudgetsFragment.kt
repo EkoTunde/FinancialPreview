@@ -6,16 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.budget.Budget
-import com.ekosoftware.financialpreview.data.model.summary.MovementSummary
 import com.ekosoftware.financialpreview.databinding.FragmentPendingBudgetsBinding
 import com.ekosoftware.financialpreview.presentation.ui.MainViewModel
 import com.ekosoftware.financialpreview.presentation.ui.ShareViewModel
 import com.ekosoftware.financialpreview.presentation.ui.pending.tabs.adapters.PendingBudgetsRecyclerAdapter
-import com.ekosoftware.financialpreview.presentation.ui.pending.tabs.adapters.PendingMovementsRecyclerAdapter
-import com.ekosoftware.financialpreview.presentation.ui.pending.tabs.adapters.PendingSettleGroupsRecyclerAdapter
 import com.ekosoftware.financialpreview.util.hide
 import com.ekosoftware.financialpreview.util.show
 
@@ -51,7 +49,9 @@ class PendingBudgetsFragment : Fragment() {
             this@PendingBudgetsFragment.requireContext(),
             object : PendingBudgetsRecyclerAdapter.Interaction {
                 override fun onItemSelected(item: Budget) {
-                    navigateEditFragment(item)
+                    val directions =
+                        PendingBudgetsFragmentDirections.actionPendingBudgetsToEditBudget(item.id)
+                    findNavController().navigate(directions)
                 }
             })
         adapter = rvAdapter
@@ -84,10 +84,6 @@ class PendingBudgetsFragment : Fragment() {
                 binding.rvPendingBudgets.hide()
             }
         }
-    }
-
-    private fun navigateEditFragment(item: Budget) {
-        shareViewModel.selectBudgetId(item.id)
     }
 
     override fun onDestroy() {
