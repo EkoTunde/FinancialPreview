@@ -55,6 +55,19 @@
     <string name="month_oct_extended">Octubre</string>
     <string name="month_nov_extended">Noviembre</string>
     <string name="month_dec_extended">Diciembre</string>
+    <string name="all_months_checked_frequency">Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec</string>
+    <string name="month_jan_key">Jan</string>
+    <string name="month_feb_key">Feb</string>
+    <string name="month_mar_key">Mar</string>
+    <string name="month_apr_key">Apr</string>
+    <string name="month_may_key">May</string>
+    <string name="month_jun_key">Jun</string>
+    <string name="month_jul_key">Jul</string>
+    <string name="month_aug_key">Aug</string>
+    <string name="month_sep_key">Sep</string>
+    <string name="month_oct_key">Oct</string>
+    <string name="month_noc_key">Noc</string>
+    <string name="month_dec_key">Dec</string>
     <string name="month_jan">Ene</string>
     <string name="month_feb">Feb</string>
     <string name="month_mar">Mar</string>
@@ -118,6 +131,7 @@
     <string name="cancel">Cancelar</string>
     <string name="edit">Editar</string>
     <string name="reestablish">Reestablecer</string>
+    <string name="reestablish_btn"><u>Reestablecer</u></string>
     <string name="save">Guardar</string>
     <string name="select_type">Seleccionar tipo</string>
     <string name="select_movement_type">Seleccionar tipo de movimiento</string>
@@ -187,10 +201,25 @@
     <string name="example_settle_group_item_aprox_amount">ARS -3360.45</string>
     <string name="settle_group_percent">Aplica %1$.2f\% sobre el total</string>
     <string name="settle_group_percent_0">No aplica ningún interés sobre el total</string>
-    <string name="no_items_found">No hay nada por aquí…</string>
-    <string name="an_error_ocurred">Ha ocurrido un error.</string>
+    <string name="no_items_found">No hay nada por aquí…\nPresioná el botón + para crear una.</string>
+    <string name="an_error_occurred">Ha ocurrido un error al cargar los datos.</string>
     <string name="example_this_is_a_title">Esto es un título</string>
     <string name="example_options">ARS - Ene 2021</string>
+    <string name="example_movement_data_summary">Silla Gamer Cuota 23 de 35</string>
+    <string name="example_currency">ARS</string>
+    <string name="account_from">Cuenta origen</string>
+    <string name="account_to">Cuenta destino</string>
+    <string name="generate_opposite_movement">Generar movimiento pendiente por el importe contrario</string>
+    <string name="was_lent">Me prestaron</string>
+    <string name="i_lent">Presté</string>
+    <string name="debtors_name">Nombre de quien debe</string>
+    <string name="lenders_name">Nombre de quien presta</string>
+    <string name="open_calculator"><u>Calculadora</u></string>
+    <string name="category_simple_adjustment">Ajuste de saldo</string>
+    <string name="category_simple_record">Registro independiente</string>
+    <string name="pending_movements">Movimientos pendientes</string>
+    <string name="search_hint">Buscar</string>
+    <string name="accounts">Cuentas</string>
 
     <string-array name="currencies">
         <item>@string/ars</item>

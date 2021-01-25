@@ -10,9 +10,9 @@ interface BudgetDao {
 
     @Query(
         """
-        SELECT * FROM budgetTable
+        SELECT * FROM budgets
         
-        WHERE budgetCurrencyCode = :currencyCode AND budgetFrom <= :fromTo AND budgetTo >= :fromTo
+        WHERE budgetCurrencyCode = :currencyCode AND budgetFreqFrom <= :fromTo AND budgetFreqTo >= :fromTo
         AND (budgetName LIKE '%' || :searchPhrase || '%' OR budgetDescription LIKE '%' || :searchPhrase || '%')
         ORDER BY budgetName
     """

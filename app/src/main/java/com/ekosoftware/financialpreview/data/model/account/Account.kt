@@ -1,21 +1,24 @@
 package com.ekosoftware.financialpreview.data.model.account
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
-@Entity(tableName = "accountTable")
+@Parcelize
+@Entity(tableName = "accounts")
 data class Account(
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "accountId")
-    var id: Int = 0,
-
-    @ColumnInfo(name = "accountCurrencyCode")
-    var currencyCode: String = "",
+    var id: String,
 
     @ColumnInfo(name = "accountName")
     var name: String,
+
+    @ColumnInfo(name = "accountCurrencyCode")
+    var currencyCode: String = "",
 
     @ColumnInfo(name = "accountBalance")
     var balance: Double = 0.0,
@@ -32,4 +35,4 @@ data class Account(
     @ColumnInfo(name = "accountColorResId")
     var colorResId: Int?
 
-)
+) : Parcelable

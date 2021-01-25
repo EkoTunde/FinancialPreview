@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="8dp"
+    android:layout_marginVertical="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/record_color_category"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:tint="@color/colorTransparent"
+        app:civ_circle_background_color="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/transparent_drawable" />
+
+    <ImageView
+        android:id="@+id/record_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintBottom_toBottomOf="@+id/record_color_category"
+        app:layout_constraintEnd_toEndOf="@+id/record_color_category"
+        app:layout_constraintStart_toStartOf="@+id/record_color_category"
+        app:layout_constraintTop_toTopOf="@+id/record_color_category"
+        app:srcCompat="@drawable/ic_bank_transfer"
+        app:tint="@color/colorWhite" />
+
+    <TextView
+        android:id="@+id/record_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/quicksand_semi_bold"
+        android:textColor="@color/colorBlack"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/record_amount"
+        app:layout_constraintStart_toEndOf="@+id/record_color_category"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/example_pending_item_name" />
+
+    <TextView
+        android:id="@+id/record_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:textColor="@color/colorAmountNegative"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/example_money_small_2" />
+
+    <TextView
+        android:id="@+id/record_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/quicksand_semi_bold"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toStartOf="@+id/record_amount"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/record_color_category"
+        app:layout_constraintTop_toBottomOf="@+id/record_name"
+        tools:text="@string/example_pending_item_category" />
+
+    <TextView
+        android:id="@+id/record_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/quicksand_semi_bold"
+        android:textAlignment="viewEnd"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/record_amount"
+        app:layout_constraintTop_toBottomOf="@+id/record_amount"
+        tools:text="@string/example_date" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

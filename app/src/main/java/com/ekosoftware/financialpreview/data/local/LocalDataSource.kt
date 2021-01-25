@@ -1,9 +1,8 @@
 package com.ekosoftware.financialpreview.data.local
 
 import com.ekosoftware.financialpreview.data.local.daos.*
-import com.ekosoftware.financialpreview.data.model.Record
+import com.ekosoftware.financialpreview.data.model.record.Record
 import com.ekosoftware.financialpreview.data.model.account.Account
-import java.util.*
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(
@@ -16,7 +15,7 @@ class LocalDataSource @Inject constructor(
 ) {
 
     // Traer una lista de cuentas
-    fun getAccountBalances() = accountDao.getAccounts()
+    //fun getAccountBalances() = accountDao.getAccounts()
 
     // Traer una lista de movimientos
     /*fun getMovements(fromDate: Date, toDate: Date, limit: Int) =

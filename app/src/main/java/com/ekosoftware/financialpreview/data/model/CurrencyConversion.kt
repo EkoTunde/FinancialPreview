@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "currencyTable", primaryKeys = ["currencyCodeId"])
+@Entity(tableName = "currencies", primaryKeys = ["currencyCodeId"])
 data class CurrencyConversion(
 
     @ColumnInfo(name = "currencyCodeId")

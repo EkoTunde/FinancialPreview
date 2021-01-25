@@ -1,15 +1,17 @@
 package com.ekosoftware.financialpreview.data.model.budget
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.ekosoftware.financialpreview.data.model.movement.Frequency
 
-@Entity(tableName = "budgetTable")
+@Entity(tableName = "budgets")
 data class Budget(
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "budgetId", index = true)
-    val id: Int,
+    val id: String,
 
     @ColumnInfo(name = "budgetName")
     var name: String,
@@ -26,12 +28,6 @@ data class Budget(
     @ColumnInfo(name = "budgetStartingAmount")
     var startingAmount: Double,
 
-    @ColumnInfo(name = "budgetUUID")
-    var budgetUUID: Int,
-
-    @ColumnInfo(name = "budgetFrom")
-    var from: Int,
-
-    @ColumnInfo(name = "budgetTo")
-    var to: Int,
+    @Embedded(prefix = "budget")
+    var frequency: Frequency,
 )

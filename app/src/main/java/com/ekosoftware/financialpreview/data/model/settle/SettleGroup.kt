@@ -6,12 +6,12 @@ import com.ekosoftware.financialpreview.data.model.movement.Movement
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@Entity(tableName = "settleGroupTable")
+@Entity(tableName = "settleGroups")
 data class SettleGroup(
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "settleGroupId", index = true)
-    var id: Int,
+    var id: String,
 
     @ColumnInfo(name = "settleGroupName")
     var name: String,

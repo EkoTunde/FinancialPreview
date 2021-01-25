@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context=".ui.edit.EditFrequencyFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <HorizontalScrollView
+            android:id="@+id/chip_group_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/frequency_chip_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                app:selectionRequired="true"
+                app:singleLine="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_not_repeat"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:fontFamily="@font/quicksand_regular"
+                    android:text="@string/repeats_no"
+                    android:textSize="16sp"
+                    app:checkedIcon="@drawable/ic_check"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/colorPrimary" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_repeat"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_regular"
+                    android:text="@string/repeats_yes"
+                    android:textSize="16sp"
+                    app:checkedIcon="@drawable/ic_check"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/colorPrimary" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_installments"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/quicksand_regular"
+                    android:text="@string/installments_yes"
+                    android:textSize="16sp"
+                    app:checkedIcon="@drawable/ic_check"
+                    app:checkedIconEnabled="true"
+                    app:checkedIconTint="@color/colorPrimary" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </HorizontalScrollView>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:stretchColumns="1">
+
+            <TableRow
+                android:id="@+id/layout_when"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:fontFamily="@font/quicksand_semi_bold"
+                    android:text="@string/when"
+                    android:textSize="16sp" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_when"
+                    style="@style/EditTextAlikeMaterialButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/layout_from"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:fontFamily="@font/quicksand_semi_bold"
+                    android:text="@string/start"
+                    android:textSize="16sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_from"
+                    style="@style/EditTextAlikeMaterialButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/layout_to"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:fontFamily="@font/quicksand_semi_bold"
+                    android:text="@string/end"
+                    android:textSize="16sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_to"
+                    style="@style/EditTextAlikeMaterialButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/layout_installments_amount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:fontFamily="@font/quicksand_semi_bold"
+                    android:text="@string/quotas"
+                    android:textSize="16sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/number_of_quotas"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    app:boxCornerRadiusBottomEnd="4dp"
+                    app:boxCornerRadiusBottomStart="4dp"
+                    app:boxCornerRadiusTopEnd="4dp"
+                    app:boxCornerRadiusTopStart="4dp"
+                    app:boxStrokeWidth="0dp"
+                    app:endIconMode="custom"
+                    app:expandedHintEnabled="false"
+                    app:hintEnabled="false"
+                    app:startIconDrawable="@drawable/ic_split">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/quicksand_regular"
+                        android:hint="@string/quantity"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:padding="2dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/layout_installments_result"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/total_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_marginHorizontal="16dp"
+                    android:fontFamily="@font/quicksand_regular"
+                    android:gravity="end"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="@string/example_quotas_total_amount" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/layout_months"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:gravity="top"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:fontFamily="@font/quicksand_semi_bold"
+                    android:text="@string/months"
+                    android:textSize="16sp" />
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp">
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_jan"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:fontFamily="@font/quicksand_regular"
+                                android:text="@string/month_jan_extended"
+                                android:textSize="16sp"
+                                app:checkedIcon="@drawable/ic_check"
+                                app:checkedIconEnabled="true"
+                                app:checkedIconTint="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_feb"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:fontFamily="@font/quicksand_regular"
+                                android:text="@string/month_feb_extended"
+                                android:textSize="16sp"
+                                app:checkedIcon="@drawable/ic_check"
+                                app:checkedIconEnabled="true"
+                                app:checkedIconTint="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_mar"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:fontFamily="@font/quicksand_regular"
+                                android:text="@string/month_mar_extended"
+                                android:textSize="16sp"
+                                app:checkedIcon="@drawable/ic_check"
+                                app:checkedIconEnabled="true"
+                                app:checkedIconTint="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_apr"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:fontFamily="@font/quicksand_regular"
+                                android:text="@string/month_apr_extended"
+                                android:textSize="16sp"
+                                app:checkedIcon="@drawable/ic_check"
+                                app:checkedIconEnabled="true"
+                                app:checkedIconTint="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_may"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:fontFamily="@font/quicksand_regular"
+                                android:text="@string/month_may_extended"
+                                android:textSize="16sp"
+                                app:checkedIcon="@drawable/ic_check"
+                                app:checkedIconEnabled="true"
+                                app:checkedIconTint="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_jun"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:fontFamily="@font/quicksand_regular"
+                                android:text="@string/month_jun_extended"
+                                android:textSize="16sp"
+                                app:checkedIcon="@drawable/ic_check"
+                                app:checkedIconEnabled="true"
+                                app:checkedIconTint="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_jul"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:fontFamily="@font/quicksand_regular"
+                                android:text="@string/month_jul_extended"
+                                android:textSize="16sp"
+                                app:checkedIcon="@drawable/ic_check"
+                                app:checkedIconEnabled="true"
+                                app:checkedIconTint="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_aug"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:fontFamily="@font/quicksand_regular"
+                                android:text="@string/month_aug_extended"
+                                android:textSize="16sp"
+                                app:checkedIcon="@drawable/ic_check"
+                                app:checkedIconEnabled="true"
+                                app:checkedIconTint="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_sep"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:fontFamily="@font/quicksand_regular"
+                                android:text="@string/month_sep_extended"
+                                android:textSize="16sp"
+                                app:checkedIcon="@drawable/ic_check"
+                                app:checkedIconEnabled="true"
+                                app:checkedIconTint="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_oct"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:fontFamily="@font/quicksand_regular"
+                                android:text="@string/month_oct_extended"
+                                android:textSize="16sp"
+                                app:checkedIcon="@drawable/ic_check"
+                                app:checkedIconEnabled="true"
+                                app:checkedIconTint="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_nov"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:fontFamily="@font/quicksand_regular"
+                                android:text="@string/month_nov_extended"
+                                android:textSize="16sp"
+                                app:checkedIcon="@drawable/ic_check"
+                                app:checkedIconEnabled="true"
+                                app:checkedIconTint="@color/colorPrimary" />
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_dic"
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:fontFamily="@font/quicksand_regular"
+                                android:text="@string/month_dec_extended"
+                                android:textSize="16sp"
+                                app:checkedIcon="@drawable/ic_check"
+                                app:checkedIconEnabled="true"
+                                app:checkedIconTint="@color/colorPrimary" />
+
+                        </com.google.android.material.chip.ChipGroup>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_select_unselect_all_months"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:checked="true"
+                            android:fontFamily="@font/quicksand_regular"
+                            android:text="@string/unselect_all"
+                            android:textAllCaps="false" />
+
+                    </LinearLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+            </TableRow>
+
+        </TableLayout>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context=".presentation.ui.pending.tabs.PendingMovementsFragment">
+    tools:context=".ui.pending.tabs.PendingMovementsFragment">
 
     <ProgressBar
         android:id="@+id/pending_movements_progress_bar"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:fontFamily="@font/quicksand_semi_bold"
-            android:text="@string/an_error_ocurred"
+            android:text="@string/an_error_occurred"
             android:textAlignment="center"
             android:textSize="18sp" />
 

@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import com.ekosoftware.financialpreview.data.local.daos.*
 import com.ekosoftware.financialpreview.data.model.Category
 import com.ekosoftware.financialpreview.data.model.CurrencyConversion
-import com.ekosoftware.financialpreview.data.model.Record
+import com.ekosoftware.financialpreview.data.model.record.Record
 import com.ekosoftware.financialpreview.data.model.account.Account
 import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.data.model.movement.Movement
@@ -23,7 +23,7 @@ import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCr
         Movement::class,
         SettleGroup::class,
         SettleGroupMovementsCrossRef::class
-    ], version = 8, exportSchema = false
+    ], version = 9, exportSchema = false
 )
 @TypeConverters(RoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {

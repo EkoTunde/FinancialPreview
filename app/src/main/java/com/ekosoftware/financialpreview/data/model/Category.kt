@@ -7,12 +7,12 @@ import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-@Entity(tableName = "categoryTable")
+@Entity(tableName = "categories")
 data class Category (
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "categoryId")
-    var id: Int,
+    var id: String,
 
     @ColumnInfo(name = "categoryName")
     var name: String,

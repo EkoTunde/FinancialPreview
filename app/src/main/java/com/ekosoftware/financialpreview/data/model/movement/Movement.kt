@@ -2,18 +2,21 @@ package com.ekosoftware.financialpreview.data.model.movement
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 import kotlin.math.max
 
+
 @Parcelize
-@Entity(tableName = "movementTable")
+@Entity(tableName = "movements")
 data class Movement(
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "movementId", index = true)
-    var id: Int,
+    var id: String,
 
     @ColumnInfo(name = "movementLeftAmount")
     var leftAmount: Double,
@@ -27,41 +30,20 @@ data class Movement(
     @ColumnInfo(name = "movementName")
     var name: String,
 
+    @Embedded(prefix = "movement")
+    var frequency: @RawValue Frequency?,
+
     @ColumnInfo(name = "movementDescription")
     var description: String?,
 
     @ColumnInfo(name = "movementAccountId")
-    var accountId: Int?,
+    var accountId: String?,
 
     @ColumnInfo(name = "movementCategoryId")
-    var categoryId: Int?,
-
-    @ColumnInfo(name = "movementTaxId")
-    val taxId: Int?,
-
-    @ColumnInfo(name = "movementFrom")
-    var from: Int,
-
-    @ColumnInfo(name = "movementTo")
-    var to: Int,
-
-    @ColumnInfo(name = "movementSteps")
-    var steps: Int = 1,
+    var categoryId: String?,
 
     @ColumnInfo(name = "movementBudgetId")
-    var budgetId: String?,
-
-    @ColumnInfo(name = "movementIsBudget")
-    var isBudget: Boolean? = false,
-
-    @ColumnInfo(name = "movementIsPreview")
-    var isPreview: Boolean? = false,
-
-    @ColumnInfo(name = "movementTotalInstallments")
-    var totalInstallments: Int?,
-
-    @ColumnInfo(name = "movementJustPreview")
-    var justPreview: Boolean? = false
+    var budgetId: String?
 
 ) : Parcelable {
 
@@ -160,5 +142,5 @@ data class Movement(
      * @param currentYM [Int] representing the current year-month.
      * @return next month, counting from given current year-month [Int], taking steps between months into an account.
      */
-    fun nextMonthForStep(currentYM: Int): Int = create(currentYM, this.steps)[1]
+    //fun nextMonthForStep(currentYM: Int): Int = create(currentYM, this.steps)[1]
 }

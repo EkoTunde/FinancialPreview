@@ -15,9 +15,11 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.ekosoftware.financialpreview.R
+import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
-import com.ekosoftware.financialpreview.data.model.summary.MonthSummary
+import com.ekosoftware.financialpreview.data.model.movement.MonthSummary
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
@@ -173,9 +175,10 @@ fun SettleGroupWithMovements.taxes(
     filter: (Movement) -> Boolean
 ): Double =
     this.movements.filter { movement ->
-        movement.from >= fromTo && movement.to <= fromTo && movement.currencyCode == currencyCode && filter(
-            movement
-        )
+        movement.frequency!!.from!! >= fromTo
+                && movement.frequency!!.to!! <= fromTo
+                && movement.currencyCode == currencyCode
+                && filter(movement)
     }.sumOf {
         it.leftAmount * (this.settleGroup.percentage / 100)
     }
@@ -197,7 +200,7 @@ fun List<SettleGroupWithMovements>.summary(fromTo: Int, currency: String): Month
     val expensesTotal = this.takeUnless { it.isNullOrEmpty() }?.sumOf {
         it.taxes(fromTo, currency) { movement -> movement.leftAmount < 0 }
     } ?: 0.0
-    return MonthSummary(currency,fromTo, incomesTotal, expensesTotal)
+    return MonthSummary(currency, fromTo, incomesTotal, expensesTotal)
 }
 
 fun currentYearMonth(): Int {
@@ -207,19 +210,19 @@ fun currentYearMonth(): Int {
     return "$year$month".toInt()
 }
 
-/*
-fun <T, K, R> LiveData<T>.combineWith(
-    vararg liveData: LiveData<K>,
-    block: (T?, List<K?>?) -> R
-): LiveData<R> {
-    val result = MediatorLiveData<R>()
-    result.addSource(this) {
-        result.value = block(this.value, liveData.value)
+fun Int.monthNameKey(): String {
+    return when (this.getMonth()) {
+        1 -> Strings.get(R.string.month_jan_key)
+        2 -> Strings.get(R.string.month_feb_key)
+        3 -> Strings.get(R.string.month_mar_key)
+        4 -> Strings.get(R.string.month_apr_key)
+        5 -> Strings.get(R.string.month_may_key)
+        6 -> Strings.get(R.string.month_jun_key)
+        7 -> Strings.get(R.string.month_jul_key)
+        8 -> Strings.get(R.string.month_aug_key)
+        9 -> Strings.get(R.string.month_sep_key)
+        10 -> Strings.get(R.string.month_oct_key)
+        11 -> Strings.get(R.string.month_noc_key)
+        else -> Strings.get(R.string.month_dec_key)
     }
-    result.addSource(liveData) {
-        result.value = block(this.value, liveData.value)
-    }
-    result.addSource()
-    return result
 }
- */

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorWhite"
-    tools:context=".presentation.ui.pending.tabs.PendingSettleGroupsFragment">
+    tools:context=".ui.pending.tabs.PendingSettleGroupsFragment">
 
     <ProgressBar
         android:id="@+id/pending_settle_groups_progress_bar"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:fontFamily="@font/quicksand_semi_bold"
-            android:text="@string/an_error_ocurred"
+            android:text="@string/an_error_occurred"
             android:textAlignment="center"
             android:textSize="18sp" />
 

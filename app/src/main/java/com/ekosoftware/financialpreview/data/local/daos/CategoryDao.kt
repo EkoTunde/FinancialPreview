@@ -7,7 +7,7 @@ import com.ekosoftware.financialpreview.data.model.Category
 @Dao
 interface CategoryDao {
 
-    @Query("SELECT * FROM categoryTable")
+    @Query("SELECT * FROM categories")
     fun getCategories(): LiveData<List<Category>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -18,5 +18,8 @@ interface CategoryDao {
 
     @Delete
     suspend fun deleteCategories(vararg category: Category)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertInitialCategories(vararg category: Category)
 
 }

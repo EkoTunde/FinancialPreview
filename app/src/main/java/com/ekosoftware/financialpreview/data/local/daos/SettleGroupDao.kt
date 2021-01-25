@@ -11,6 +11,6 @@ import java.util.*
 interface SettleGroupDao {
 
     @Transaction
-    @Query("SELECT * FROM settleGroupTable")
+    @Query("SELECT * FROM settleGroups")
     fun getSettleGroupsWithMovements(): LiveData<List<SettleGroupWithMovements>>
 }

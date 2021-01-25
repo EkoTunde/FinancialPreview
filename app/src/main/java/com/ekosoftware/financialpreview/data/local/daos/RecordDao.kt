@@ -2,12 +2,32 @@ package com.ekosoftware.financialpreview.data.local.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.ekosoftware.financialpreview.data.model.Record
-import org.joda.time.LocalDate
+import com.ekosoftware.financialpreview.data.model.record.Record
+import com.ekosoftware.financialpreview.data.model.record.RecordSummary
 import java.util.*
 
 @Dao
 interface RecordDao {
+
+    @Query(
+        """
+        SELECT recordId AS id, recordDate AS date, recordAmount AS amount, recordCurrencyCode as currencyCode 
+        ,recordName AS name, categoryName AS categoryName, categoryIconResId AS categoryIconResId,  
+        categoryColorResId AS categoryColorResId
+        FROM records INNER JOIN categories ON recordOld_movementCategoryId = categoryId
+        WHERE recordAccountId = :accountId
+        AND recordDate >= :topDate
+        AND recordAmount BETWEEN :amountMin AND :amountMax
+        ORDER BY recordDate
+    """
+    )
+    fun getRecords(
+        accountId: String,
+        topDate: Date,
+        amountMax: Double = -100_000.0,
+        amountMin: Double = 100_000.0
+    ): LiveData<List<RecordSummary>>
+
 
     /*@Query(
         """

@@ -4,8 +4,9 @@ import androidx.lifecycle.LiveData
 import com.ekosoftware.financialpreview.data.local.daos.*
 import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
-import com.ekosoftware.financialpreview.data.model.summary.MonthSummary
-import com.ekosoftware.financialpreview.data.model.summary.MovementSummary
+import com.ekosoftware.financialpreview.data.model.movement.MonthSummary
+import com.ekosoftware.financialpreview.data.model.movement.MovementSummary
+import com.ekosoftware.financialpreview.util.monthNameKey
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
@@ -24,26 +25,31 @@ class HomeRepository @Inject constructor(
     fun getLiveMonthSummary(fromTo: Int, currencyCode: String): LiveData<MonthSummary> =
         movementDao.getLiveMonthSummary(
             fromTo,
-            currencyCode
+            currencyCode,
+            fromTo.monthNameKey()
         )
 
     fun getSettleGroupsWithMovements(): LiveData<List<SettleGroupWithMovements>> =
         settleGroupDao.getSettleGroupsWithMovements()
 
     fun getMonthPendingSummary(fromTo: Int, currencyCode: String): MonthSummary =
-        movementDao.getMonthPendingSummary(fromTo, currencyCode)
+        movementDao.getMonthPendingSummary(fromTo, currencyCode, fromTo.monthNameKey())
 
     fun getMovementsSummaries(
         searchPhrase: String,
         currencyCode: String,
         fromTo: Int
-    ): LiveData<List<MovementSummary>> =
-        movementDao.getMovementsSummaries(searchPhrase, currencyCode, fromTo)
+    ): LiveData<List<MovementSummary>> = movementDao.getMovementsSummaries(
+        searchPhrase,
+        fromTo,
+        currencyCode,
+        fromTo.monthNameKey()
+    )
 
     fun getBudgets(
         searchPhrase: String,
         currencyCode: String,
         fromTo: Int
-    ) : LiveData<List<Budget>> = budgetDao.getBudgets(searchPhrase, currencyCode, fromTo)
+    ): LiveData<List<Budget>> = budgetDao.getBudgets(searchPhrase, currencyCode, fromTo)
 
 }
