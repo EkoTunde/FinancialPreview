@@ -226,7 +226,8 @@ object DummyData1 {
     val settleGroupMovementsCrossRef = listOf(
         SettleGroupMovementsCrossRef(1, 3),
         SettleGroupMovementsCrossRef(1, 4),
-        SettleGroupMovementsCrossRef(1, 5)
+        SettleGroupMovementsCrossRef(1, 5),
+                SettleGroupMovementsCrossRef(1, 4)
     )
 
     /*val records = listOf<Record>(

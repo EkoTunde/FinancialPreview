@@ -43,11 +43,26 @@ class AccountsAndRecordsViewModel @ViewModelInject constructor(
     }
 
     val recordsFilterOptions: MutableLiveData<RecordsFilterOptions> =
-        savedStateHandle.getLiveData(SELECTED_FILTER_OPTIONS_KEY)
+        savedStateHandle.getLiveData(SELECTED_FILTER_OPTIONS_KEY, RecordsFilterOptions())
+
+    fun recordSearch(phrase: String) {
+        val old = currentFilterOptions
+        setFilterOptions(
+            RecordsFilterOptions(
+                phrase,
+                old.accountId,
+                old.topDate,
+                old.amountMax,
+                old.amountMin
+            )
+        )
+    }
 
     fun setFilterOptions(recordsFilterOptions: RecordsFilterOptions) {
         this.recordsFilterOptions.value = recordsFilterOptions
     }
+
+    val currentFilterOptions get() = recordsFilterOptions.value!!
 
     val records = recordsFilterOptions.distinctUntilChanged().switchMap { options ->
         liveData<Resource<List<RecordSummary>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
@@ -71,8 +86,9 @@ class AccountsAndRecordsViewModel @ViewModelInject constructor(
 }
 
 data class RecordsFilterOptions(
+    var searchString: String = "",
     var accountId: String = "",
-    var topDate: Date,
+    var topDate: Date = Date(),
     var amountMax: Double = -100_000.0,
     var amountMin: Double = 100_000.0
 )
