@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="0dp"
     app:cardElevation="15dp">
@@ -36,7 +37,7 @@
             android:layout_height="wrap_content"
             android:elevation="0dp"
             android:fontFamily="@font/quicksand_semi_bold"
-            android:text="@string/example_money_small"
+            tools:text="@string/example_money_small"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="36sp"

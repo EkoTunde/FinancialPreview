@@ -5,6 +5,10 @@ import androidx.room.*
 import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.data.model.movement.MonthSummary
 import com.ekosoftware.financialpreview.data.model.movement.MovementSummary
+import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
+import com.ekosoftware.financialpreview.presentation.SimpleQueryData
+import kotlinx.coroutines.flow.Flow
+import java.time.YearMonth
 
 @Dao
 interface MovementDao {
@@ -26,6 +30,56 @@ interface MovementDao {
      *
      * @return [LiveData] object containing a [MonthSummary].
      */
+    @Query(
+        """
+        SELECT 
+            :currencyCode AS currencyCode,
+            :fromTo AS yearMonth,
+            (
+                (
+                    SELECT SUM(movementLeftAmount) 
+                    FROM movements 
+                    WHERE movementLeftAmount > 0 
+                    AND movementCurrencyCode = :currencyCode 
+                    AND :fromTo >= movementFreqFrom  
+                    AND :fromTo <= movementFreqTo
+                    AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+                ) + (
+                    SELECT SUM(budgetLeftAmount) 
+                    FROM budgets 
+                    WHERE budgetLeftAmount > 0 
+                    AND budgetCurrencyCode = :currencyCode 
+                    AND :fromTo >= budgetFreqFrom  
+                    AND :fromTo <= budgetFreqTo
+                    AND budgetFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+                ) 
+            ) AS totalIncome, (
+                (
+                    SELECT SUM(movementLeftAmount) 
+                    FROM movements 
+                    WHERE movementLeftAmount < 0 
+                    AND movementCurrencyCode = :currencyCode 
+                    AND :fromTo >= movementFreqFrom  
+                    AND :fromTo <= movementFreqTo
+                    AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+                ) + (
+                    SELECT SUM(budgetLeftAmount) 
+                    FROM budgets 
+                    WHERE budgetLeftAmount < 0 
+                    AND budgetCurrencyCode = :currencyCode 
+                    AND :fromTo >= budgetFreqFrom  
+                    AND :fromTo <= budgetFreqTo
+                    AND budgetFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+                ) 
+            ) AS totalExpense
+        """
+    )
+    fun getLiveMonthSummary(
+        fromTo: Int,
+        currencyCode: String,
+        monthIncluded: String
+    ): LiveData<MonthSummary>
+
     @Query(
         """
         SELECT 
@@ -70,17 +124,16 @@ interface MovementDao {
             ) AS totalExpense
         """
     )
-    fun getLiveMonthSummary(
+    fun getLiveMonthSummary2(
         fromTo: Int,
         currencyCode: String,
         monthIncluded: String
-    ): LiveData<MonthSummary>
-
+    ): Flow<MonthSummary>
 
     /**
      * Similar to [getLiveMonthSummary], queries for the results of
      * performing a sum to all movements and budget corresponding to
-     * indicated month and year, but doesn't return an [LiveData] observable.
+     * indicated month and year, but doesn't return a [LiveData] observable.
      *
      * @param fromTo the [Int] year and month to query in "yyyyMM" format.
      * @param currencyCode the [String] representing a currency, e.g.: "USD".
@@ -138,6 +191,54 @@ interface MovementDao {
         monthIncluded: String
     ): MonthSummary
 
+    @Transaction
+    @Query(
+        """
+        SELECT :currencyCode AS currencyCode,
+        :yearMonth AS yearMonth,
+        (
+            SELECT SUM(movementLeftAmount) 
+            FROM movements 
+            WHERE movementLeftAmount >= 0 
+            AND movementCurrencyCode = :currencyCode 
+            AND movementFreqFrom <= :yearMonth 
+            AND movementFreqTo >= :yearMonth
+            AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS movementIncome,
+        (
+            SELECT SUM(budgetLeftAmount) 
+            FROM budgets 
+            WHERE budgetLeftAmount >= 0 
+            AND budgetCurrencyCode = :currencyCode 
+            AND budgetFreqFrom <= :yearMonth 
+            AND budgetFreqTo >= :yearMonth
+            AND budgetFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS budgetIncome,
+        (
+            SELECT SUM(movementLeftAmount) 
+            FROM movements 
+            WHERE movementLeftAmount < 0 
+            AND movementCurrencyCode = :currencyCode 
+            AND movementFreqFrom <= :yearMonth 
+            AND movementFreqTo >= :yearMonth
+            AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS movementExpense,
+        (
+            SELECT SUM(budgetLeftAmount) 
+            FROM budgets 
+            WHERE budgetLeftAmount < 0 
+            AND budgetCurrencyCode = :currencyCode 
+            AND budgetFreqFrom <= :yearMonth 
+            AND budgetFreqTo >= :yearMonth
+            AND budgetFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS budgetExpense
+        """
+    )
+    fun getMonthPendingSummary(
+        currencyCode: String,
+        yearMonth: Int,
+        monthIncluded: String
+    ): MonthSummary
 
     /**
      * Queries for all [Movement]s in database but outputs only specified
@@ -179,5 +280,81 @@ interface MovementDao {
     @Delete
     suspend fun deleteScheduled(vararg movement: Movement)
 
+    @Query(
+        """
+        SELECT movementId AS id,
+        movementName AS name,
+        movementCurrencyCode AS currencyCode,
+        movementLeftAmount AS amount,
+        categories.categoryColorResId AS color,
+        categories.categoryIconResId AS iconResId
+        FROM movements
+        INNER JOIN categories ON movementCategoryId = categoryId
+        WHERE movementName LIKE '%' || :searchPhrase || '%' 
+        OR movementDescription LIKE '%' || :searchPhrase || '%'
+        OR movementCurrencyCode LIKE '%' || :searchPhrase || '%'
+    """
+    )
+    fun getMovementsAsSimpleData(searchPhrase: String): LiveData<List<SimpleQueryData>>
+
+    @Query("SELECT SUM(accountBalance) FROM accounts WHERE accountCurrencyCode = :currency")
+    fun getAccountsTotalForCurrency(currency: String): LiveData<Double?>
+
+    /*@Transaction
+    @Query(
+        """
+        SELECT :currencyCode AS currencyCode,
+        :yearMonth AS yearMonth,
+        (SELECT SUM(accountBalance) FROM accounts WHERE accountCurrencyCode = :currencyCode) AS currentBalance,
+        (
+            SELECT SUM(movementLeftAmount) 
+            FROM movements 
+            WHERE movementLeftAmount >= 0 
+            AND movementCurrencyCode = :currencyCode 
+            AND movementFreqFrom <= :yearMonth 
+            AND movementFreqTo >= :yearMonth
+            AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS currentMonthMovementIncome,
+        (
+            SELECT SUM(budgetLeftAmount) 
+            FROM budgets 
+            WHERE budgetLeftAmount >= 0 
+            AND budgetCurrencyCode = :currencyCode 
+            AND budgetFreqFrom <= :yearMonth 
+            AND budgetFreqTo >= :yearMonth
+            AND budgetFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS currentMonthBudgetIncome,
+        (
+            SELECT SUM(movementLeftAmount) 
+            FROM movements 
+            WHERE movementLeftAmount < 0 
+            AND movementCurrencyCode = :currencyCode 
+            AND movementFreqFrom <= :yearMonth 
+            AND movementFreqTo >= :yearMonth
+            AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS currentMonthMovementExpense,
+        (
+            SELECT SUM(budgetLeftAmount) 
+            FROM budgets 
+            WHERE budgetLeftAmount < 0 
+            AND budgetCurrencyCode = :currencyCode 
+            AND budgetFreqFrom <= :yearMonth 
+            AND budgetFreqTo >= :yearMonth
+            AND budgetFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS currentMonthBudgetExpense
+        """
+    )
+    fun getBigQuery(currencyCode: String, yearMonth: Int, monthIncluded: String): LiveData<BQ>*/
+
+
 }
 
+data class BQ(
+    val currencyCode: String,
+    val yearMonth: Int,
+    val currentBalance: Long = 0,
+    val currentMonthMovementIncome: Long? = 0,
+    val currentMonthMovementExpense: Long? = 0,
+    val currentMonthBudgetIncome: Long? = 0,
+    val currentMonthBudgetExpense: Long? = 0,
+)

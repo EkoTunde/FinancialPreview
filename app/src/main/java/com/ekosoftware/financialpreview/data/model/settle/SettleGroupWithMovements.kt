@@ -9,12 +9,13 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class SettleGroupWithMovements(
-    @Embedded val settleGroup: SettleGroup,
+    @Embedded var settleGroup: SettleGroup,
     @Relation(
         parentColumn = "settleGroupId",
+        entity = Movement::class,
         entityColumn = "movementId",
         associateBy = Junction(
-            SettleGroupMovementsCrossRef::class,
+            value = SettleGroupMovementsCrossRef::class,
             entityColumn = "movementId",
             parentColumn = "settleGroupId",
         )

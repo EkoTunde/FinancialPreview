@@ -1,6 +1,8 @@
 package com.ekosoftware.financialpreview.util
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.text.SpannableStringBuilder
@@ -11,16 +13,19 @@ import android.text.style.SuperscriptSpan
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.res.use
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
 import com.ekosoftware.financialpreview.data.model.movement.MonthSummary
 import com.google.android.material.snackbar.Snackbar
+import java.math.BigDecimal
 import java.util.*
 
 /**
@@ -41,8 +46,9 @@ fun Int.getMonth() = this.toString().substring(4).toInt()
  * @throws IllegalArgumentException if params are 0.
  */
 fun Int.plusMonths(months: Int): Int {
-    println("getyear() = ${getYear()} + months / 12 = ${months / 12}")
+    //println("getyear() = ${getYear()} + months / 12 = ${months / 12}")
 
+    if (months == 0) return this
     // Gets the given year and adds the years
     // given by the times a year fits in given months
     // to add
@@ -67,23 +73,30 @@ fun Int.plusMonths(months: Int): Int {
 }
 
 fun TextView.applyMoneyFormat(currency: String, amount: Double) {
-    val wholeNo = amount.toString().split(".")[0]
-    val decimalNo = amount.toString().split(".")[1]
-    // Initialize a new String variable
-    val inputText = "$currency $wholeNo $decimalNo"
-    text = SpannableStringBuilder(inputText).apply {
-        setSpan(
-            SuperscriptSpan(),  // Span to add
-            inputText.lastIndexOf(decimalNo),  // Start of the span (inclusive)
-            inputText.lastIndexOf(decimalNo) + decimalNo.length,  // End of the span (exclusive)
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE // Do not extend the span when text add later
-        )
-        setSpan(
-            RelativeSizeSpan(.45f),
-            inputText.lastIndexOf(decimalNo), // Start of the span (inclusive)
-            inputText.lastIndexOf(decimalNo) + decimalNo.length, // End of the span (exclusive)
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE // Do not extend the span when text add later
-        )
+
+    val withCurrencyFormat = amount.forDisplayAmount(currency)
+
+    text = if (!withCurrencyFormat.contains(".")) {
+        withCurrencyFormat
+    } else {
+        val wholeNo = withCurrencyFormat.split(".")[0]
+        val decimalNo = withCurrencyFormat.split(".")[1]
+        // Initialize a new String variable
+        val inputText = "$currency $wholeNo $decimalNo"
+        SpannableStringBuilder(inputText).apply {
+            setSpan(
+                SuperscriptSpan(),  // Span to add
+                inputText.lastIndexOf(decimalNo),  // Start of the span (inclusive)
+                inputText.lastIndexOf(decimalNo) + decimalNo.length,  // End of the span (exclusive)
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE // Do not extend the span when text add later
+            )
+            setSpan(
+                RelativeSizeSpan(.45f),
+                inputText.lastIndexOf(decimalNo), // Start of the span (inclusive)
+                inputText.lastIndexOf(decimalNo) + decimalNo.length, // End of the span (exclusive)
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE // Do not extend the span when text add later
+            )
+        }
     }
 }
 
@@ -159,6 +172,24 @@ fun <T, K, R> LiveData<T>.combineWith(
     return result
 }
 
+fun <X, Y, Z, R> LiveData<X>.combineWith(
+    liveData1: LiveData<Y>,
+    liveData2: LiveData<Z>,
+    block: (X?, Y?, Z?) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    result.addSource(this) {
+        result.value = block(this.value, liveData1.value, liveData2.value)
+    }
+    result.addSource(liveData1) {
+        result.value = block(this.value, liveData1.value, liveData2.value)
+    }
+    result.addSource(liveData2) {
+        result.value = block(this.value, liveData1.value, liveData2.value)
+    }
+    return result
+}
+
 
 /**
  * Transforms a [List] of [Movement]s into a [Double] representing the sum of the products between
@@ -173,25 +204,25 @@ fun SettleGroupWithMovements.taxes(
     fromTo: Int,
     currencyCode: String,
     filter: (Movement) -> Boolean
-): Double =
+): Long =
     this.movements.filter { movement ->
         movement.frequency!!.from!! >= fromTo
                 && movement.frequency!!.to!! <= fromTo
                 && movement.currencyCode == currencyCode
                 && filter(movement)
-    }.sumOf {
-        it.leftAmount * (this.settleGroup.percentage / 100)
-    }
+    }.sumOf { it.leftAmount.times(this.settleGroup.percentage / 100).toLong() }
 
 
 /**
- * Transforms a [List]<[SettleGroupWithMovements]> into a PendingSummary computing only
- * movements' taxes (@see [SettleGroupWithMovements.taxes()]) for a specified month and year ([fromTo]) and a particular [currency].
+ * Transforms a [List]<[SettleGroupWithMovements]> into a MonthSummary computing only
+ * movements' taxes for a specified month and year ([fromTo]) and a particular [currency].
  *
  *  @param fromTo an [Int] representing a year and month (i.e.: 202010) to filter movements list.
  *  @param currency [String] formatted currency code to filter movements list.
  *
  * @return [MonthSummary]
+ *
+ * @see [SettleGroupWithMovements.taxes]
  */
 fun List<SettleGroupWithMovements>.summary(fromTo: Int, currency: String): MonthSummary {
     val incomesTotal = this.takeUnless { it.isNullOrEmpty() }?.sumOf {
@@ -200,7 +231,7 @@ fun List<SettleGroupWithMovements>.summary(fromTo: Int, currency: String): Month
     val expensesTotal = this.takeUnless { it.isNullOrEmpty() }?.sumOf {
         it.taxes(fromTo, currency) { movement -> movement.leftAmount < 0 }
     } ?: 0.0
-    return MonthSummary(currency, fromTo, incomesTotal, expensesTotal)
+    return MonthSummary(currency, fromTo, incomesTotal.toLong(), expensesTotal.toLong())
 }
 
 fun currentYearMonth(): Int {
@@ -222,7 +253,48 @@ fun Int.monthNameKey(): String {
         8 -> Strings.get(R.string.month_aug_key)
         9 -> Strings.get(R.string.month_sep_key)
         10 -> Strings.get(R.string.month_oct_key)
-        11 -> Strings.get(R.string.month_noc_key)
+        11 -> Strings.get(R.string.month_nov_key)
         else -> Strings.get(R.string.month_dec_key)
+    }
+}
+
+fun Long.forCommunicationAmount(): Double = this / 10_000.0
+
+fun Long.forDisplayAmount(currencyCode: String): String {
+    val amount = (this/10_000.0).toString().split(".")
+    val preDecimal = amount[0]
+    val postDecimal = "." + amount[1]
+
+    return when (val maxDigits = Currency.getInstance(currencyCode).defaultFractionDigits) {
+        0 -> preDecimal
+        else -> preDecimal + postDecimal.take(maxDigits + 1).padEnd(maxDigits + 1, '0')
+    }
+}
+
+fun Double.forDisplayAmount(currencyCode: String): String {
+    val amount = this.toString().split(".")
+    val preDecimal = amount[0]
+    val postDecimal = "." + amount[1]
+
+    return when (val maxDigits = Currency.getInstance(currencyCode).defaultFractionDigits) {
+        0 -> preDecimal
+        else -> preDecimal + postDecimal.take(maxDigits + 1).padEnd(maxDigits + 1, '0')
+    }
+}
+
+fun Double.forDatabaseAmount(): Long = (this * 10_000).toLong()
+
+/**
+ * Retrieve a color from the current [android.content.res.Resources.Theme].
+ */
+@ColorInt
+@SuppressLint("Recycle")
+fun Context.themeColor(
+    @AttrRes themeAttrId: Int
+): Int {
+    return obtainStyledAttributes(
+        intArrayOf(themeAttrId)
+    ).use {
+        it.getColor(0, Color.MAGENTA)
     }
 }

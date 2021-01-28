@@ -23,10 +23,10 @@ data class Budget(
     var currencyCode: String,
 
     @ColumnInfo(name = "budgetLeftAmount")
-    var leftAmount: Double,
+    var leftAmount: Long,
 
     @ColumnInfo(name = "budgetStartingAmount")
-    var startingAmount: Double,
+    var startingAmount: Long,
 
     @Embedded(prefix = "budget")
     var frequency: Frequency,

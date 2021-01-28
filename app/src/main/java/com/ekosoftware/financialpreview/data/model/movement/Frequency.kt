@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo
 
 data class Frequency(
 
-    @ColumnInfo(name = "FreqTo")
+    @ColumnInfo(name = "FreqFrom")
     var from: Int?,
 
-    @ColumnInfo(name = "FreqFrom")
+    @ColumnInfo(name = "FreqTo")
     var to: Int?,
 
     @ColumnInfo(name = "FreqInstallments")

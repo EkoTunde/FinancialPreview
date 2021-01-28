@@ -1,7 +1,9 @@
 package com.ekosoftware.financialpreview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -10,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.ekosoftware.financialpreview.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -21,34 +24,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        /*val TAG = "MainActivity LOG"
-        var ars = ""
-        Currency.getAvailableCurrencies().toList().sortedBy { it.currencyCode }.forEach {
-            println("${it.displayName} -> ${it.currencyCode}\n")
-            if (it.displayName == "peso argentino") {
-                println("\n\n\n peso argentinooo papaaaa => $it ${it.symbol}\n\n\n")
-                ars = it.toString()
-            }
-        }
-
-        val c = Currency.getInstance(ars)*/
-
-      /*  supportActionBar?.apply {
-            //setDisplayHomeAsUpEnabled((destination.id in NO_HOME_ICON_FRAGMENTS).not())
-            setHomeAsUpIndicator(*//*if (destination.id in arrayOf(
-                        R.id.editMovementDialogFragment,
-                        R.id.editBudgetDialogFragment,
-                        R.id.editSettleGroupDialogFragment,
-                        R.id.editAccountDialogFragment
-                    )) *//*R.drawable.ic_close*//* else R.drawable.ic_back*//*
-            )
-        }*/
-
-
         val navView: BottomNavigationView = binding.bottomNavigationView
-
         val navController = findNavController(R.id.nav_host_fragment)
-
         val appBarConfiguration =
             AppBarConfiguration(setOf(R.id.home_page_fragment, R.id.pending_page_fragment))
 
@@ -63,12 +40,12 @@ class MainActivity : AppCompatActivity() {
                 //supportActionBar!!.show()
             } else {
                 //supportActionBar!!.setHomeAsUpIndicator(0)
-                if (destination.id in arrayOf(R.id.selection)) {
+                //if (destination.id in arrayOf(R.id.selection)) {
                    //supportActionBar!!.show()
-                } else {
+                //} else {
                     //supportActionBar!!.title = getString(R.string.app_name)
                     //supportActionBar!!.hide()
-                }
+                //}
             }
         }
     }

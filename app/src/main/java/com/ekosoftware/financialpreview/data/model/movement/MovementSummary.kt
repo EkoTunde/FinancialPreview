@@ -3,7 +3,7 @@ package com.ekosoftware.financialpreview.data.model.movement
 
 data class MovementSummary(
     var movementId: String,
-    var leftAmount: Double,
+    var leftAmount: Long,
     var currencyCode: String,
     var name: String,
     var categoryName: String?,

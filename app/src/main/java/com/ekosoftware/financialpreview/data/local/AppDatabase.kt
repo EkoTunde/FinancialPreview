@@ -8,6 +8,7 @@ import com.ekosoftware.financialpreview.data.model.Category
 import com.ekosoftware.financialpreview.data.model.CurrencyConversion
 import com.ekosoftware.financialpreview.data.model.record.Record
 import com.ekosoftware.financialpreview.data.model.account.Account
+import com.ekosoftware.financialpreview.data.model.account.AccountType
 import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
@@ -16,6 +17,7 @@ import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCr
 @Database(
     entities = [
         Account::class,
+        AccountType::class,
         Budget::class,
         Category::class,
         CurrencyConversion::class,
@@ -23,7 +25,7 @@ import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCr
         Movement::class,
         SettleGroup::class,
         SettleGroupMovementsCrossRef::class
-    ], version = 9, exportSchema = false
+    ], version = 3, exportSchema = false
 )
 @TypeConverters(RoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -35,4 +37,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun movementDao(): MovementDao
     abstract fun recordDao(): RecordDao
     abstract fun settleGroupDao(): SettleGroupDao
+    abstract fun someDao(): SomeDao
 }

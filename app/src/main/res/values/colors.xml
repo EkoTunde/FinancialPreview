@@ -20,6 +20,8 @@
     <color name="colorAmountPositiveGradient3">#0288D1</color>
 
     <color name="colorTextPrimary">#969696</color>
+    <color name="colorTextTitle">#323232</color>
+    <color name="colorTextDescription">#A5A5A5</color>
 
     <!-- Scheduled Dialog Filled Edit Texts -->
     <color name="filledEditTextBackground">#B3512DA8</color>

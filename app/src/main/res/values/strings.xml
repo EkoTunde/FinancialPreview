@@ -25,7 +25,7 @@
     <string name="expenses">Gastos</string>
     <string name="budgets">Presupuestos</string>
     <string name="accumulated">Presupuestos</string>
-    <string name="balances">Diferencias</string>
+    <string name="balances">Saldos</string>
     <string name="projection_timeline">Proyección: línea de tiempo</string>
     <string name="actions">Acciones</string>
     <string name="add_preview">agregar\npreview</string>
@@ -66,7 +66,7 @@
     <string name="month_aug_key">Aug</string>
     <string name="month_sep_key">Sep</string>
     <string name="month_oct_key">Oct</string>
-    <string name="month_noc_key">Noc</string>
+    <string name="month_nov_key">Nov</string>
     <string name="month_dec_key">Dec</string>
     <string name="month_jan">Ene</string>
     <string name="month_feb">Feb</string>
@@ -78,7 +78,7 @@
     <string name="month_aug">Ago</string>
     <string name="month_sep">Sep</string>
     <string name="month_oct">Oct</string>
-    <string name="month_noc">Nov</string>
+    <string name="month_nov">Nov</string>
     <string name="month_dec">Dic</string>
     <string name="amount">Importe</string>
     <string name="details">DETALLES</string>
@@ -186,20 +186,21 @@
     <string name="from_income">de ingreso</string>
     <string name="from_expense">de gasto</string>
     <string name="from_balance">de balance</string>
-    <string name="balance_acummulated">Acumulado</string>
+
+    <string name="balance_acummulated">Acumulados</string>
     <string name="error_loading_something">Error al cargar %1$s</string>
     <string name="pending_summary_balance">el resumen de cuentas pendientes</string>
     <string name="retry">Reintentar</string>
     <string name="movements">Moviemientos</string>
     <string name="groups">Grupos</string>
-    <string name="budget_percent">%1$d\% restante</string>
-    <string name="amount_holder">%1$s %2$.2f</string>
+    <string name="budget_percent">%1$.2f %2$s restante</string>
+    <string name="amount_holder">%1$s %2$s</string>
     <string name="example_settle_group_item_name">MasterCard</string>
     <string name="example_settle_group_item_description">Engloba todos los gastos de la tarjeta de crédito MasterCard</string>
     <string name="example_settle_group_item_percent">Aplica un 0.28% sobre el total</string>
     <string name="example_settle_group_item_movements_amount">Incluye 7 movimientos</string>
     <string name="example_settle_group_item_aprox_amount">ARS -3360.45</string>
-    <string name="settle_group_percent">Aplica %1$.2f\% sobre el total</string>
+    <string name="settle_group_percent">"Aplica %1$s%2$s sobre el total"</string>
     <string name="settle_group_percent_0">No aplica ningún interés sobre el total</string>
     <string name="no_items_found">No hay nada por aquí…\nPresioná el botón + para crear una.</string>
     <string name="an_error_occurred">Ha ocurrido un error al cargar los datos.</string>
@@ -220,6 +221,7 @@
     <string name="pending_movements">Movimientos pendientes</string>
     <string name="search_hint">Buscar</string>
     <string name="accounts">Cuentas</string>
+    <string name="records">Registros</string>
 
     <string-array name="currencies">
         <item>@string/ars</item>
@@ -237,18 +239,43 @@
         <item>@string/month_aug</item>
         <item>@string/month_sep</item>
         <item>@string/month_oct</item>
-        <item>@string/month_noc</item>
+        <item>@string/month_nov</item>
         <item>@string/month_dec</item>
     </string-array>
 
     <plurals name="amountOfSettleGroupPercent">
         <item quantity="zero">No aplica ningún interés sobre el total</item>
-        <item quantity="other">Aplica un %.2f sobre el total</item>
+        <item quantity="other">Aplica un %f sobre el total</item>
     </plurals>
 
     <plurals name="amountOfMovementsInSettleGroup">
+        <item quantity="zero">Ningún moviemiento seleccionado</item>
         <item quantity="one">Incluye %d movimiento</item>
-        <item quantity="other">Incluye $d movimientos</item>
+        <item quantity="other">Incluye %d movimientos</item>
     </plurals>
+
+    <string name="account_type_general">General</string>
+    <string name="account_type_cash">Efectivo</string>
+    <string name="account_type_saving">Caja de ahorro</string>
+    <string name="account_type_checking">Cuenta corriente</string>
+    <string name="account_type_other">Otro</string>
+    <string name="account_type_digital">Billetera Virtual</string>
+    <string name="account_type_safe">Caja fuerte</string>
+    <string name="pending_budgets">Presupuestos pendientes</string>
+    <string name="settle_groups">Grupos de liquidación</string>
+
+    <string-array name="account_types">
+        <item>@string/account_type_cash</item>
+        <item>@string/account_type_saving</item>
+        <item>@string/account_type_general</item>
+        <item>@string/account_type_checking</item>
+        <item>@string/account_type_other</item>
+        <item>@string/account_type_digital</item>
+        <item>@string/account_type_safe</item>
+    </string-array>
+
+    // Pending Movements Fragment
+    <string name="movement_card_transition_name">movement_card_%1$s</string>
+    <string name="movement_card_detail_transition_name">movement_card_detail</string>
 
 </resources>

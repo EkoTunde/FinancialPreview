@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.ekosoftware.financialpreview.R
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -21,7 +22,10 @@ data class Account(
     var currencyCode: String = "",
 
     @ColumnInfo(name = "accountBalance")
-    var balance: Double = 0.0,
+    var balance: Long = 0,
+
+    @ColumnInfo(name = "accountTypeId")
+    var typeId: Int = R.string.account_type_general,
 
     @ColumnInfo(name = "accountDescription")
     var description: String? = null,
@@ -36,3 +40,15 @@ data class Account(
     var colorResId: Int?
 
 ) : Parcelable
+
+@Entity(tableName = "accountTypes")
+data class AccountType(
+
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "accountTypeId")
+    var id: Int = 0,
+
+    @ColumnInfo(name = "accountTypeNameStringResId")
+    var nameStringResId: Int
+
+)

@@ -25,8 +25,8 @@ class AccountsFragment : BaseListFragment<Account, ItemAccountBinding>() {
 
     private val viewModel by activityViewModels<AccountsAndRecordsViewModel>()
 
-    private val accountListAdapter = AccountsListAdapter {
-        val directions = AccountsFragmentDirections.accountsToRecords(it)
+    private val accountListAdapter = AccountsListAdapter { _, account ->
+        val directions = AccountsFragmentDirections.accountsToRecords(account)
         findNavController().navigate(directions)
     }
 
@@ -50,7 +50,7 @@ class AccountsFragment : BaseListFragment<Account, ItemAccountBinding>() {
         super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
         inflater.inflate(R.menu.only_search_menu, menu)
-        val searchView = SearchView((context as MainActivity).supportActionBar?.themedContext ?: context)
+        val searchView = SearchView((requireContext() as MainActivity).supportActionBar?.themedContext ?: requireContext())
         menu.findItem(R.id.menu_item_search).apply {
             setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_IF_ROOM)
             actionView = searchView
@@ -79,7 +79,14 @@ class AccountsFragment : BaseListFragment<Account, ItemAccountBinding>() {
         }
     }
 
-    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun recyclerViewDividerOrientation(): Int = LinearLayout.VERTICAL
+
+    private fun setData() = viewModel.accounts.fetchData {
+        accountListAdapter.submitList(it)
+    }
+}
+
+/*override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         return when (item.itemId) {
             R.id.menu_item_search -> {
@@ -89,10 +96,3 @@ class AccountsFragment : BaseListFragment<Account, ItemAccountBinding>() {
             else -> super.onOptionsItemSelected(item)
         }
     }*/
-
-    override fun recyclerViewDividerOrientation(): Int = LinearLayout.VERTICAL
-
-    private fun setData() = viewModel.accounts.fetchData {
-        accountListAdapter.submitList(it)
-    }
-}

@@ -31,12 +31,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            tools:visibility="gone" />
+            app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <Button
             android:id="@+id/button_retry"
@@ -47,8 +46,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title"
-            tools:visibility="gone" />
+            app:layout_constraintTop_toBottomOf="@+id/title" />
 
         <LinearLayout
             android:id="@+id/top_layout"
@@ -58,12 +56,10 @@
             android:layout_marginTop="8dp"
             android:baselineAligned="false"
             android:orientation="horizontal"
-            android:visibility="gone"
             android:weightSum="300"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            tools:visibility="visible">
+            app:layout_constraintTop_toBottomOf="@id/title">
 
             <LinearLayout
                 android:id="@+id/this_month_layout"
@@ -79,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/pending"
+                    android:text="@string/this_month"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -170,13 +166,11 @@
             android:baselineAligned="false"
             android:gravity="center"
             android:orientation="horizontal"
-            android:visibility="gone"
             android:weightSum="300"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/top_layout"
-            tools:visibility="visible">
+            app:layout_constraintTop_toBottomOf="@id/top_layout">
 
             <RelativeLayout
                 android:layout_width="0dp"

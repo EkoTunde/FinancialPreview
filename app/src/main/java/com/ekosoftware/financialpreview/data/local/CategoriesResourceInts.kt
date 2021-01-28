@@ -6,6 +6,7 @@ object CategoriesResourceInts {
 
     val categoriesIntIds = listOf(
         R.drawable.category_ac,
+        R.drawable.category_account_balance_wallet,
         R.drawable.category_album,
         R.drawable.category_apartment,
         R.drawable.category_architecture,

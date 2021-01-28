@@ -27,13 +27,13 @@ data class Record(
     var movement: Movement? = null,
 
     @ColumnInfo(name = "recordAmount")
-    var amount: Double,
-
-    @ColumnInfo(name = "recordAccountId")
-    var accountId: Int,
+    var amount: Long,
 
     @ColumnInfo(name = "recordCurrencyCode")
     var currencyCode: String,
+
+    @ColumnInfo(name = "recordAccountId")
+    var accountId: Int,
 
     @ColumnInfo(name = "recordCurrentPendingMovementId")
     var currentPendingMovementId: String?,
@@ -43,6 +43,15 @@ data class Record(
 
     @ColumnInfo(name = "recordAccountIdOut")
     var accountIdOut: String?,
+
+    @ColumnInfo(name = "recordCategoryId")
+    var categoryId: String?,
+
+    @ColumnInfo(name = "recordDebtorName")
+    var debtorName: String?,
+
+    @ColumnInfo(name = "recordLenderName")
+    var lenderName: String?,
 
     ) : Parcelable
 

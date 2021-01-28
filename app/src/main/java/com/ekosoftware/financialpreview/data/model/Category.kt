@@ -8,7 +8,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity(tableName = "categories")
-data class Category (
+data class Category(
 
     @PrimaryKey
     @ColumnInfo(name = "categoryId")
@@ -16,6 +16,9 @@ data class Category (
 
     @ColumnInfo(name = "categoryName")
     var name: String,
+
+    @ColumnInfo(name = "categoryDescription")
+    var description: String,
 
     @ColumnInfo(name = "categoryIconResId")
     var iconResId: Int,

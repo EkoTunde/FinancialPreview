@@ -19,10 +19,10 @@ data class Movement(
     var id: String,
 
     @ColumnInfo(name = "movementLeftAmount")
-    var leftAmount: Double,
+    var leftAmount: Long,
 
     @ColumnInfo(name = "movementStartingAmount")
-    var startingAmount: Double,
+    var startingAmount: Long,
 
     @ColumnInfo(name = "movementCurrencyCode")
     var currencyCode: String,
@@ -32,9 +32,6 @@ data class Movement(
 
     @Embedded(prefix = "movement")
     var frequency: @RawValue Frequency?,
-
-    @ColumnInfo(name = "movementDescription")
-    var description: String?,
 
     @ColumnInfo(name = "movementAccountId")
     var accountId: String?,

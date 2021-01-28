@@ -28,7 +28,7 @@ class EditAccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val account = args.account
+        val account = args.accountId
         TODO("Set account data in UI")
         binding.checkIsBankAccount.setOnCheckedChangeListener { _, isChecked ->
             extraOptionsVisible(isChecked)

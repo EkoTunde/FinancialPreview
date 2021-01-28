@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.ekosoftware.financialpreview.core.BaseViewModel
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.account.Account
 import com.ekosoftware.financialpreview.data.model.record.RecordSummary
@@ -16,7 +17,7 @@ class AccountsAndRecordsViewModel @ViewModelInject constructor(
     @ApplicationContext private val appContext: Context,
     private val accountsAndRecordsRepository: AccountsAndRecordsRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
-) : ViewModel() {
+) : BaseViewModel() {
 
     companion object {
         private const val ACCOUNTS_SEARCH_STRING_KEY = "accountsSearchStringKey"
@@ -29,17 +30,12 @@ class AccountsAndRecordsViewModel @ViewModelInject constructor(
         accountSearchPhrase.value = phrase
     }
 
-    val accounts = accountSearchPhrase.switchMap { searchPhrase ->
-        liveData<Resource<List<Account>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
-            emit(Resource.Loading())
-            try {
-                emitSource(accountsAndRecordsRepository.getAccounts(searchPhrase).map {
-                    Resource.Success(it ?: emptyList())
-                })
-            } catch (e: Exception) {
-                emit(Resource.Failure(e))
-            }
-        }
+    /*val accounts = accountSearchPhrase.switchMap { searchPhrase ->
+        resourceIOLiveData { accountsAndRecordsRepository.getAccounts(searchPhrase) }
+    }*/
+
+    val accounts = accountSearchPhrase.switchToResourceIOLiveData { searchPhrase ->
+        accountsAndRecordsRepository.getAccounts(searchPhrase)
     }
 
     val recordsFilterOptions: MutableLiveData<RecordsFilterOptions> =

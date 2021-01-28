@@ -1,6 +1,8 @@
 package com.ekosoftware.financialpreview.domain.local
 
+import androidx.lifecycle.LiveData
 import com.ekosoftware.financialpreview.data.local.daos.*
+import com.ekosoftware.financialpreview.data.model.account.Account
 import java.util.*
 import javax.inject.Inject
 
@@ -9,7 +11,8 @@ class AccountsAndRecordsRepository @Inject constructor(
     private val recordDao: RecordDao
 ) {
 
-    fun getAccounts(searchPhrase: String) = accountDao.getAccounts(searchPhrase)
+    fun getAccounts(searchPhrase: String): LiveData<List<Account>> =
+        accountDao.getAccounts(searchPhrase)
 
     fun getRecords(
         accountId: String,

@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.ekosoftware.financialpreview.R
+import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.databinding.FragmentPendingBinding
 import com.ekosoftware.financialpreview.presentation.ShareViewModel
 import com.ekosoftware.financialpreview.ui.pending.tabs.PendingBudgetsFragmentDirections
@@ -49,7 +51,7 @@ class PendingFragment : Fragment() {
                     null
                 )
                 OPTION_ADD_BUDGET -> PendingBudgetsFragmentDirections.budgetsToEditBudget(null)
-                OPTION_ADD_SETTLE_GROUP -> PendingSettleGroupsFragmentDirections.settleGroupsToEditSettleGroup(
+                OPTION_ADD_SETTLE_GROUP -> PendingSettleGroupsFragmentDirections.settleGorupsToEditSettleGroup(
                     null
                 )
                 else -> throw IllegalArgumentException("Position in tab mus be 0, 1 or 2. $currentPosition is not allowed.")
@@ -63,7 +65,13 @@ class PendingFragment : Fragment() {
             override fun onTabSelected(position: Int) {
                 currentPosition = position
             }
-        })
+        }) { v, id ->
+            val movementCardDetailTransitionName =
+                Strings.get(R.string.movement_card_detail_transition_name)
+            val extras = FragmentNavigatorExtras(v to movementCardDetailTransitionName)
+            val directions = PendingFragmentDirections.actionPendingPageFragmentToEditMovement(id)
+            findNavController().navigate(directions, extras)
+        }
 
         binding.pager.adapter = adapter
 

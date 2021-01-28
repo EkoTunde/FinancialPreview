@@ -17,17 +17,17 @@ import android.view.View
  *
  */
 abstract class BaseListAdapter<T, K : ViewBinding>(
-    private val onSelected: ((T) -> Unit)
+    private val onSelected: ((v: View, T) -> Unit)
 ) :
     ListAdapter<T, BaseListAdapter<T, K>.BaseListViewHolder>(BaseDiffCallback<T>()) {
 
     inner class BaseListViewHolder(
         private val binding: K,
-        private val onSelected: (T) -> Unit
+        private val onSelected: (v: View, T) -> Unit
     ) : BaseViewHolder<T>(binding.root) {
         override fun bind(item: T) {
             binding.root.setOnClickListener {
-                onSelected(item)
+                onSelected(it, item)
             }
             this@BaseListAdapter.bind(item, binding)
         }

@@ -1,75 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_marginVertical="8dp"
     android:layout_height="wrap_content"
-    android:elevation="8dp">
+    android:transitionName="@{@string/pending_movement_card_transition_name(movement.id)}"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="8dp"
+    app:cardPreventCornerOverlap="true">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/pending_category_color"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:tint="@color/colorTransparent"
-        app:civ_circle_background_color="@color/colorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/transparent_drawable" />
-
-    <ImageView
-        android:id="@+id/pending_icon"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/app_name"
-        app:layout_constraintBottom_toBottomOf="@+id/pending_category_color"
-        app:layout_constraintEnd_toEndOf="@+id/pending_category_color"
-        app:layout_constraintStart_toStartOf="@+id/pending_category_color"
-        app:layout_constraintTop_toTopOf="@+id/pending_category_color"
-        app:srcCompat="@drawable/category_apartment"
-        app:tint="@color/colorWhite" />
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/pending_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/quicksand_semi_bold"
-        android:textColor="@color/colorBlack"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/pending_amount"
-        app:layout_constraintStart_toEndOf="@+id/pending_category_color"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/example_pending_item_name" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/pending_category_color"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:tint="@color/colorTransparent"
+            app:civ_circle_background_color="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/transparent_drawable" />
 
-    <TextView
-        android:id="@+id/pending_amount"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:textColor="@color/colorAmountPositive"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/example_money_small_2" />
+        <ImageView
+            android:id="@+id/pending_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintBottom_toBottomOf="@+id/pending_category_color"
+            app:layout_constraintEnd_toEndOf="@+id/pending_category_color"
+            app:layout_constraintStart_toStartOf="@+id/pending_category_color"
+            app:layout_constraintTop_toTopOf="@+id/pending_category_color"
+            app:srcCompat="@drawable/category_apartment"
+            app:tint="@color/colorWhite" />
 
-    <TextView
-        android:id="@+id/pending_category"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/quicksand_semi_bold"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toStartOf="@+id/pending_amount"
-        app:layout_constraintStart_toEndOf="@+id/pending_category_color"
-        app:layout_constraintTop_toBottomOf="@+id/pending_name"
-        tools:text="@string/example_pending_item_category" />
+        <TextView
+            android:id="@+id/pending_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/quicksand_semi_bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/pending_amount"
+            app:layout_constraintStart_toEndOf="@+id/pending_category_color"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/example_pending_item_name" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/pending_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:textColor="@color/colorAmountPositive"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/example_money_small_2" />
+
+        <TextView
+            android:id="@+id/pending_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/quicksand_semi_bold"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toStartOf="@+id/pending_amount"
+            app:layout_constraintStart_toEndOf="@+id/pending_category_color"
+            app:layout_constraintTop_toBottomOf="@+id/pending_name"
+            tools:text="@string/example_pending_item_category" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

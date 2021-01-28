@@ -2,23 +2,23 @@ package com.ekosoftware.financialpreview.data
 
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.data.model.Category
-import com.ekosoftware.financialpreview.data.model.record.Record
 import com.ekosoftware.financialpreview.data.model.account.Account
 import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.data.model.movement.Frequency
 import com.ekosoftware.financialpreview.data.model.movement.Movement
+import com.ekosoftware.financialpreview.data.model.record.Record
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCrossRef
 import java.util.*
 
-object DummyData1 {
+object DummyData {
 
-    val accounts = listOf(
+    val m1Accounts = arrayOf(
         Account(
             id = "ac1 Bapro",
             currencyCode = "ARS",
             name = "CA $ BaPro",
-            balance = 28139.96,
+            balance = 281399600,
             bank = "Banco Provincia",
             colorResId = R.color.materialColor11
         ),
@@ -26,79 +26,85 @@ object DummyData1 {
             id = "ac2 MP",
             currencyCode = "ARS",
             name = "MercadoPago",
-            balance = 14337.2,
+            balance = 143372000,
             colorResId = R.color.materialColor8
         ),
         Account(
             id = "ac3 bolsillo",
             currencyCode = "ARS",
             name = "$ Bolsillo",
-            balance = 1220.0,
+            balance = 1220000,
             colorResId = R.color.materialColor2
         ),
         Account(
             id = "bapro dols",
             currencyCode = "USD",
             name = "CA USD BaPro",
-            balance = 0.08,
+            balance = 800,
             colorResId = R.color.materialColor14
         ),
         Account(
             id = "bolsi dols",
             currencyCode = "USD",
             name = "USD Bolsillo",
-            balance = 1690.0,
+            balance = 16_900_000,
             colorResId = R.color.materialColor14
         ),
     )
 
-    val categories = listOf(
+    val m2Categories = arrayOf(
         Category(
             id = "cat salario",
             name = "Salario",
+            description = "",
             iconResId = R.drawable.category_work,
             colorResId = R.color.materialColor12
         ),
         Category(
             id = "cat compras",
             name = "Compras",
+            description = "",
             iconResId = R.drawable.category_shopping_cart,
             colorResId = R.color.materialColor10
         ),
         Category(
             id = "cat comida y bebida",
             name = "Comida y bebida",
+            description = "",
             iconResId = R.drawable.category_food,
             colorResId = R.color.materialColor16
         ),
         Category(
             id = "cat seguros",
             name = "Seguros",
+            description = "",
             iconResId = R.drawable.category_safety,
             colorResId = R.color.materialColor4
         ),
         Category(
             id = "cat sit",
             name = "SIT",
+            description = "",
             iconResId = R.drawable.category_tools,
             colorResId = R.color.materialColor6
         ),
         Category(
             id = "cat salud",
             name = "Salud",
+            description = "",
             iconResId = R.drawable.category_cards_heart,
             colorResId = R.color.materialColor1
         ),
     )
 
-    val budgets = listOf<Budget>(
+    val m3Budgets = arrayOf<Budget>(
         Budget(
             id = "bud master",
             name = "Varios (salidas, etc.)",
             currencyCode = "ARS",
             description = "",
-            leftAmount = -4430.0,
-            startingAmount = -6000.0,
+            leftAmount = -44300000,
+            startingAmount = -60000000,
             frequency = Frequency(
                 from = 202101,
                 to = 999999,
@@ -108,11 +114,11 @@ object DummyData1 {
         )
     )
 
-    val movements = listOf<Movement>(
+    val m4Movements = arrayOf<Movement>(
         Movement(
             id = "mov1",
-            leftAmount = 14042.0,
-            startingAmount = 14042.0,
+            leftAmount = 140420000,
+            startingAmount = 140420000,
             currencyCode = "ARS",
             name = "Sueldo Envión",
             description = "",
@@ -128,8 +134,8 @@ object DummyData1 {
         ),
         Movement(
             id = "mov2",
-            leftAmount = 14042.0,
-            startingAmount = 14042.0,
+            leftAmount = 140420000,
+            startingAmount = 140420000,
             currencyCode = "ARS",
             name = "Sueldo PAINA",
             description = "",
@@ -145,8 +151,8 @@ object DummyData1 {
         ),
         Movement(
             id = "mov3",
-            leftAmount = -1833.33,
-            startingAmount = -1833.33,
+            leftAmount = -18333300,
+            startingAmount = -18333300,
             currencyCode = "ARS",
             name = "Silla Gamer",
             description = "",
@@ -162,8 +168,8 @@ object DummyData1 {
         ),
         Movement(
             id = "mov4",
-            leftAmount = -1570.00,
-            startingAmount = -1570.00,
+            leftAmount = -15700000,
+            startingAmount = -15_700_000,
             currencyCode = "ARS",
             name = "Pedidos Ya con Geor (McDonalds)",
             description = "",
@@ -179,8 +185,8 @@ object DummyData1 {
         ),
         Movement(
             id = "mov5",
-            leftAmount = -369.00,
-            startingAmount = -369.00,
+            leftAmount = -3690000,
+            startingAmount = -3690000,
             currencyCode = "ARS",
             name = "Seguro mala praxis",
             description = "",
@@ -196,8 +202,8 @@ object DummyData1 {
         ),
         Movement(
             id = "mov6",
-            leftAmount = -500.00,
-            startingAmount = -2000.00,
+            leftAmount = -5000000,
+            startingAmount = -20000000,
             currencyCode = "ARS",
             name = "Oftalmóloga",
             description = "",
@@ -213,7 +219,7 @@ object DummyData1 {
         ),
     )
 
-    val settleGroups = listOf(
+    val m5SettleGroups = arrayOf(
         SettleGroup(
             id = "settle 1",
             name = "MasterCard",
@@ -223,14 +229,14 @@ object DummyData1 {
         ),
     )
 
-    val settleGroupMovementsCrossRef = listOf(
-        SettleGroupMovementsCrossRef(1, 3),
-        SettleGroupMovementsCrossRef(1, 4),
-        SettleGroupMovementsCrossRef(1, 5),
-                SettleGroupMovementsCrossRef(1, 4)
+    val m6SettleGroupMovementsCrossRef = arrayOf(
+        SettleGroupMovementsCrossRef("settle 1", "mov3"),
+        SettleGroupMovementsCrossRef("settle 1", "mov4"),
+        SettleGroupMovementsCrossRef("settle 1", "mov5"),
+        SettleGroupMovementsCrossRef("settle 1", "mov6")
     )
 
-    /*val records = listOf<Record>(
+    val m7Records = arrayOf<Record>(
         Record(
             id = "record oftal #1",
             date = Date(Calendar.getInstance().apply {
@@ -239,11 +245,11 @@ object DummyData1 {
             name = "Oftalmóloga (pago parcial)",
             currencyCode = "ARS",
             accountId = 1,
-            amount = -1500.0,
+            amount = -15_000_000,
             movement = Movement(
                 id = "mov6",
-                leftAmount = -2000.00,
-                startingAmount = -2000.00,
+                leftAmount = -20_000_000,
+                startingAmount = -20_000_000,
                 currencyCode = "ARS",
                 name = "Oftalmóloga",
                 description = "",
@@ -256,8 +262,14 @@ object DummyData1 {
                 accountId = "ac3 bolsillo",
                 categoryId = "cat salud",
                 budgetId = null
-            )
+            ),
+            currentPendingMovementId = "",
+            accountIdIn = "",
+            accountIdOut = "",
+            categoryId = "",
+            debtorName = "",
+            lenderName = ""
         )
-    )*/
+    )
 
 }

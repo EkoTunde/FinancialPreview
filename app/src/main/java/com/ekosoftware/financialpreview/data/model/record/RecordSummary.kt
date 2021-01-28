@@ -5,8 +5,8 @@ import java.util.*
 data class RecordSummary(
     var id: String,
     var date: Date?,
-    var amount: Double,
     var currencyCode: String,
+    var amount: Long,
     var name: String?,
     var categoryName: String?,
     var categoryIconResId: Int?,

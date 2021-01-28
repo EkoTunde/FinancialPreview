@@ -1,13 +1,12 @@
 package com.ekosoftware.financialpreview.ui.edit
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.*
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.ekosoftware.financialpreview.R
@@ -16,7 +15,9 @@ import com.ekosoftware.financialpreview.core.ImageAdapter
 import com.ekosoftware.financialpreview.data.local.CategoriesResourceInts
 import com.ekosoftware.financialpreview.databinding.EditFragmentMovementBinding
 import com.ekosoftware.financialpreview.presentation.ShareViewModel
+import com.ekosoftware.financialpreview.util.themeColor
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.transition.MaterialContainerTransform
 import java.util.*
 
 
@@ -28,6 +29,16 @@ class EditMovementFragment : Fragment() {
     private val shareViewModel by activityViewModels<ShareViewModel>()
 
     private lateinit var dateResult: String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.nav_host_fragment
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+            scrimColor = Color.TRANSPARENT
+            setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,11 +58,11 @@ class EditMovementFragment : Fragment() {
         setHasOptionsMenu(true)
         binding.account.apply {
             setEndIconOnClickListener {
-                findNavController().navigate(R.id.editMovement_to_selection)
+                //findNavController().navigate(R.id.editMoveeditMovement_to_selection)
             }
             arrayListOf(this, editText).forEach {
                 it?.setOnClickListener {
-                    findNavController().navigate(R.id.editMovement_to_selection)
+                    //findNavController().navigate(R.id.editMovement_to_selection)
                 }
             }
         }
@@ -74,7 +85,7 @@ class EditMovementFragment : Fragment() {
 
     private var leftAmountEnable = false
 
-    private fun showDialog() {
+    /*private fun showDialog() {
         val fragmentManager = requireActivity().supportFragmentManager
         //val newFragment = CalculatorDialogFragment()
         val newFragment = SelectionFragment()
@@ -89,7 +100,7 @@ class EditMovementFragment : Fragment() {
             .add(android.R.id.content, newFragment)
             .addToBackStack(null)
             .commit()
-    }
+    }*/
 
     private fun yearMonthChooser() = AlertDialog.Builder(requireContext()).apply {
         setTitle("Prueba")
