@@ -1,6 +1,7 @@
 package com.ekosoftware.financialpreview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -24,6 +25,10 @@ import java.util.*
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        private const val TAG = "MainActivityy"
+    }
+
     private lateinit var binding: ActivityMainBinding
 
     private val navViewModel: NavigationViewModel by viewModels()
@@ -37,14 +42,23 @@ class MainActivity : AppCompatActivity() {
 
         val navView: BottomNavigationView = binding.bottomNavigationView
         val navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration =
-            AppBarConfiguration(setOf(R.id.home_page_fragment, R.id.pending_page_fragment))
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.home_page_fragment, R.id.pending_page_fragment))
 
         //setupActionBarWithNavController(this, navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         /*NavigationUI.setupWithNavController(navView, navController, appBarConfiguration)*/
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            val place = when (destination.id) {
+                R.id.home_page_fragment -> "home"
+                R.id.pending_page_fragment -> "pending"
+                R.id.accounts -> "accounts"
+                R.id.records -> "records"
+                R.id.editMovementFragment -> "edit movement"
+                R.id.selectFragment -> "select fragment"
+                else -> "Nothing"
+            }
+            Log.d(TAG, "onCreate: in => $place")
 
             if (destination.id in arrayOf(
                     R.id.pending_page_fragment,

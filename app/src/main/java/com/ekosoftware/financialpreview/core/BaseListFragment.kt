@@ -49,6 +49,7 @@ abstract class BaseListFragment<T, K : ViewBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = BaseListFragmentBinding.inflate(inflater, container, false)
+        onCreateToolbar(binding.appBarLayout, binding.toolbar)
         return binding.root
     }
 
@@ -56,7 +57,6 @@ abstract class BaseListFragment<T, K : ViewBinding> : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpRetryButton()
         setUpRecyclerView()
-        onCreateToolbar(binding.appBarLayout, binding.toolbar)
     }
 
 

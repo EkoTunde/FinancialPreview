@@ -124,6 +124,7 @@ class EntryMovementFragment : Fragment() {
     }
 
     private fun setAccountListener() = binding.account.apply {
+        isEndIconCheckable = false
         val action = MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.ACCOUNTS)
         setEndIconOnClickListener { findNavController().navigate(action) }
         arrayListOf(this, editText).forEach { it?.setOnClickListener { findNavController().navigate(action) } }
@@ -136,12 +137,14 @@ class EntryMovementFragment : Fragment() {
     }
 
     private fun setCategoryListener() = binding.category.apply {
+        isEndIconCheckable = false
         val action = MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.CATEGORIES)
         setEndIconOnClickListener { findNavController().navigate(action) }
         arrayListOf(this, editText).forEach { it?.setOnClickListener { findNavController().navigate(action) } }
     }
 
     private fun setBudgetListener() = binding.budget.apply {
+        isEndIconCheckable = false
         val action = MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.BUDGETS)
         setEndIconOnClickListener { findNavController().navigate(action) }
         arrayListOf(this, editText).forEach { it?.setOnClickListener { findNavController().navigate(action) } }
