@@ -13,7 +13,7 @@ data class Account(
 
     @PrimaryKey
     @ColumnInfo(name = "accountId")
-    var id: String,
+    var id: String = "Nan",
 
     @ColumnInfo(name = "accountName")
     var name: String,
@@ -37,7 +37,10 @@ data class Account(
     var bank: String? = null,
 
     @ColumnInfo(name = "accountColorResId")
-    var colorResId: Int?
+    var colorResId: Int?,
+
+    @ColumnInfo(name = "accountIsMain")
+    var isMainAccount: Boolean = false,
 
 ) : Parcelable
 

@@ -18,6 +18,9 @@ class PendingBudgetsListAdapter(onSelected: (v: View, Budget) -> Unit) :
     BaseListAdapter<Budget, ItemPendingBudgetBinding>(onSelected) {
 
     override fun bind(item: Budget, binding: ItemPendingBudgetBinding) = with(binding) {
+
+        this.root.transitionName = item.id
+
         val percentLeft = (((item.leftAmount/10000.0) * 100) / (item.startingAmount/10000.0))
         budgetPercent.text = Strings.get(R.string.budget_percent, percentLeft, "%")
 

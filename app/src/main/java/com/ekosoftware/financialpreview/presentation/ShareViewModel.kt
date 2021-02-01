@@ -1,7 +1,5 @@
 package com.ekosoftware.financialpreview.presentation
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -9,9 +7,13 @@ import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.data.model.account.Account
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ShareViewModel @ViewModelInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle
+
+@HiltViewModel
+class ShareViewModel @Inject constructor(
+     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     companion object {
@@ -72,7 +74,7 @@ data class SimpleQueryData(
     var iconResId: Int? = null
 )
 
-data class SimpleDisplayedData(
+data class SimpleDisplayableData(
     var id: String,
     var name: String,
     var description: String? = null,
@@ -80,8 +82,8 @@ data class SimpleDisplayedData(
     var iconResId: Int? = null
 )
 
-fun SimpleQueryData.displayable(): SimpleDisplayedData {
-    return SimpleDisplayedData(
+fun SimpleQueryData.displayable(): SimpleDisplayableData {
+    return SimpleDisplayableData(
         this.id,
         this.name,
         this.description ?: Strings.get(

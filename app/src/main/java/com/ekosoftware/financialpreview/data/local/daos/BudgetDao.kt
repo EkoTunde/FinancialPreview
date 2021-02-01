@@ -3,11 +3,13 @@ package com.ekosoftware.financialpreview.data.local.daos
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
+import com.ekosoftware.financialpreview.core.BaseDao
 import com.ekosoftware.financialpreview.data.model.budget.Budget
+import com.ekosoftware.financialpreview.data.model.record.Record
 import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 
 @Dao
-interface BudgetDao {
+interface BudgetDao : BaseDao<Budget> {
 
     @Query(
         """
@@ -24,17 +26,19 @@ interface BudgetDao {
         fromTo: Int
     ): LiveData<List<Budget>>
 
-    @Query(
-        """
-        SELECT budgetId AS id,
-        budgetName AS name,
-        budgetCurrencyCode AS currencyCode,
-        budgetLeftAmount AS amount
+    @Query("SELECT * FROM budgets WHERE budgetId = :id")
+    fun getBudget(id: String): LiveData<Budget>
+
+    @Query("SELECT budgetName FROM budgets WHERE budgetId = :id")
+    fun getBudgetName(id: String): LiveData<String>
+
+    @Query("""
+        SELECT budgetId AS id, budgetName AS name, NULL AS currencyCode, NULL AS amount,
+        NULL AS typeId, budgetDescription AS description, NULL AS color, NULL AS iconResId 
         FROM budgets
         WHERE budgetName LIKE '%' || :searchPhrase || '%' 
         OR budgetDescription LIKE '%' || :searchPhrase || '%'
-        OR budgetCurrencyCode LIKE '%' || :searchPhrase || '%'
-    """
-    )
-    fun getBudgetsAsSimpleData(searchPhrase: String): LiveData<List<SimpleQueryData>>
+        ORDER BY budgetName
+    """)
+    fun getBudgetsAsSimpleData(searchPhrase: String) : LiveData<List<SimpleQueryData>>
 }

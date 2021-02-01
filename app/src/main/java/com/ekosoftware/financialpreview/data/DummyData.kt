@@ -224,8 +224,7 @@ object DummyData {
             id = "settle 1",
             name = "MasterCard",
             description = "",
-            percentage = 0.012,
-            currencyCode = "ARS"
+            percentage = 0.012
         ),
     )
 
@@ -264,11 +263,11 @@ object DummyData {
                 budgetId = null
             ),
             currentPendingMovementId = "",
-            accountIdIn = "",
             accountIdOut = "",
             categoryId = "",
             debtorName = "",
-            lenderName = ""
+            lenderName = "",
+            description = ""
         )
     )
 

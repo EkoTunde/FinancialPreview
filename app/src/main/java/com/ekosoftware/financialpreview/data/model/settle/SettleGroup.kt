@@ -22,8 +22,5 @@ data class SettleGroup(
     @ColumnInfo(name = "settleGroupPercentage")
     var percentage: Double,
 
-    @ColumnInfo(name = "settleGroupCurrencyCode")
-    var currencyCode: String
-
     ) : Parcelable
 

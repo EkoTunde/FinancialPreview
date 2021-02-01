@@ -5,221 +5,233 @@
     android:id="@+id/main_nav_graph"
     app:startDestination="@id/home_page_fragment">
     <fragment
-        android:id="@+id/home_page_fragment"
-        android:name="com.ekosoftware.financialpreview.ui.home.HomeFragment"
-        tools:layout="@layout/fragment_home">
+        android:id="@+id/detailsRecordFragment"
+        android:name="com.ekosoftware.financialpreview.ui.details.DetailsRecordFragment"
+        android:label="DetailsRecordFragment">
         <action
-            android:id="@+id/home_to_accounts"
-            app:destination="@id/accounts" />
-        <action
-            android:id="@+id/action_home_page_fragment_to_select"
-            app:destination="@id/select" />
-    </fragment>
-    <fragment
-        android:id="@+id/pending_page_fragment"
-        android:name="com.ekosoftware.financialpreview.ui.pending.PendingFragment"
-        tools:layout="@layout/fragment_pending" >
-        <action
-            android:id="@+id/action_pending_page_fragment_to_editSettleGroup"
-            app:destination="@id/editSettleGroup" />
-        <action
-            android:id="@+id/action_pending_page_fragment_to_editBudget"
-            app:destination="@id/editBudget" />
-        <action
-            android:id="@+id/action_pending_page_fragment_to_editMovement"
-            app:destination="@id/editMovement" />
-    </fragment>
-    <fragment
-        android:id="@+id/budgets"
-        android:name="com.ekosoftware.financialpreview.ui.pending.tabs.PendingBudgetsFragment"
-        android:label="fragment_pending_budgets"
-        tools:layout="@layout/base_list_fragment">
-        <action
-            android:id="@+id/budgets_to_editBudget"
-            app:destination="@id/editBudget" />
-    </fragment>
-    <fragment
-        android:id="@+id/movements"
-        android:name="com.ekosoftware.financialpreview.ui.pending.tabs.PendingMovementsFragment"
-        android:label="@string/pending_movements"
-        tools:layout="@layout/base_list_fragment">
-        <action
-            android:id="@+id/movements_to_editMovement"
-            app:destination="@id/editMovement" />
-    </fragment>
-    <fragment
-        android:id="@+id/editBudget"
-        android:name="com.ekosoftware.financialpreview.ui.edit.EditBudgetFragment"
-        android:label="edit_fragment_budget"
-        tools:layout="@layout/edit_fragment_budget">
-        <action
-            android:id="@+id/editBudget_to_editFrequency"
-            app:destination="@id/editFrequency" />
-        <action
-            android:id="@+id/editBudget_to_calculator"
-            app:destination="@id/calculator" />
-        <action
-            android:id="@+id/editBudget_to_settle"
-            app:destination="@id/settle" />
+            android:id="@+id/action_detailsRecordFragment_to_editRecordFragment"
+            app:destination="@id/editRecordFragment" />
         <argument
-            android:name="budgetId"
+            android:name="recordSummary"
+            app:argType="com.ekosoftware.financialpreview.data.model.record.RecordSummary" />
+    </fragment>
+    <fragment
+        android:id="@+id/accounts"
+        android:name="com.ekosoftware.financialpreview.ui.accounts.AccountsFragment"
+        android:label="AccountsFragment">
+        <action
+            android:id="@+id/action_accountsFragment_to_recordsFragment"
+            app:destination="@id/records"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/records"
+        android:name="com.ekosoftware.financialpreview.ui.records.RecordsFragment"
+        android:label="RecordsFragment">
+        <action
+            android:id="@+id/action_records_to_detailsRecordFragment"
+            app:destination="@id/detailsRecordFragment" />
+        <argument
+            android:name="account"
+            app:argType="com.ekosoftware.financialpreview.data.model.account.Account" />
+    </fragment>
+    <fragment
+        android:id="@+id/editRecordFragment"
+        android:name="com.ekosoftware.financialpreview.ui.entry.EntryRecordFragment"
+        android:label="edit_fragment_record"
+        tools:layout="@layout/entry_fragment_record">
+        <argument
+            android:name="recordId"
             app:argType="string"
+            android:defaultValue="NaN" />
+    </fragment>
+    <fragment
+        android:id="@+id/editMovementFragment"
+        android:name="com.ekosoftware.financialpreview.ui.entry.EntryMovementFragment"
+        android:label="edit_fragment_movement"
+        tools:layout="@layout/entry_fragment_movement">
+        <argument
+            android:name="movementId"
+            app:argType="string"
+            android:defaultValue="NaN" />
+        <action
+            android:id="@+id/action_editMovementFragment_to_editFrequencyFragment4"
+            app:destination="@id/editFrequencyFragment4" />
+        <argument
+            android:name="movementUI"
+            app:argType="com.ekosoftware.financialpreview.data.model.movement.MovementUI"
             app:nullable="true" />
     </fragment>
     <fragment
-        android:id="@+id/editSettleGroup"
-        android:name="com.ekosoftware.financialpreview.ui.edit.EditSettleGroupFragment"
-        android:label="edit_fragment_settle_group"
-        tools:layout="@layout/edit_fragment_settle_group">
+        android:id="@+id/editBudgetFragment"
+        android:name="com.ekosoftware.financialpreview.ui.entry.EntryBudgetFragment"
+        android:label="edit_fragment_budget"
+        tools:layout="@layout/entry_fragment_budget">
+        <argument
+            android:name="budgetId"
+            app:argType="string"
+            android:defaultValue="NaN" />
         <action
-            android:id="@+id/editSettleGroup_to_settle"
-            app:destination="@id/settle" />
+            android:id="@+id/action_editBudgetFragment_to_editFrequencyFragment4"
+            app:destination="@id/editFrequencyFragment4" />
+    </fragment>
+    <fragment
+        android:id="@+id/editAccountFragment"
+        android:name="com.ekosoftware.financialpreview.ui.entry.EntryAccountFragment"
+        android:label="edit_fragment_account"
+        tools:layout="@layout/entry_fragment_account" >
+        <argument
+            android:name="accountId"
+            app:argType="string"
+            android:defaultValue="NaN" />
+    </fragment>
+    <fragment
+        android:id="@+id/editCategoryFragment"
+        android:name="com.ekosoftware.financialpreview.ui.entry.EntryCategoryFragment"
+        android:label="edit_fragment_category"
+        tools:layout="@layout/entry_fragment_category" />
+    <fragment
+        android:id="@+id/selectFragment"
+        android:name="com.ekosoftware.financialpreview.ui.selection.SelectFragment"
+        android:label="SelectFragment">
+        <argument
+            android:name="type"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_selectFragment_to_editCategoryFragment2"
+            app:destination="@id/editCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editSettleGroupFragment"
+        android:name="com.ekosoftware.financialpreview.ui.entry.EntrySettleGroupFragment"
+        android:label="edit_fragment_settle_group"
+        tools:layout="@layout/entry_fragment_settle_group" >
         <argument
             android:name="settleGroupWithMovements"
             app:argType="com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements"
             app:nullable="true" />
     </fragment>
     <fragment
-        android:id="@+id/editMovement"
-        android:name="com.ekosoftware.financialpreview.ui.edit.EditMovementFragment"
-        android:label="edit_fragment_movement"
-        tools:layout="@layout/edit_fragment_movement">
+        android:id="@+id/home_page_fragment"
+        android:name="com.ekosoftware.financialpreview.ui.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/editMovement_to_editFrequency"
-            app:destination="@id/editFrequency" />
+            android:id="@+id/action_home_page_fragment_to_settleOptionsDialog"
+            app:destination="@id/settleOptionsDialog" />
         <action
-            android:id="@+id/editMovement_to_calculator"
-            app:destination="@id/calculator" />
-        <action
-            android:id="@+id/editMovement_to_settle"
-            app:destination="@id/settle" />
-        <argument
-            android:name="movementId"
-            app:argType="string"
-            app:nullable="true" />
-        <action
-            android:id="@+id/action_editMovement_to_select"
-            app:destination="@id/select" />
+            android:id="@+id/action_home_page_fragment_to_accounts"
+            app:destination="@id/accounts"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
-        android:id="@+id/editFrequency"
-        android:name="com.ekosoftware.financialpreview.ui.edit.EditFrequencyFragment"
-        android:label="edit_fragment_frequency"
-        tools:layout="@layout/edit_fragment_frequency" />
+        android:id="@+id/pending_page_fragment"
+        android:name="com.ekosoftware.financialpreview.ui.pending.PendingFragment"
+        android:label="fragment_pending"
+        tools:layout="@layout/fragment_pending" >
+
+        <action
+            android:id="@+id/action_pending_page_fragment_to_detailsBudgetFragment"
+            app:destination="@id/detailsBudgetFragment" />
+        <action
+            android:id="@+id/action_pending_page_fragment_to_detailsMovementFragment"
+            app:destination="@id/detailsMovementFragment" />
+        <action
+            android:id="@+id/action_pending_page_fragment_to_detailsSettleGroupFragment"
+            app:destination="@id/detailsSettleGroupFragment" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_selectFragment"
+        app:destination="@id/selectFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
     <fragment
-        android:id="@+id/calculator"
+        android:id="@+id/calculatorFragment4"
         android:name="com.ekosoftware.financialpreview.ui.calc.CalculatorFragment"
         android:label="fragment_calculator"
         tools:layout="@layout/fragment_calculator" />
+    <action
+        android:id="@+id/action_global_calculatorFragment4"
+        app:destination="@id/calculatorFragment4"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_global_editSettleGroupFragment"
+        app:destination="@id/editSettleGroupFragment"
+        app:enterAnim="@anim/enter_anim_dialog"
+        app:popExitAnim="@anim/exit_anim_dialog" />
+    <action
+        android:id="@+id/action_global_editAccountFragment"
+        app:destination="@id/editAccountFragment"
+        app:enterAnim="@anim/enter_anim_dialog"
+        app:popExitAnim="@anim/exit_anim_dialog" />
+    <action
+        android:id="@+id/action_global_editBudgetFragment"
+        app:destination="@id/editBudgetFragment"
+        app:enterAnim="@anim/enter_anim_dialog"
+        app:popExitAnim="@anim/exit_anim_dialog" />
+    <action
+        android:id="@+id/action_global_editMovementFragment"
+        app:destination="@id/editMovementFragment" />
     <fragment
-        android:id="@+id/accounts"
-        android:name="com.ekosoftware.financialpreview.ui.accounts.AccountsFragment"
-        android:label="fragment_accounts"
-        tools:layout="@layout/base_list_fragment">
-        <action
-            android:id="@+id/accounts_to_records"
-            app:destination="@id/records" />
-    </fragment>
-    <fragment
-        android:id="@+id/records"
-        android:name="com.ekosoftware.financialpreview.ui.records.RecordsFragment"
-        android:label="fragment_records"
-        tools:layout="@layout/base_list_fragment">
-        <action
-            android:id="@+id/records_to_editRecord"
-            app:destination="@id/editRecord" />
-        <action
-            android:id="@+id/records_to_editAccount"
-            app:destination="@id/editAccount" />
+        android:id="@+id/detailsBudgetFragment"
+        android:name="com.ekosoftware.financialpreview.ui.details.DetailsBudgetFragment"
+        android:label="DetailsBudgetFragment" >
         <argument
-            android:name="account"
-            app:argType="com.ekosoftware.financialpreview.data.model.account.Account"
-            app:nullable="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/editRecord"
-        android:name="com.ekosoftware.financialpreview.ui.edit.EditRecordFragment"
-        android:label="edit_fragment_record"
-        tools:layout="@layout/edit_fragment_record">
-        <argument
-            android:name="recordId"
-            app:argType="string"
-            app:nullable="true" />
-        <action
-            android:id="@+id/action_editRecord_to_select"
-            app:destination="@id/select" />
-    </fragment>
-    <fragment
-        android:id="@+id/editCategory"
-        android:name="com.ekosoftware.financialpreview.ui.edit.EditCategoryFragment"
-        android:label="edit_fragment_category"
-        tools:layout="@layout/edit_fragment_category">
-        <argument
-            android:name="categoryId"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/settle"
-        android:name="com.ekosoftware.financialpreview.ui.settle.SettleFragment"
-        android:label="fragment_settle"
-        tools:layout="@layout/fragment_settle">
-        <argument
-            android:name="settlingType"
+            android:name="budgetId"
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/editAccount"
-        android:name="com.ekosoftware.financialpreview.ui.edit.EditAccountFragment"
-        android:label="edit_fragment_account"
-        tools:layout="@layout/edit_fragment_account">
+        android:id="@+id/detailsMovementFragment"
+        android:name="com.ekosoftware.financialpreview.ui.details.DetailsMovementFragment"
+        android:label="DetailsMovementFragment" >
         <argument
-            android:name="accountId"
+            android:name="movementId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsSettleGroupFragment"
+        android:name="com.ekosoftware.financialpreview.ui.details.DetailsSettleGroupFragment"
+        android:label="DetailsSettleGroupFragment" >
+        <argument
+            android:name="settleGroupWithMovement"
+            app:argType="com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFrequencyFragment4"
+        android:name="com.ekosoftware.financialpreview.ui.entry.EditFrequencyFragment"
+        android:label="edit_fragment_frequency"
+        tools:layout="@layout/edit_fragment_frequency" />
+    <fragment
+        android:id="@+id/settleFragment"
+        android:name="com.ekosoftware.financialpreview.ui.settle.SettleFragment"
+        android:label="fragment_settle"
+        tools:layout="@layout/fragment_settle" >
+        <argument
+            android:name="type"
+            app:argType="integer" />
+        <argument
+            android:name="id"
             app:argType="string"
             app:nullable="true" />
     </fragment>
-    <fragment
-        android:id="@+id/settleGroups"
-        android:name="com.ekosoftware.financialpreview.ui.pending.tabs.PendingSettleGroupsFragment"
-        android:label="fragment_pending_settle_groups"
-        tools:layout="@layout/base_list_fragment">
-        <action
-            android:id="@+id/settleGorups_to_editSettleGroup"
-            app:destination="@id/editSettleGroup" />
-    </fragment>
-    <fragment
-        android:id="@+id/select"
-        android:name="com.ekosoftware.financialpreview.ui.selection.SelectFragment"
-        android:label="SelectFragment" >
-        <argument
-            android:name="type"
-            app:argType="com.ekosoftware.financialpreview.presentation.Selection$Type"
-            android:defaultValue="ACCOUNTS" />
-        <action
-            android:id="@+id/action_select_to_settle"
-            app:destination="@id/settle" />
-        <action
-            android:id="@+id/action_select_to_movements"
-            app:destination="@id/movements" />
-        <action
-            android:id="@+id/action_select_to_budgets"
-            app:destination="@id/budgets" />
-        <action
-            android:id="@+id/action_select_to_accounts"
-            app:destination="@id/accounts" />
-        <action
-            android:id="@+id/action_select_to_settleGroups"
-            app:destination="@id/settleGroups" />
-        <action
-            android:id="@+id/action_select_to_categories"
-            app:destination="@id/categories" />
-    </fragment>
-    <fragment
-        android:id="@+id/categories"
-        android:name="com.ekosoftware.financialpreview.ui.categories.CategoriesFragment"
-        android:label="@string/category" >
-        <action
-            android:id="@+id/action_categories_to_editCategory"
-            app:destination="@id/editCategory" />
-    </fragment>
+    <action
+        android:id="@+id/action_global_settleFragment"
+        app:destination="@id/settleFragment"
+        app:enterAnim="@anim/enter_anim_dialog"
+        app:popExitAnim="@anim/exit_anim_dialog" />
+    <dialog
+        android:id="@+id/settleOptionsDialog"
+        android:name="com.ekosoftware.financialpreview.ui.home.SettleOptionsDialog"
+        android:label="SettleOptionsDialog" />
 </navigation>

@@ -12,7 +12,7 @@ data class Category(
 
     @PrimaryKey
     @ColumnInfo(name = "categoryId")
-    var id: String,
+    var id: String = "Nan",
 
     @ColumnInfo(name = "categoryName")
     var name: String,

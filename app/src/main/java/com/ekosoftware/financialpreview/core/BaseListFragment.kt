@@ -167,6 +167,10 @@ abstract class BaseListFragment<T, K : ViewBinding> : Fragment() {
         }
     }
 
+    fun hideFab() {
+        binding.fabAdd.hide()
+    }
+
     /**
      * Called from "Retry" [MaterialButton] for "Retry Policy".
      */

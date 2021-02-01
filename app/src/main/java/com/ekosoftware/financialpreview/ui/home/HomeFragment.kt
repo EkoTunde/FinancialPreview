@@ -6,11 +6,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.ekosoftware.financialpreview.R
+import com.ekosoftware.financialpreview.app.Constants
+import com.ekosoftware.financialpreview.app.Constants.SETTLE_TYPE_LOAN_DEBT
+import com.ekosoftware.financialpreview.app.Constants.SETTLE_TYPE_SIMPLE_RECORD
+import com.ekosoftware.financialpreview.app.Constants.SETTLE_TYPE_TRANSFER
 import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.HomeData
@@ -53,7 +58,7 @@ class HomeFragment : Fragment() {
         fetchData()
         setUpActions()
         binding.balance.currentTotal.setOnClickListener {
-            val directions = HomeFragmentDirections.homeToAccounts()
+            val directions = HomeFragmentDirections.actionHomePageFragmentToAccounts()
             findNavController().navigate(directions)
         }
     }
@@ -98,10 +103,37 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpActions() = binding.actions.apply {
-        btnSettle.setOnClickListener { /*onSettleSelected()*/ }
-        btnAddPending.setOnClickListener { /*onAddPendingSelected()*/ }
-        btnAddRecord.setOnClickListener { /*onAddRecordSelected()*/ }
-        btnTransfer.setOnClickListener { /*onTransferSelected()*/ }
+        btnSettle.setOnClickListener {
+            val actions = HomeFragmentDirections.actionHomePageFragmentToSettleOptionsDialog()
+            findNavController().navigate(actions)
+        }
+        btnAddPending.setOnClickListener {
+            findNavController().navigate(
+                HomeFragmentDirections.actionGlobalEditMovementFragment(Constants.nan, null)
+            )
+        }
+        btnAddRecord.setOnClickListener {
+            findNavController().navigate(
+                HomeFragmentDirections.actionGlobalSettleFragment(
+                    SETTLE_TYPE_SIMPLE_RECORD,
+                    null
+                )
+            )
+        }
+        btnTransfer.setOnClickListener {
+            findNavController().navigate(
+                HomeFragmentDirections.actionGlobalSettleFragment(
+                    SETTLE_TYPE_TRANSFER, null
+                )
+            )
+        }
+        btnLoan.setOnClickListener {
+            findNavController().navigate(
+                HomeFragmentDirections.actionGlobalSettleFragment(
+                    SETTLE_TYPE_LOAN_DEBT, null
+                )
+            )
+        }
     }
 
     private fun setUpPendingSummary(
@@ -175,7 +207,11 @@ class HomeFragment : Fragment() {
         })
 
         // Set data
-        val barData = getBarData(homeData.incomes.map {it.forCommunicationAmount()}, homeData.expenses.map {it.forCommunicationAmount()}, homeData.monthsNames)
+        val barData = getBarData(
+            homeData.incomes.map { it.forCommunicationAmount() },
+            homeData.expenses.map { it.forCommunicationAmount() },
+            homeData.monthsNames
+        )
         val lineData =
             getLineData(homeData.balances, homeData.accumulatedBalances, homeData.monthsNames)
         val combinedData = CombinedData()

@@ -11,7 +11,7 @@ data class Budget(
 
     @PrimaryKey
     @ColumnInfo(name = "budgetId", index = true)
-    val id: String,
+    var id: String = "Nan",
 
     @ColumnInfo(name = "budgetName")
     var name: String,

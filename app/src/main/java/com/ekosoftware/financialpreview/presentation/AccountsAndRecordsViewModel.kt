@@ -1,22 +1,24 @@
 package com.ekosoftware.financialpreview.presentation
 
 import android.content.Context
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.BaseViewModel
 import com.ekosoftware.financialpreview.core.Resource
-import com.ekosoftware.financialpreview.data.model.account.Account
 import com.ekosoftware.financialpreview.data.model.record.RecordSummary
 import com.ekosoftware.financialpreview.domain.local.AccountsAndRecordsRepository
+import dagger.assisted.Assisted
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import java.util.*
+import javax.inject.Inject
 
-class AccountsAndRecordsViewModel @ViewModelInject constructor(
+
+@HiltViewModel
+class AccountsAndRecordsViewModel @Inject constructor(
     @ApplicationContext private val appContext: Context,
     private val accountsAndRecordsRepository: AccountsAndRecordsRepository,
-    @Assisted private val savedStateHandle: SavedStateHandle
+     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     companion object {

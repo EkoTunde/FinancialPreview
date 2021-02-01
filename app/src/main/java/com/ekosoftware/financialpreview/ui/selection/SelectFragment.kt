@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.core.BaseListAdapter
@@ -14,11 +14,9 @@ import com.ekosoftware.financialpreview.databinding.ItemSelectionExtendedBinding
 import com.ekosoftware.financialpreview.presentation.*
 
 class SelectFragment :
-    BaseListSelectionFragment<SimpleDisplayedData, ItemSelectionExtendedBinding>() {
+    BaseListSelectionFragment<SimpleDisplayableData, ItemSelectionExtendedBinding>() {
 
-    //val args : SelectiFragmentArgs by navArgs()
-
-    val type: Int = 0
+    private val args: SelectFragmentArgs by navArgs()
 
     private val shareViewModel by activityViewModels<ShareViewModel>()
 
@@ -28,7 +26,7 @@ class SelectFragment :
         shareViewModel.selectAccountItem(item.id, item.name)
     }
 
-    override val listAdapter: BaseListAdapter<SimpleDisplayedData, ItemSelectionExtendedBinding>
+    override val listAdapter: BaseListAdapter<SimpleDisplayableData, ItemSelectionExtendedBinding>
         get() = adapter
     override val title: String get() = Strings.get(R.string.account)
 
@@ -37,9 +35,7 @@ class SelectFragment :
         setData()
     }
 
-    private fun setData() {
-
-    }
+    private fun setData() = selectionViewModel.displayableItems(args.type).observe(viewLifecycleOwner) { adapter.submitList(it) }
 
     override fun recyclerViewDividerOrientation(): Int = LinearLayout.VERTICAL
 

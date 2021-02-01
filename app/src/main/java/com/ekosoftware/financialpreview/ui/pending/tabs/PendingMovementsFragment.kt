@@ -4,31 +4,27 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.core.BaseListAdapter
-import com.ekosoftware.financialpreview.data.model.movement.MovementSummary
+import com.ekosoftware.financialpreview.data.model.movement.MovementUI
 import com.ekosoftware.financialpreview.databinding.BaseListFragmentBinding
 import com.ekosoftware.financialpreview.databinding.ItemPendingMovementBinding
 import com.ekosoftware.financialpreview.presentation.MainViewModel
 import com.ekosoftware.financialpreview.ui.pending.tabs.adapters.PendingMovementListAdapter
 
 class PendingMovementsFragment(private val onItemClicked: ((v: View, id: String) -> Unit)?) :
-    BaseTabbedListFragment<MovementSummary, ItemPendingMovementBinding>() {
+    BaseTabbedListFragment<MovementUI, ItemPendingMovementBinding>() {
 
     private val viewModel by activityViewModels<MainViewModel>()
 
     override val title: String get() = Strings.get(R.string.pending_movements)
 
     private val movementListAdapter = PendingMovementListAdapter { v: View, summary ->
-        onItemClicked?.let { it(v, summary.movementId) }
-
+        onItemClicked?.let { it(v, summary.id) }
     }
 
-    override val listAdapter: BaseListAdapter<MovementSummary, ItemPendingMovementBinding>
+    override val listAdapter: BaseListAdapter<MovementUI, ItemPendingMovementBinding>
         get() = movementListAdapter
 
     override var editable: Boolean = arguments?.getBoolean("editable") ?: false
@@ -40,11 +36,14 @@ class PendingMovementsFragment(private val onItemClicked: ((v: View, id: String)
 
     override fun onQueryTextChanged(query: String) = viewModel.submitSearchQuery(query)
 
-    override fun recyclerViewDividerOrientation(): Int = LinearLayout.HORIZONTAL
+    override fun recyclerViewDividerOrientation(): Int = LinearLayout.VERTICAL
 
     override fun onRetry(binding: BaseListFragmentBinding) = setData()
 
-    private fun setData() = viewModel.movements.fetchData { movementListAdapter.submitList(it) }
+    private fun setData() = viewModel.movements.fetchData {
+        movementListAdapter.submitList(it)
+        hideFab()
+    }
 }
 
 /*override fun onCreateToolbar(appBarLayout: AppBarLayout, toolbar: Toolbar) {

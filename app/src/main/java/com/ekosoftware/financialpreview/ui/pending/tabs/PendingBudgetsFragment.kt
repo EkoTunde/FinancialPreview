@@ -14,20 +14,19 @@ import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.databinding.BaseListFragmentBinding
 import com.ekosoftware.financialpreview.databinding.ItemPendingBudgetBinding
 import com.ekosoftware.financialpreview.presentation.MainViewModel
+import com.ekosoftware.financialpreview.ui.pending.PendingFragmentDirections
 import com.ekosoftware.financialpreview.ui.pending.tabs.adapters.PendingBudgetsListAdapter
 
 
-class PendingBudgetsFragment : BaseTabbedListFragment<Budget, ItemPendingBudgetBinding>() {
+class PendingBudgetsFragment(private val onItemClicked: ((v: View, id: String) -> Unit)?) :
+    BaseTabbedListFragment<Budget, ItemPendingBudgetBinding>() {
 
     private val viewModel by activityViewModels<MainViewModel>()
 
     override var editable: Boolean = arguments?.getBoolean("editable") ?: false
     override val title: String get() = Strings.get(R.string.pending_budgets)
 
-    private val pendingBudgetsListAdapter = PendingBudgetsListAdapter { _, budget ->
-        val directions = PendingBudgetsFragmentDirections.budgetsToEditBudget(budget.id)
-        findNavController().navigate(directions)
-    }
+    private val pendingBudgetsListAdapter = PendingBudgetsListAdapter { v, budget -> onItemClicked?.let { it(v, budget.id) } }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,11 +38,10 @@ class PendingBudgetsFragment : BaseTabbedListFragment<Budget, ItemPendingBudgetB
     override val listAdapter: BaseListAdapter<Budget, ItemPendingBudgetBinding>
         get() = pendingBudgetsListAdapter
 
-    override fun recyclerViewDividerOrientation(): Int = LinearLayout.HORIZONTAL
-
     override fun onRetry(binding: BaseListFragmentBinding) = setData()
 
     private fun setData() = viewModel.budgets.fetchData {
         pendingBudgetsListAdapter.submitList(it)
+        hideFab()
     }
 }

@@ -19,15 +19,12 @@ class AccountsListAdapter(private val onSelected: (v: View, Account) -> Unit) :
     BaseListAdapter<Account, ItemAccountBinding>(onSelected) {
     override fun bind(item: Account, binding: ItemAccountBinding) = with(binding) {
         name.text = item.name
-        amountBtn.text =
+        amountTxt.text =
             binding.root.context.getString(
                 R.string.amount_holder,
                 item.currencyCode,
                 item.balance.forDisplayAmount(item.currencyCode)
             )
-        amountBtn.setOnClickListener {
-            onSelected(it, item)
-        }
     }
 
     override fun viewBindingClass(parent: ViewGroup): ItemAccountBinding {

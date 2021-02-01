@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:colorBackground"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:paddingHorizontal="8dp"
+    android:paddingTop="8dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/email_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:transitionName="@string/record_card_detail_transition_name"
+        app:cardElevation="8dp">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nested_scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/menu_item_constraint_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="24dp">
+
+
+                    <ImageButton
+                        android:id="@+id/navigation_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.6"
+                        android:background="?attr/actionBarItemBackground"
+                        android:contentDescription="@string/navigate_back_icon_content_desc"
+                        android:padding="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_arrow_down" />
+
+
+                    <TextView
+                        android:id="@+id/account_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:textAllCaps="true"
+                        android:textAppearance="?attr/textAppearanceButton"
+                        app:layout_constraintEnd_toEndOf="@+id/amount"
+                        app:layout_constraintStart_toEndOf="@+id/account_color"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="CA $ BaPro" />
+
+                    <ImageView
+                        android:id="@+id/account_color"
+                        android:layout_width="24dp"
+                        android:layout_height="0dp"
+                        android:layout_marginVertical="5dp"
+                        android:background="@color/materialColor5"
+                        app:layout_constraintBottom_toBottomOf="@+id/account_name"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/account_name"
+                        tools:ignore="ContentDescription"
+                        tools:src="@drawable/transparent_drawable" />
+
+                    <TextView
+                        android:id="@+id/amount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:autoSizeTextType="uniform"
+                        android:fontFamily="@font/work_sans_semi_bold"
+                        android:lines="1"
+                        android:textAppearance="?attr/textAppearanceHeadline4"
+                        android:textColor="@color/colorAmountPositive"
+                        app:autoSizeMaxTextSize="100sp"
+                        app:autoSizeMinTextSize="24sp"
+                        app:autoSizeStepGranularity="2sp"
+                        app:layout_constraintEnd_toStartOf="@+id/navigation_icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/account_name"
+                        tools:text="ARS 69010.26" />
+
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autoSizeTextType="uniform"
+                        android:fontFamily="@font/work_sans_semi_bold"
+                        android:lines="1"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:textColor="@android:color/darker_gray"
+                        app:autoSizeMaxTextSize="50sp"
+                        app:autoSizeMinTextSize="14sp"
+                        app:autoSizeStepGranularity="2sp"
+                        app:layout_constraintEnd_toEndOf="@+id/amount"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/amount"
+                        tools:text="25-Ene-2021" />
+
+                    <View
+                        android:id="@+id/separator"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@android:color/darker_gray"
+                        app:layout_constraintTop_toBottomOf="@+id/date"
+                        tools:layout_editor_absoluteX="16dp" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/separator"
+                        tools:text="Préstamo de Pepino Remolino" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/category_color"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginTop="16dp"
+                        android:tint="@color/colorTransparent"
+                        app:civ_circle_background_color="@color/colorPrimary"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/name"
+                        tools:src="@drawable/transparent_drawable" />
+
+                    <ImageView
+                        android:id="@+id/category_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/app_name"
+                        app:layout_constraintBottom_toBottomOf="@+id/category_color"
+                        app:layout_constraintEnd_toEndOf="@+id/category_color"
+                        app:layout_constraintStart_toStartOf="@+id/category_color"
+                        app:layout_constraintTop_toTopOf="@+id/category_color"
+                        app:srcCompat="@drawable/category_apartment"
+                        app:tint="@color/colorWhite" />
+
+                    <TextView
+                        android:id="@+id/category_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:textAppearance="?attr/textAppearanceBody1"
+                        app:layout_constraintBottom_toBottomOf="@+id/category_color"
+                        app:layout_constraintEnd_toEndOf="@+id/name"
+                        app:layout_constraintStart_toEndOf="@+id/category_color"
+                        app:layout_constraintTop_toTopOf="@+id/category_color"
+                        tools:text="Compras" />
+
+                    <ImageView
+                        android:id="@+id/image_view_subject"
+                        android:layout_width="42dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:contentDescription="@string/app_name"
+                        android:scaleType="center"
+                        app:layout_constraintEnd_toEndOf="@+id/category_color"
+                        app:layout_constraintStart_toStartOf="@+id/category_color"
+                        app:layout_constraintTop_toBottomOf="@+id/category_color"
+                        app:srcCompat="@drawable/ic_subject" />
+
+                    <TextView
+                        android:id="@+id/info"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:fontFamily="@font/quicksand_bold"
+                        android:textAppearance="?attr/textAppearanceBody1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/image_view_subject"
+                        app:layout_constraintTop_toTopOf="@+id/image_view_subject"
+                        tools:text="Para comprarse un pancho" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <com.leinardi.android.speeddial.SpeedDialView
+            android:id="@+id/speedDial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:sdMainFabClosedSrc="@drawable/ic_add" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</FrameLayout>

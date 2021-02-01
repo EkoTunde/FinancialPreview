@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:paddingBottom="@dimen/bottom_app_bar_height"
     android:layout_height="match_parent"
     tools:context=".ui.pending.PendingFragment">
 
@@ -68,6 +69,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:contentDescription="@string/app_name"
+        android:visibility="gone"
         android:text="@string/add"
         android:transitionName="btn_add"
         app:layout_constraintBottom_toBottomOf="parent"

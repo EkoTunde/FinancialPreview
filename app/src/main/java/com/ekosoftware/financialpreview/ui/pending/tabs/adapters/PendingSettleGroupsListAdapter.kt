@@ -16,6 +16,9 @@ class PendingSettleGroupsListAdapter(onSelected: (v: View, SettleGroupWithMoveme
 
     override fun bind(item: SettleGroupWithMovements, binding: ItemPendingSettleGroupBinding) =
         with(binding) {
+
+            this.root.transitionName = item.settleGroup.id
+
             settleGroupName.text = item.settleGroup.name
 
             settleGroupPercent.text =
@@ -41,7 +44,7 @@ class PendingSettleGroupsListAdapter(onSelected: (v: View, SettleGroupWithMoveme
         )
     }
 
-    fun String.removeZeros(): String {
+    private fun String.removeZeros(): String {
         return if (this.contains(".") && (this.endsWith("0") || this.endsWith("."))) {
             this.substring(0, this.length - 1).removeZeros()
         } else {

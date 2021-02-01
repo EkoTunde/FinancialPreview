@@ -2,7 +2,7 @@ package com.ekosoftware.financialpreview.domain.local
 
 import androidx.lifecycle.LiveData
 import com.ekosoftware.financialpreview.data.local.daos.*
-import com.ekosoftware.financialpreview.presentation.Selection
+import com.ekosoftware.financialpreview.presentation.SelectionViewModel
 import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 import javax.inject.Inject
 
@@ -14,43 +14,34 @@ class SelectionRepository @Inject constructor(
     private val settleGroupDao: SettleGroupDao
 ) {
 
-    fun getSimpleQueryData(selection: Selection): LiveData<List<SimpleQueryData>> {
-        return when (selection.type) {
-            Selection.Type.ACCOUNTS -> {
-                getAccounts(selection.queryText)
-            }
-            Selection.Type.BUDGETS, Selection.Type.BUDGETS_SETTLE -> {
-                getBudgets(selection.queryText)
-            }
-            Selection.Type.CATEGORIES -> {
-                getCategories(selection.queryText)
-            }
-            Selection.Type.MOVEMENTS -> {
-                getMovements(selection.queryText)
-            }
-            Selection.Type.SETTLE_GROUPS -> {
-                getSettleGroups(selection.queryText)
-            }
+    fun getSimpleQueryData(type: Int, queryText: String): LiveData<List<SimpleQueryData>> {
+        return when (type) {
+            SelectionViewModel.ACCOUNTS -> accountDao.getAccountsAsSimpleData(queryText)
+            SelectionViewModel.BUDGETS -> budgetDao.getBudgetsAsSimpleData(queryText)
+            SelectionViewModel.CATEGORIES -> categoryDao.getCategoriesAsSimpleData(queryText)
+            SelectionViewModel.MOVEMENTS -> movementDao.getMovementsAsSimpleData(queryText)
+            SelectionViewModel.SETTLE_GROUPS -> settleGroupDao.getSettleGroupsAsSimpleData(queryText)
+            else -> throw IllegalArgumentException("Error ar: ${this.javaClass}. Given type $type isn't a value parameter.")
         }
     }
 
-    fun getAccounts(searchPhrase: String): LiveData<List<SimpleQueryData>> {
-        return accountDao.getAccountsAsSimpleData(searchPhrase)
+    fun getAccounts(queryText: String): LiveData<List<SimpleQueryData>> {
+        return accountDao.getAccountsAsSimpleData(queryText)
     }
 
-    fun getBudgets(searchPhrase: String): LiveData<List<SimpleQueryData>> {
-        return budgetDao.getBudgetsAsSimpleData(searchPhrase)
+    fun getBudgets(queryText: String): LiveData<List<SimpleQueryData>> {
+        return budgetDao.getBudgetsAsSimpleData(queryText)
     }
 
-    fun getCategories(searchPhrase: String): LiveData<List<SimpleQueryData>> {
-        return categoryDao.getCategoriesAsSimpleData(searchPhrase)
+    fun getCategories(queryText: String): LiveData<List<SimpleQueryData>> {
+        return categoryDao.getCategoriesAsSimpleData(queryText)
     }
 
-    fun getMovements(searchPhrase: String): LiveData<List<SimpleQueryData>> {
-        return movementDao.getMovementsAsSimpleData(searchPhrase)
+    fun getMovements(queryText: String): LiveData<List<SimpleQueryData>> {
+        return movementDao.getMovementsAsSimpleData(queryText)
     }
 
-    fun getSettleGroups(searchPhrase: String): LiveData<List<SimpleQueryData>> {
-        return settleGroupDao.getSettleGroupsAsSimpleData(searchPhrase)
+    fun getSettleGroups(queryText: String): LiveData<List<SimpleQueryData>> {
+        return settleGroupDao.getSettleGroupsAsSimpleData(queryText)
     }
 }

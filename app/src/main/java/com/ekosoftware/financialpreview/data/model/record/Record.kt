@@ -15,7 +15,7 @@ data class Record(
 
     @PrimaryKey
     @ColumnInfo(name = "recordId", index = true)
-    var id: String,
+    var id: String = "Nan",
 
     @ColumnInfo(name = "recordDate")
     var date: Date? = null,
@@ -38,9 +38,6 @@ data class Record(
     @ColumnInfo(name = "recordCurrentPendingMovementId")
     var currentPendingMovementId: String?,
 
-    @ColumnInfo(name = "recordAccountIdIn")
-    var accountIdIn: String?,
-
     @ColumnInfo(name = "recordAccountIdOut")
     var accountIdOut: String?,
 
@@ -52,6 +49,9 @@ data class Record(
 
     @ColumnInfo(name = "recordLenderName")
     var lenderName: String?,
+
+    @ColumnInfo(name = "recordDescription")
+    var description: String?,
 
     ) : Parcelable
 

@@ -1,16 +1,19 @@
 package com.ekosoftware.financialpreview.presentation
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import com.ekosoftware.financialpreview.core.BaseViewModel
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.domain.local.CategoriesRepository
+import dagger.assisted.Assisted
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class CategoriesViewModel @ViewModelInject constructor(
+
+@HiltViewModel
+class CategoriesViewModel @Inject constructor(
     private val categoriesRepository: CategoriesRepository,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     private val queryText = savedStateHandle.getLiveData("CategoriesSearchText", "")

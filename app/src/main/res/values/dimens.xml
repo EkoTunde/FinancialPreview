@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--BottomNavBar-->
+    <dimen name="bottom_app_bar_height">56dp</dimen>
+    <dimen name="fab_bottom_margin_on_bottom_bar">72dp</dimen>
+    <dimen name="speed_dial_bottom_margin_on_bottom_bar">56dp</dimen>
+
+
+</resources>

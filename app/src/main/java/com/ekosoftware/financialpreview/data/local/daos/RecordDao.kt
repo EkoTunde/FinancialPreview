@@ -2,12 +2,14 @@ package com.ekosoftware.financialpreview.data.local.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.ekosoftware.financialpreview.core.BaseDao
+import com.ekosoftware.financialpreview.data.model.Category
 import com.ekosoftware.financialpreview.data.model.record.Record
 import com.ekosoftware.financialpreview.data.model.record.RecordSummary
 import java.util.*
 
 @Dao
-interface RecordDao {
+interface RecordDao : BaseDao<Record> {
 
     @Query(
         """
@@ -27,6 +29,9 @@ interface RecordDao {
         amountMax: Double = -100_000.0,
         amountMin: Double = 100_000.0
     ): LiveData<List<RecordSummary>>
+
+    @Query("SELECT * FROM records WHERE recordId = :id")
+    fun getRecord(id: String): LiveData<Record>
 
 
     /*@Query(
@@ -76,13 +81,12 @@ interface RecordDao {
         search: String,
     ): LiveData<List<Record>>*/
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    /*@Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecord(vararg record: Record)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateRecord(vararg record: Record)
 
     @Delete
-    suspend fun deleteRecord(vararg record: Record)
-
+    suspend fun deleteRecord(vararg record: Record)*/
 }

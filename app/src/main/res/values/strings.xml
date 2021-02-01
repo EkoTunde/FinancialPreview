@@ -277,5 +277,36 @@
     // Pending Movements Fragment
     <string name="movement_card_transition_name">movement_card_%1$s</string>
     <string name="movement_card_detail_transition_name">movement_card_detail</string>
+    <string name="budget_card_transition_name">budget_card_%1$s</string>
+    <string name="budget_card_detail_transition_name">budget_card_detail</string>
+    <string name="settle_group_card_transition_name">settle_group_card_%1$s</string>
+    <string name="settle_group_card_detail_transition_name">settle_group_card_detail</string>
+    <string name="record_card_transition_name">record_card_%1$s</string>
+    <string name="record_card_detail_transition_name">record_card_detail</string>
+    <string name="navigate_back_icon_content_desc">Navigate back</string>
+    <string name="category_transfer">Transferencia</string>
+    <string name="category_share">Deudas y préstamos</string>
+    <string name="today">Hoy</string>
+    <string name="yesterday">Ayer</string>
+    <string name="days_ago">Hace %1$s días</string>
+    <string name="a_week_ago">Hace 1 semana</string>
+    <string name="transfer_from">Transferencia desde %1$s</string>
+    <string name="you_ve_lend_to">Prestaste a %1$s</string>
+    <string name="debt_with">%1$s te prestó</string>
+    <string name="settle_group">Grupo de liquidación</string>
+    <string name="record">Registro independiente</string>
+    <string name="select_settle_option">Qué querés liquidar</string>
+    <string name="installments_placeholder"> (cuota %1$d/%2$d)</string>
+    <string name="all_months_checked">Se repite todos los meses</string>
+    <string name="is_repeated_on">"Se repite en "</string>
+    <string name="add_to_group">Agregar a un grupo</string>
+    <string name="btn_add">Agregar</string>
+    <string name="title_add_movement">Nuevo pendiente</string>
+    <string name="title_edit_movement">Editar pendiente</string>
+    <string name="installments_frequency_placeholder">%1$d cuotas</string>
+    <string name="repeats_placeholder_from">Se repite desde el %1$s-%2$d, %3$s</string>
+    <string name="repeats_placeholder_to">Se repite entre %1$s-%2$d y %3$s-%4$d, %5$s</string>
+    <string name="every_month">todos los meses</string>
+    <string name="some_months">algunos meses</string>
 
 </resources>

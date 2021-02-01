@@ -127,6 +127,30 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@android:color/background_dark" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_loan"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="@string/loan"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="12sp"
+                    app:icon="@drawable/ic_share"
+                    app:iconGravity="top"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </LinearLayout>
 
         </HorizontalScrollView>

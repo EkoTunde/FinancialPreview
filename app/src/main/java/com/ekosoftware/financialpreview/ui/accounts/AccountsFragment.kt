@@ -26,7 +26,7 @@ class AccountsFragment : BaseListFragment<Account, ItemAccountBinding>() {
     private val viewModel by activityViewModels<AccountsAndRecordsViewModel>()
 
     private val accountListAdapter = AccountsListAdapter { _, account ->
-        val directions = AccountsFragmentDirections.accountsToRecords(account)
+        val directions = AccountsFragmentDirections.actionAccountsFragmentToRecordsFragment(account)
         findNavController().navigate(directions)
     }
 

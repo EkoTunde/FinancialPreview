@@ -22,13 +22,11 @@
     <color name="colorTextPrimary">#969696</color>
     <color name="colorTextTitle">#323232</color>
     <color name="colorTextDescription">#A5A5A5</color>
+    <color name="editTextBackground">#E0E0E0</color>
 
     <!-- Scheduled Dialog Filled Edit Texts -->
     <color name="filledEditTextBackground">#B3512DA8</color>
     <color name="filledEditTextLightWhite">#80FFFFFF</color>
-
-
-    <color name="editTextBackground">#E0E0E0</color>
 
 
     // Categories and accounts colors

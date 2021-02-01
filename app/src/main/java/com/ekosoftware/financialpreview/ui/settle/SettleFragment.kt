@@ -12,6 +12,10 @@ class SettleFragment : Fragment() {
     private var _binding: FragmentSettleBinding? = null
     private val binding get() = _binding!!
 
+    companion object {
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {

@@ -1,40 +1,43 @@
 package com.ekosoftware.financialpreview.presentation
 
 import android.content.Context
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.BaseViewModel
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.DummyData
 import com.ekosoftware.financialpreview.data.model.HomeData
 import com.ekosoftware.financialpreview.data.model.budget.Budget
-import com.ekosoftware.financialpreview.data.model.movement.MonthSummary
-import com.ekosoftware.financialpreview.data.model.movement.MovementSummary
-import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
+import com.ekosoftware.financialpreview.data.model.movement.MovementUI
 import com.ekosoftware.financialpreview.domain.local.MainRepository
-import com.ekosoftware.financialpreview.util.*
+import com.ekosoftware.financialpreview.util.combineWith
+import com.ekosoftware.financialpreview.util.currentYearMonth
+import com.ekosoftware.financialpreview.util.plusMonths
+import dagger.assisted.Assisted
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import javax.inject.Inject
 
-
-class MainViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     @ApplicationContext private val appContext: Context,
     private val mainRepository: MainRepository,
-    @Assisted private val savedStateHandle: SavedStateHandle
+     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     init {
         insertSome()
     }
 
-    private fun insertSome() = CoroutineScope(viewModelScope.coroutineContext + Dispatchers.IO).launch {
-        mainRepository.insertSettleGroups(*DummyData.m6SettleGroupMovementsCrossRef)
-    }
+    private fun insertSome() =
+        CoroutineScope(viewModelScope.coroutineContext + Dispatchers.IO).launch {
+            mainRepository.insertSettleGroups(*DummyData.m6SettleGroupMovementsCrossRef)
+        }
+
     companion object {
         private const val SELECTED_CONFIG_KEY = "selectedConfigurationKey"
 
@@ -68,22 +71,23 @@ class MainViewModel @ViewModelInject constructor(
         savedStateHandle[SELECTED_CONFIG_KEY] = homeScreenConfiguration
     }
 
-    val movements = selectedConfiguration.switchMap { config ->
-        liveData<Resource<List<MovementSummary>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
-            emit(Resource.Loading())
-            try {
-                emitSource(mainRepository.getMovementsSummaries(
-                    config.searchPhrase, config.currencyCode, config.currentYearMonth
-                ).map {
-                    Resource.Success(it)
-                })
-            } catch (e: Exception) {
-                emit(Resource.Failure(e))
+    val movements: LiveData<Resource<List<MovementUI>>> =
+        selectedConfiguration.switchMap { config ->
+            liveData<Resource<List<MovementUI>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
+                emit(Resource.Loading())
+                try {
+                    emitSource(mainRepository.getMovementsSummaries(
+                        config.searchPhrase, config.currencyCode, config.currentYearMonth
+                    ).map {
+                        Resource.Success(it)
+                    })
+                } catch (e: Exception) {
+                    emit(Resource.Failure(e))
+                }
             }
         }
-    }
 
-    val budgets = selectedConfiguration.switchMap { config ->
+    val budgets: LiveData<Resource<List<Budget>>> = selectedConfiguration.switchMap { config ->
         liveData<Resource<List<Budget>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading())
             try {
@@ -101,23 +105,12 @@ class MainViewModel @ViewModelInject constructor(
         }
     }
 
-    val settleGroups =
-        liveData<Resource<List<SettleGroupWithMovements>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
-            emit(Resource.Loading())
-            try {
-                emitSource(
-                    mainRepository.getSettleGroupsWithMovements().map { Resource.Success(it) })
-            } catch (e: Exception) {
-                emit(Resource.Failure(e))
-            }
-        }
-
-    val homeData = selectedConfiguration.switchMap { config ->
+    val homeData: LiveData<Resource<HomeData>> = selectedConfiguration.switchMap { config ->
         liveData<Resource<HomeData>>(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading())
             try {
                 val months = listOf(0..12).flatten().map {
-                    withContext(viewModelScope.coroutineContext + Dispatchers.IO){
+                    withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
                         mainRepository.getMonthPendingSummary(
                             config.currentYearMonth.plusMonths(it),
                             config.currencyCode

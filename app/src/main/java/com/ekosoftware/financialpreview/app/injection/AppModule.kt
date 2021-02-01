@@ -7,16 +7,19 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ekosoftware.financialpreview.app.Constants.DATABASE_NAME
 import com.ekosoftware.financialpreview.app.Constants.PREPOPULATE_ACCOUNT_TYPES
 import com.ekosoftware.financialpreview.app.Constants.PREPOPULATE_BASIC_CATEGORIES_DATA
+import com.ekosoftware.financialpreview.data.DummyData
 import com.ekosoftware.financialpreview.data.local.AppDatabase
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.DefineComponent
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object AppModule {
 
     @Singleton
@@ -32,13 +35,13 @@ object AppModule {
                             .insertInitialCategories(*PREPOPULATE_BASIC_CATEGORIES_DATA)
                         provideRoomInstance(context).accountDao()
                             .insertAccountTypes(*PREPOPULATE_ACCOUNT_TYPES)
-                        //provideRoomInstance(context).someDao().insertAccount(*DummyData1.m1Accounts)
-                        //provideRoomInstance(context).someDao().insertCategory(*DummyData1.m2Categories)
-                        //provideRoomInstance(context).someDao().insertBudget(*DummyData1.m3Budgets)
-                        //provideRoomInstance(context).someDao().insertMovement(*DummyData1.m4Movements)
-                        //provideRoomInstance(context).someDao().insertSettleGroup(*DummyData1.m5SettleGroups)
-                        //provideRoomInstance(context).someDao().insertSettleGroupCrossRef(*DummyData1.m6SettleGroupMovementsCrossRef)
-                        //provideRoomInstance(context).someDao().insertRecord(*DummyData1.m7Records)
+                        provideRoomInstance(context).someDao().insertAccount(*DummyData.m1Accounts)
+                        provideRoomInstance(context).someDao().insertCategory(*DummyData.m2Categories)
+                        provideRoomInstance(context).someDao().insertBudget(*DummyData.m3Budgets)
+                        provideRoomInstance(context).someDao().insertMovement(*DummyData.m4Movements)
+                        provideRoomInstance(context).someDao().insertSettleGroup(*DummyData.m5SettleGroups)
+                        provideRoomInstance(context).someDao().insertSettleGroupCrossRef(*DummyData.m6SettleGroupMovementsCrossRef)
+                        provideRoomInstance(context).someDao().insertRecord(*DummyData.m7Records)
                     }
                 }
             })
@@ -58,7 +61,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCurrencyDao(db: AppDatabase) = db.currencyConversionDao()
+    fun provideCurrencyDao(db: AppDatabase) = db.currencyDao()
 
     @Singleton
     @Provides

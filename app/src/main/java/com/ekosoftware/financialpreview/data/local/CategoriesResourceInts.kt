@@ -118,6 +118,7 @@ object CategoriesResourceInts {
         R.drawable.category_self_improvement,
         R.drawable.category_services_one,
         R.drawable.category_services_two,
+        R.drawable.category_share,
         R.drawable.category_shield,
         R.drawable.category_shopping_cart,
         R.drawable.category_sick,

@@ -16,7 +16,7 @@ class RecordsListAdapter(private var onSelected: (v: View, RecordSummary) -> Uni
     override fun bind(item: RecordSummary, binding: ItemRecordBinding) = with(binding) {
         recordAmount.text = Strings.get(R.string.amount_holder, item.currencyCode, item.amount)
         recordName.text = item.name
-        if (item.accountIdIn == null) {
+        if (item.accountId == null) {
             item.categoryName?.let { recordCategory.text = it }
             item.categoryColorResId?.let {
                 recordColorCategory.setCircleBackgroundColorResource(

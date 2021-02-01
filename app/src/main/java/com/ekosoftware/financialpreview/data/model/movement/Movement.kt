@@ -16,7 +16,7 @@ data class Movement(
 
     @PrimaryKey
     @ColumnInfo(name = "movementId", index = true)
-    var id: String,
+    var id: String = "Nan",
 
     @ColumnInfo(name = "movementLeftAmount")
     var leftAmount: Long,
@@ -33,14 +33,17 @@ data class Movement(
     @Embedded(prefix = "movement")
     var frequency: @RawValue Frequency?,
 
+    @ColumnInfo(name = "movementDescription")
+    var description: String?,
+
     @ColumnInfo(name = "movementAccountId")
-    var accountId: String?,
+    var accountId: String? = "",
 
     @ColumnInfo(name = "movementCategoryId")
-    var categoryId: String?,
+    var categoryId: String? = "",
 
     @ColumnInfo(name = "movementBudgetId")
-    var budgetId: String?
+    var budgetId: String? = ""
 
 ) : Parcelable {
 

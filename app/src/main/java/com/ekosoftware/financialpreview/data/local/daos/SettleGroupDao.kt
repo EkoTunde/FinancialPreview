@@ -2,28 +2,78 @@ package com.ekosoftware.financialpreview.data.local.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.ekosoftware.financialpreview.core.BaseDao
 import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
+import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCrossRef
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
 import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 import kotlinx.coroutines.flow.Flow
 import java.util.*
 
+
 @Dao
-interface SettleGroupDao {
+interface SettleGroupDao : BaseDao<SettleGroup> {
 
     @Transaction
     @Query("SELECT * FROM settleGroups")
     fun getSettleGroupsWithMovements(): LiveData<List<SettleGroupWithMovements>>
 
+    @Transaction
+    @Query("SELECT * FROM settleGroups WHERE settleGroupId = :id")
+    fun getSingleSettleGroupWithMovements(id: String): LiveData<SettleGroupWithMovements>
+
+    @Query("SELECT * FROM settleGroups")
+    fun getSettleGroups(): LiveData<List<SettleGroup>>
+
+    /**
+     * Insert a "SettleGroup-Movement" relation in the database.
+     *
+     * @param settleGroupMovementsCrossRef the object to be inserted.
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertSettleGroupMovementsCrossRef(settleGroupMovementsCrossRef: SettleGroupMovementsCrossRef)
+
+    /**
+     * Insert an array of "SettleGroup-Movement" relation in the database.
+     *
+     * @param settleGroupMovementsCrossRef the object to be inserted.
+     */
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertSettleGroupMovementsCrossRef(vararg settleGroupMovementsCrossRef: SettleGroupMovementsCrossRef)
+
+    /**
+     * Update a "SettleGroup-Movement" relation from the database.
+     *
+     * @param settleGroupMovementsCrossRef the object to be updated
+     */
+    @Update
+    suspend fun updateSettleGroupMovementsCrossRef(settleGroupMovementsCrossRef: SettleGroupMovementsCrossRef)
+
+    /**
+     * Delete a "SettleGroup-Movement" relation from the database
+     *
+     * @param settleGroupMovementsCrossRef the object to be deleted
+     */
+    @Delete
+    suspend fun delete(settleGroupMovementsCrossRef: SettleGroupMovementsCrossRef)
+
     @Query(
         """
-        SELECT settleGroupId AS id,
-        settleGroupName AS name,
-        settleGroupDescription AS description
+        SELECT 
+            settleGroupId AS id, 
+            settleGroupName AS name, 
+            NULL AS currencyCode, 
+            NULL AS amount,
+            NULL AS typeId, 
+            CAST(settleGroupPercentage AS description), 
+            NULL AS color, 
+            NULL AS iconResId
         FROM settleGroups
         WHERE settleGroupName LIKE '%' || :searchPhrase || '%' 
         OR settleGroupDescription LIKE '%' || :searchPhrase || '%'
+        OR settleGroupPercentage LIKE '%' || :searchPhrase || '%'
+        ORDER BY settleGroupName
     """
     )
     fun getSettleGroupsAsSimpleData(searchPhrase: String): LiveData<List<SimpleQueryData>>

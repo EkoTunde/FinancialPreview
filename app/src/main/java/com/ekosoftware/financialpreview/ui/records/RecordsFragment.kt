@@ -27,7 +27,7 @@ class RecordsFragment : BaseListFragment<RecordSummary, ItemRecordBinding>() {
     private val viewModel by activityViewModels<AccountsAndRecordsViewModel>()
 
     private val recordsAdapter = RecordsListAdapter { _, record ->
-        val directions = RecordsFragmentDirections.recordsToEditRecord(record.id)
+        val directions = RecordsFragmentDirections.actionRecordsToDetailsRecordFragment(record)
         findNavController().navigate(directions)
     }
 

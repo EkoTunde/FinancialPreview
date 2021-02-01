@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="fab_settle" type="id" />
+    <item name="fab_edit" type="id" />
+    <item name="fab_add_to_group" type="id" />
+    <item name="fab_restore" type="id" />
+</resources>
