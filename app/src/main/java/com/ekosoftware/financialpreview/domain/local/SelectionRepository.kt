@@ -21,7 +21,7 @@ class SelectionRepository @Inject constructor(
             SelectionViewModel.CATEGORIES -> categoryDao.getCategoriesAsSimpleData(queryText)
             SelectionViewModel.MOVEMENTS -> movementDao.getMovementsAsSimpleData(queryText)
             SelectionViewModel.SETTLE_GROUPS -> settleGroupDao.getSettleGroupsAsSimpleData(queryText)
-            else -> throw IllegalArgumentException("Error ar: ${this.javaClass}. Given type $type isn't a value parameter.")
+            else -> throw IllegalArgumentException("Error at: ${this.javaClass}. Given type $type isn't a value parameter.")
         }
     }
 

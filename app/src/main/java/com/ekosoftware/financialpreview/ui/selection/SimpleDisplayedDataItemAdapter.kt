@@ -14,14 +14,18 @@ class SimpleDisplayedDataItemAdapter<T : Any>(onSelected: (v: View, SimpleDispla
     override fun bind(item: SimpleDisplayableData, binding: ItemSelectionExtendedBinding) =
         with(binding) {
 
-            if (item.color != null) { colorIconContainer.setBackgroundColor(item.color!!) } else colorIconContainer.hide()
+            if (item.color != null) {
+                colorIconContainer.setBackgroundColor(item.color!!)
+            } else colorIconContainer.hide()
 
             item.iconResId?.let {
                 colorIconContainer.setImageResource(item.iconResId!!)
             }
 
             name.text = item.name
-            description.text = item.description ?: ""
+            if (item.description != null) {
+                description.text = item.description
+            } else description.hide()
         }
 
     override fun viewBindingClass(parent: ViewGroup): ItemSelectionExtendedBinding {
