@@ -52,7 +52,8 @@ interface AccountDao : BaseDao<Account> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAccountTypes(vararg accountType: AccountType)
 
-    @Query("""
+    @Query(
+        """
         SELECT 
         accountId AS id, 
         accountName AS name, 
@@ -68,6 +69,14 @@ interface AccountDao : BaseDao<Account> {
         OR accountBank LIKE '%' || :searchPhrase || '%'
         OR accountCurrencyCode LIKE '%' || :searchPhrase || '%'
         ORDER BY accountName
-    """)
-    fun getAccountsAsSimpleData(searchPhrase: String) : LiveData<List<SimpleQueryData>>
+    """
+    )
+    fun getAccountsAsSimpleData(searchPhrase: String): LiveData<List<SimpleQueryData>>
+
+    @Query(
+        """
+        SELECT accountCurrencyCode FROM accounts WHERE accountId = :accountId
+    """
+    )
+    fun getCurrencyCodeForAccountId(accountId: String): String
 }

@@ -21,7 +21,7 @@ interface CurrencyDao : BaseDao<Currency> {
             NULL AS color, 
             NULL AS iconResId 
         FROM currencies
-        WHERE currencyCode LIKE '%' || :searchPhrase || '%'
+        WHERE currencyCodeId LIKE '%' || :searchPhrase || '%'
         ORDER BY currencyCode
     """)
     fun getCurrenciesAsSimpleData(searchPhrase: String) : LiveData<List<SimpleQueryData>>

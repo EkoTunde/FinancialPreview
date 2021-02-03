@@ -5,14 +5,20 @@
     <item
         android:id="@+id/menu_item_search"
         android:icon="@drawable/ic_search"
-        app:showAsAction="collapseActionView|ifRoom"
+        app:showAsAction="collapseActionView|always"
         android:title="@string/search"
-        app:actionViewClass="android.widget.SearchView" />
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
     <item
         android:id="@+id/menu_item_edit"
         android:icon="@drawable/ic_edit"
         app:showAsAction="ifRoom"
         android:title="@string/edit" />
+
+    <item
+        android:id="@+id/menu_item_clear_selection"
+        android:icon="@drawable/ic_cancel"
+        app:showAsAction="ifRoom"
+        android:title="@string/none" />
 
 </menu>

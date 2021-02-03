@@ -9,12 +9,15 @@ data class Currency(
 
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "currencyCodeId")
-    var currencyCode: String,
+    var id: String,
 
     @ColumnInfo(name = "currencyIsMain")
     var isMain: Boolean = false,
 
-    @ColumnInfo(name = "currencyProportionToMain")
-    var proportion: Double
+    /**
+     * Indicates how many times main currency fits in current currency
+     */
+    @ColumnInfo(name = "currencyProportionFromMain")
+    var proportionFromMain: Double
 
 )

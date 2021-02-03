@@ -95,6 +95,7 @@
                     android:id="@+id/btn_when"
                     style="@style/EditTextAlikeMaterialButton"
                     android:layout_width="0dp"
+                    android:text="@string/when"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp" />
 
@@ -122,6 +123,7 @@
                     style="@style/EditTextAlikeMaterialButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:text="@string/from"
                     android:layout_marginHorizontal="16dp" />
 
             </TableRow>
@@ -147,6 +149,7 @@
                     android:id="@+id/btn_to"
                     style="@style/EditTextAlikeMaterialButton"
                     android:layout_width="0dp"
+                    android:text="@string/to"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp" />
 

@@ -58,19 +58,14 @@
             android:defaultValue="NaN"
             app:argType="string" />
         <action
-            android:id="@+id/action_editMovementFragment_to_editFrequencyFragment4"
-            app:destination="@id/editFrequencyFragment4" />
+            android:id="@+id/action_editMovement_to_editFrequency"
+            app:destination="@id/editFrequencyFragment4"
+            app:enterAnim="@anim/enter_anim_selection"
+            app:popExitAnim="@anim/exit_anim_selection" />
         <argument
             android:name="movementUI"
             app:argType="com.ekosoftware.financialpreview.data.model.movement.MovementUI"
             app:nullable="true" />
-        <action
-            android:id="@+id/action_editMovementFragment_to_selectFragment"
-            app:destination="@id/selectFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/editBudgetFragment"
@@ -219,7 +214,13 @@
         android:id="@+id/editFrequencyFragment4"
         android:name="com.ekosoftware.financialpreview.ui.entry.EditFrequencyFragment"
         android:label="edit_fragment_frequency"
-        tools:layout="@layout/edit_fragment_frequency" />
+        tools:layout="@layout/edit_fragment_frequency" >
+        <argument
+            android:name="frequency"
+            app:argType="com.ekosoftware.financialpreview.data.model.movement.Frequency"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/settleFragment"
         android:name="com.ekosoftware.financialpreview.ui.settle.SettleFragment"

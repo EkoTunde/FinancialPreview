@@ -35,6 +35,7 @@ object AppModule {
                             .insertInitialCategories(*PREPOPULATE_BASIC_CATEGORIES_DATA)
                         provideRoomInstance(context).accountDao()
                             .insertAccountTypes(*PREPOPULATE_ACCOUNT_TYPES)
+                        provideRoomInstance(context).someDao().insertCurrency(*DummyData.m0Currencies)
                         provideRoomInstance(context).someDao().insertAccount(*DummyData.m1Accounts)
                         provideRoomInstance(context).someDao().insertCategory(*DummyData.m2Categories)
                         provideRoomInstance(context).someDao().insertBudget(*DummyData.m3Budgets)

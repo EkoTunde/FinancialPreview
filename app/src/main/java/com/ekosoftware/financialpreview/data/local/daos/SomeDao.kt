@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import com.ekosoftware.financialpreview.data.model.Category
 import com.ekosoftware.financialpreview.data.model.account.Account
 import com.ekosoftware.financialpreview.data.model.budget.Budget
+import com.ekosoftware.financialpreview.data.model.currency.Currency
 import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.data.model.record.Record
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
@@ -13,6 +14,9 @@ import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCr
 
 @Dao
 interface SomeDao {
+
+    @Insert
+    fun insertCurrency(vararg currency: Currency)
 
     @Insert
     fun insertAccount(vararg account: Account)

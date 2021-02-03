@@ -2,9 +2,12 @@ package com.ekosoftware.financialpreview.ui.selection
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.Menu
+import androidx.appcompat.widget.SearchView
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.LinearLayout
-import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
@@ -20,7 +23,6 @@ import com.ekosoftware.financialpreview.core.BaseListFragment
 import com.ekosoftware.financialpreview.databinding.BaseListFragmentBinding
 import com.ekosoftware.financialpreview.databinding.ItemSelectionExtendedBinding
 import com.ekosoftware.financialpreview.presentation.SelectionViewModel
-import com.ekosoftware.financialpreview.presentation.ShareViewModel
 import com.ekosoftware.financialpreview.presentation.SimpleDisplayableData
 import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,35 +36,30 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
 
     private val args: SelectFragmentArgs by navArgs()
 
-    private val shareViewModel by activityViewModels<ShareViewModel>()
-
     private val selectionViewModel by activityViewModels<SelectionViewModel>()
 
-    private val adapter = SimpleDisplayedDataItemAdapter<String> { _, item ->
-        when (args.type) {
-            SelectionViewModel.ACCOUNTS -> selectionViewModel.setAccountId(item.id)
-            SelectionViewModel.BUDGETS -> selectionViewModel.setBudgetId(item.id)
-            SelectionViewModel.CATEGORIES -> selectionViewModel.setCategoryId(item.id)
-            SelectionViewModel.CURRENCIES -> selectionViewModel.setCurrencyId(item.id)
-            SelectionViewModel.MOVEMENTS -> selectionViewModel.setMovementId(item.id)
-            SelectionViewModel.SETTLE_GROUPS -> selectionViewModel.setSettleGroupId(item.id)
-            else -> throw IllegalArgumentException("Given argument ${args.type} isn't a valid type to deploy an action in ${this.javaClass.name}")
-        }
-        findNavController().navigateUp()
-    }
+    private val adapter = SimpleDisplayableDataAdapter { _, item -> goBack(item) }
 
     override val listAdapter: BaseListAdapter<SimpleDisplayableData, ItemSelectionExtendedBinding>
         get() = adapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         setData()
     }
 
     override fun onCreateToolbar(appBarLayout: AppBarLayout, toolbar: Toolbar) {
+        setHasOptionsMenu(true)
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.inflateMenu(R.menu.only_search_menu)
+        toolbar.inflateMenu(R.menu.selection_menu)
+        (requireActivity() as MainActivity).setSupportActionBar(toolbar)
         toolbar.setupWithNavController(navController, appBarConfiguration)
         toolbar.title = when (args.type) {
             SelectionViewModel.ACCOUNTS -> Strings.get(R.string.account)
@@ -76,33 +73,24 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
-        inflater.inflate(R.menu.only_search_menu, menu)
-        val searchView = SearchView((context as MainActivity).supportActionBar?.themedContext ?: context)
-        menu.findItem(R.id.menu_item_search).apply {
-            setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_IF_ROOM)
-            actionView = searchView
-        }
-
+        inflater.inflate(R.menu.selection_menu, menu)
+        val searchView: SearchView = menu.findItem(R.id.menu_item_search).actionView as SearchView
         searchView.setOnQueryTextListener(queryListener)
-        searchView.setOnClickListener { view ->
-            Toast.makeText(
-                requireContext(),
-                "hola",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private val queryListener by lazy {
         object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                selectionViewModel.setSearText(query)
+                selectionViewModel.setSearchText(query)
+                Log.d(TAG, "onQueryTextSubmit: $query")
                 return false
             }
+
             override fun onQueryTextChange(newText: String): Boolean {
-                selectionViewModel.setSearText(newText)
+                Log.d(TAG, "onQueryTextChange: $newText")
+                selectionViewModel.setSearchText(newText)
                 return false
             }
         }
@@ -114,13 +102,15 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
                 onEdit()
                 true
             }
+            R.id.menu_item_clear_selection -> {
+                goBack(null)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun setData() = selectionViewModel.displayableItems(args.type).fetchData {
-        adapter.submitList(it)
-    }
+    private fun setData() = selectionViewModel.get(args.type).fetchData { adapter.submitList(it) }
 
     override fun recyclerViewDividerOrientation(): Int = LinearLayout.VERTICAL
 
@@ -130,6 +120,19 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
         //findNavController().navigate(SelectAccountFragmentDirections.selectAccountToAccounts())
     }
 
-    //override fun onSubmitQuery(queryText: String) = selectionViewModel.accountSearch(queryText)
-
+    private fun goBack(item: SimpleDisplayableData?) {
+        when (args.type) {
+            SelectionViewModel.ACCOUNTS -> selectionViewModel.setAccountId(item?.id)
+            SelectionViewModel.BUDGETS -> selectionViewModel.setBudgetId(item?.id)
+            SelectionViewModel.CATEGORIES -> selectionViewModel.setCategoryId(item?.id)
+            SelectionViewModel.CURRENCIES -> {
+                Log.d(TAG, "##goBack: back from SelectionFragment. Set id to ${item?.id}")
+                selectionViewModel.setCurrencyId(item?.id)
+            }
+            SelectionViewModel.MOVEMENTS -> selectionViewModel.setMovementId(item?.id)
+            SelectionViewModel.SETTLE_GROUPS -> selectionViewModel.setSettleGroupId(item?.id)
+            else -> throw IllegalArgumentException("Given argument ${args.type} isn't a valid type to deploy an action in ${this.javaClass.name}")
+        }
+        findNavController().navigateUp()
+    }
 }

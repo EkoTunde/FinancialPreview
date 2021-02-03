@@ -4,6 +4,7 @@ import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.data.model.Category
 import com.ekosoftware.financialpreview.data.model.account.Account
 import com.ekosoftware.financialpreview.data.model.budget.Budget
+import com.ekosoftware.financialpreview.data.model.currency.Currency
 import com.ekosoftware.financialpreview.data.model.movement.Frequency
 import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.data.model.record.Record
@@ -12,6 +13,19 @@ import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCr
 import java.util.*
 
 object DummyData {
+
+    val m0Currencies = arrayOf(
+        Currency(
+            "ARS",
+            true,
+            1.0
+        ),
+        Currency(
+            "USD",
+            true,
+            92.5
+        )
+    )
 
     val m1Accounts = arrayOf(
         Account(

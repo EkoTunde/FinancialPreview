@@ -43,7 +43,7 @@ interface CategoryDao : BaseDao<Category> {
             categoryIconResId AS iconResId 
         FROM categories
         WHERE categoryName LIKE '%' || :searchPhrase || '%'
-        AND categoryDescription LIKE '%' || :searchPhrase || '%'
+        OR categoryDescription LIKE '%' || :searchPhrase || '%'
         ORDER BY categoryName
     """)
     fun getCategoriesAsSimpleData(searchPhrase: String) : LiveData<List<SimpleQueryData>>

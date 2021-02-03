@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.ekosoftware.financialpreview.MainNavGraphDirections
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Colors
 import com.ekosoftware.financialpreview.app.Strings
@@ -86,6 +87,8 @@ class DetailsMovementFragment : Fragment() {
                 }
                 R.id.fab_edit -> {
                     Toast.makeText(requireContext(), "Editar!", Toast.LENGTH_SHORT).show()
+                    val action = MainNavGraphDirections.actionGlobalEditMovementFragment(args.movementId, null)
+                    findNavController().navigate(action)
                     binding.speedDial.close() // To close the Speed Dial with animation
                     return@setOnActionSelectedListener true // false will close it without animation
                 }

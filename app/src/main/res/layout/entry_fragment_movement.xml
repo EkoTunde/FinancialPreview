@@ -39,6 +39,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/left_amount"
+                app:errorEnabled="true"
                 android:labelFor="@id/actv_3"
                 android:textColorHint="@color/filledEditTextLightWhite"
                 android:visibility="gone"
@@ -107,6 +108,7 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_weight="9"
                         app:layout_constraintStart_toEndOf="@+id/currency"
+                        app:errorEnabled="true"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -134,20 +136,58 @@
                         app:layout_constraintEnd_toStartOf="@+id/starting_amount"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_weight="5"
+                        app:errorEnabled="true"
                         app:layout_constraintStart_toStartOf="parent"
-
                         app:layout_constraintTop_toTopOf="parent">
 
                         <AutoCompleteTextView
                             android:id="@+id/currency_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="false"
                             android:fontFamily="@font/quicksand_regular"
                             android:inputType="none" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <HorizontalScrollView
+                    android:id="@+id/chip_group_container_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chip_group_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_expense"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:fontFamily="@font/quicksand_regular"
+                            android:text="@string/expense"
+                            app:chipCornerRadius="15dp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_income"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/quicksand_regular"
+                            android:text="@string/income"
+                            app:chipCornerRadius="15dp" />
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                </HorizontalScrollView>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/account"
@@ -173,7 +213,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/repetition"
+                    android:id="@+id/frequency"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -183,6 +223,7 @@
                     app:boxCornerRadiusTopEnd="4dp"
                     app:boxCornerRadiusTopStart="4dp"
                     app:endIconMode="none"
+                    app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
                     app:startIconDrawable="@drawable/ic_repeat">
 
@@ -206,6 +247,7 @@
                     app:boxCornerRadiusTopEnd="4dp"
                     app:boxCornerRadiusTopStart="4dp"
                     app:endIconMode="dropdown_menu"
+                    app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
                     app:startIconDrawable="@drawable/ic_category">
 
@@ -225,6 +267,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:hint="@string/name"
+                    app:errorEnabled="true"
                     app:boxCornerRadiusTopEnd="4dp"
                     app:boxCornerRadiusTopStart="4dp"
                     android:labelFor="@+id/name_et"

@@ -1,5 +1,6 @@
 package com.ekosoftware.financialpreview.domain.local
 
+import androidx.lifecycle.LiveData
 import com.ekosoftware.financialpreview.data.local.daos.*
 import com.ekosoftware.financialpreview.data.model.Category
 import com.ekosoftware.financialpreview.data.model.account.Account
@@ -8,6 +9,7 @@ import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.data.model.record.Record
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCrossRef
+import kotlinx.coroutines.flow.Flow
 import java.util.*
 import javax.inject.Inject
 
@@ -92,21 +94,23 @@ class EntryRepository @Inject constructor(
         }
     }
 
-    fun getAccount(id: String) = accountDao.getAccount(id)
+    fun getAccount(id: String): LiveData<Account> = accountDao.getAccount(id)
 
-    fun getBudget(id: String) = budgetDao.getBudget(id)
+    fun getBudget(id: String): LiveData<Budget> = budgetDao.getBudget(id)
 
-    fun getCategory(id: String) = categoryDao.getCategory(id)
+    fun getCategory(id: String): LiveData<Category> = categoryDao.getCategory(id)
 
-    fun getMovement(id: String) = movementDao.getMovement(id)
+    fun getMovement(id: String): Movement = movementDao.getMovement(id)
 
-    fun getRecord(id: String) = recordDao.getRecord(id)
+    fun getRecord(id: String): LiveData<Record> = recordDao.getRecord(id)
 
     fun getSingleSettleGroupWithMovements(id: String) = settleGroupDao.getSingleSettleGroupWithMovements(id)
 
-    fun getAccountName(id: String) = accountDao.getAccountName(id)
+    fun getAccountName(id: String): LiveData<String> = accountDao.getAccountName(id)
 
-    fun getBudgetName(id: String) = budgetDao.getBudgetName(id)
+    fun getBudgetName(id: String): LiveData<String> = budgetDao.getBudgetName(id)
 
-    fun getCategoryName(id: String) = categoryDao.getCategoryName(id)
+    fun getCategoryName(id: String): LiveData<String> = categoryDao.getCategoryName(id)
+
+    fun getAccountCurrencyCode(accountId: String): String = accountDao.getCurrencyCodeForAccountId(accountId)
 }
