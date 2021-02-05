@@ -70,4 +70,5 @@ object Constants {
     const val SETTLE_TYPE_LOAN_DEBT = 6
 
     const val nan = "NaN"
+    const val noMonth = "000"
 }

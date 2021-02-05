@@ -2,11 +2,9 @@ package com.ekosoftware.financialpreview.ui.home
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -20,7 +18,7 @@ import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.HomeData
 import com.ekosoftware.financialpreview.databinding.FragmentHomeBinding
-import com.ekosoftware.financialpreview.presentation.MainViewModel
+import com.ekosoftware.financialpreview.presentation.HomeViewModel
 import com.ekosoftware.financialpreview.util.*
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.components.Legend
@@ -40,7 +38,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val mainViewModel by activityViewModels<MainViewModel>()
+    private val mainViewModel by activityViewModels<HomeViewModel>()
 
     private lateinit var tf: Typeface
 

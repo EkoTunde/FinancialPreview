@@ -1,6 +1,8 @@
 package com.ekosoftware.financialpreview.data.model.movement
 
 import android.os.Parcelable
+import com.ekosoftware.financialpreview.R
+import com.ekosoftware.financialpreview.app.Strings
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -13,7 +15,7 @@ data class MovementUI(
     var fromYearMonth: Int,
     var toYearMonth: Int,
     var totalInstallments: Int?,
-    var monthsChecked: String,
+    var monthsChecked: String= Strings.get(R.string.all_months_checked_frequency),
     var accountId: String?,
     var accountName: String?,
     var accountColorResId: Int?,

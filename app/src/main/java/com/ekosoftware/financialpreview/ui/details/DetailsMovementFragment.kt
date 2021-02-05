@@ -142,11 +142,11 @@ class DetailsMovementFragment : Fragment() {
             arrayOf(budgetName, imageViewSub).show()
         }
 
-        monthsIncluded.text = Frequency(movementUI.fromYearMonth, movementUI.toYearMonth, movementUI.totalInstallments, movementUI.monthsChecked).forDisplay()
-
-       /* monthsIncluded.text = if (movementUI.monthsChecked == Strings.get(R.string.all_months_checked_frequency)) {
-            Strings.get(R.string.all_months_checked)
-        } else movementUI.monthsChecked!!.monthsCheckedSummary()*/
+        monthsIncluded.text = Frequency(movementUI.fromYearMonth,
+            movementUI.toYearMonth,
+            movementUI.totalInstallments,
+            movementUI.monthsChecked
+        ).forDisplay()
     }
 
     override fun onDestroy() {

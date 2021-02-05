@@ -1,46 +1,40 @@
 package com.ekosoftware.financialpreview.ui.entry
 
-import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.*
-import androidx.core.content.res.ResourcesCompat.getColor
+import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.Slide
 import com.ekosoftware.financialpreview.MainActivity
 import com.ekosoftware.financialpreview.MainNavGraphDirections
 import com.ekosoftware.financialpreview.R
-import com.ekosoftware.financialpreview.app.Colors
 import com.ekosoftware.financialpreview.app.Constants
 import com.ekosoftware.financialpreview.app.Strings
-import com.ekosoftware.financialpreview.core.ImageAdapter
-import com.ekosoftware.financialpreview.data.local.CategoriesResourceInts
 import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.databinding.EntryFragmentMovementBinding
+import com.ekosoftware.financialpreview.presentation.CalculatorViewModel
 import com.ekosoftware.financialpreview.presentation.EntryMovementViewModel
+import com.ekosoftware.financialpreview.presentation.FrequencyViewModel
 import com.ekosoftware.financialpreview.presentation.SelectionViewModel
-import com.ekosoftware.financialpreview.util.forDisplay
-import com.ekosoftware.financialpreview.util.forDisplayAmount
-import com.ekosoftware.financialpreview.util.show
-import com.ekosoftware.financialpreview.util.themeColor
+import com.ekosoftware.financialpreview.ui.selection.SelectFragment
+import com.ekosoftware.financialpreview.util.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.math.BigDecimal
 
 @AndroidEntryPoint
 class EntryMovementFragment : Fragment() {
-
-    private enum class EditingState {
-        NEW_MOVEMENT,
-        EXISTING_MOVEMENT
-    }
 
     companion object {
         private const val TAG = "EntryMovementFragment"
@@ -50,59 +44,90 @@ class EntryMovementFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val entryMovementViewModel: EntryMovementViewModel by activityViewModels()
-
     private val selectionViewModel: SelectionViewModel by activityViewModels()
-
-    private lateinit var dateResult: String
+    private val frequencyViewModel: FrequencyViewModel by activityViewModels()
+    private val calculatorViewModel: CalculatorViewModel by activityViewModels()
 
     private val args: EntryMovementFragmentArgs by navArgs()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = EntryFragmentMovementBinding.inflate(inflater, container, false)
-        binding.toolbar.inflateMenu(R.menu.save_menu)
-        (requireActivity() as MainActivity).setSupportActionBar(binding.toolbar)
-        binding.toolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
-        binding.toolbar.title =
-            if (args.movementId == Constants.nan) Strings.get(R.string.title_add_movement) else Strings.get(R.string.title_edit_movement)
+        setUpToolbar()
         return binding.root
+    }
+
+    private fun setUpToolbar() {
+        binding.toolbar.inflateMenu(
+            if (args.movementId == Constants.nan) {
+                R.menu.save_menu
+            } else R.menu.save_delete_menu
+        )
+        (requireActivity() as MainActivity).setSupportActionBar(binding.toolbar)
+        binding.toolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+        binding.toolbar.title = if (args.movementId == Constants.nan) {
+            Strings.get(R.string.title_add_movement)
+        } else {
+            Strings.get(R.string.title_edit_movement)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(
+            if (args.movementId == Constants.nan) {
+                R.menu.save_menu
+            } else R.menu.save_delete_menu, menu
+        )
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    /**
+     * Handles saving button onClickListener
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_item_save -> {
+                done()
+                true
+            }
+            R.id.menu_item_delete -> {
+                delete()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
         setTransition() // Run Animation
 
         if (args.movementId != Constants.nan) {
-            Log.d(TAG, "onViewCreated: ID es ${args.movementId}")
             binding.leftAmount.show()
-            entryMovementViewModel.get(args.movementId).observe(viewLifecycleOwner) { movement ->
+            entryMovementViewModel.movement(args.movementId).observe(viewLifecycleOwner) { movement ->
                 movement?.let {
                     populateUI(it)
+                    entryMovementViewModel.setFrequency(it.frequency)
                     entryMovementViewModel.movementRetrievedOk()
-                    entryMovementViewModel.get(args.movementId).removeObservers(viewLifecycleOwner)
+                    entryMovementViewModel.movement(args.movementId).removeObservers(viewLifecycleOwner)
                 }
             }
+            binding.leftAmount.setEndIconOnClickListener { warnLeftAmountChanging() }
+        } else {
+            binding.startingAmount.editText?.doOnTextChanged { text, _, _, _ -> binding.leftAmount.editText?.setText(text) }
         }
         fetchSelectionData()
-        setCurrencyListener()
-        setAccountListener()
-        setFrequencyListener()
-        setCategoryListener()
-        setBudgetListener()
-
-        with(binding) {
-            arrayOf(startingAmount, leftAmount, currency, category, name, frequency).forEach {
-                it.editText?.doOnTextChanged { text, _, _, _ ->
-                    if (text.toString().isNotEmpty()) {
-                        it.error = null
-                    }
-                }
-            }
-        }
+        setSelectionListeners()
+        setCleanErrorOnChangedText()
     }
 
+    /**
+     * Set starting and ending transition for this fragment.
+     */
     private fun setTransition() {
         enterTransition = MaterialContainerTransform().apply {
             startView = requireActivity().findViewById(R.id.main_fab)/*startingView*/
@@ -119,6 +144,9 @@ class EntryMovementFragment : Fragment() {
         }
     }
 
+    /**
+     * Run observers meant to handle data which is chosen in [SelectFragment]
+     */
     private fun fetchSelectionData() {
         selectionViewModel.accountId.observe(viewLifecycleOwner) { accountId ->
             binding.currency.isEnabled = accountId == null
@@ -126,114 +154,174 @@ class EntryMovementFragment : Fragment() {
         }
         selectionViewModel.budgetId.observe(viewLifecycleOwner) { id -> entryMovementViewModel.setBudgetId(id) }
         selectionViewModel.categoryId.observe(viewLifecycleOwner) { id -> entryMovementViewModel.setCategoryId(id) }
-        selectionViewModel.currencyId.observe(viewLifecycleOwner) { id -> entryMovementViewModel.setCurrencyId(id) }
-        entryMovementViewModel.frequency.observe(viewLifecycleOwner) { frequency -> binding.frequency.editText?.setText(frequency.forDisplay()) }
-        entryMovementViewModel.accountName().observe(viewLifecycleOwner) { name -> binding.account.editText?.setText(name) }
+        selectionViewModel.currencyId.observe(viewLifecycleOwner) { id -> entryMovementViewModel.setCurrencyCode(id) }
+        frequencyViewModel.getFrequency().observe(viewLifecycleOwner) { frequency -> frequency?.let { entryMovementViewModel.setFrequency(it) } }
+        calculatorViewModel.getAmount().observe(viewLifecycleOwner) { amount -> entryMovementViewModel.setLeftAmount(amount) }
+        with(entryMovementViewModel) {
+            accountName().observe(viewLifecycleOwner) { name -> binding.account.editText?.setText(name) }
+            budgetName().observe(viewLifecycleOwner) { name -> binding.budget.editText?.setText(name) }
+            categoryName().observe(viewLifecycleOwner) { name ->
+                Log.d(TAG, "fetchSelectionData: categoryName() triggered with code: s${name}s")
+                binding.category.editText?.setText(name)
+            }
+            currencyCode().observe(viewLifecycleOwner) { code ->
+                Log.d(TAG, "fetchSelectionData: currencyCode() triggered with code: s${code}s")
+                binding.currency.editText?.setText(code)
+            }
+            frequency().observe(viewLifecycleOwner) { frequency -> binding.frequency.editText?.setText(frequency.forDisplay()) }
+            getLeftAmount().observe(viewLifecycleOwner) { leftAmount ->
+                leftAmount?.let {
+                    val asText = startAmountToString(it)
+                    binding.startingAmount.editText?.setText(asText)
+                }
+            }
+        }
+        /*entryMovementViewModel.accountName().observe(viewLifecycleOwner) { name -> binding.account.editText?.setText(name) }
         entryMovementViewModel.budgetName().observe(viewLifecycleOwner) { name -> binding.budget.editText?.setText(name) }
         entryMovementViewModel.categoryName().observe(viewLifecycleOwner) { name -> binding.category.editText?.setText(name) }
         entryMovementViewModel.currencyCode().observe(viewLifecycleOwner) { code -> binding.currency.editText?.setText(code) }
+        entryMovementViewModel.frequency().observe(viewLifecycleOwner) { frequency -> binding.frequency.editText?.setText(frequency.forDisplay()) }
+        entryMovementViewModel.getLeftAmount().observe(viewLifecycleOwner) { leftAmount -> leftAmount?.let { binding.leftAmount.editText?.setText(it.toString()) } }*/
     }
 
-    private fun populateUI(movement: Movement) = with(binding) {
-        leftAmount.editText?.setText(movement.leftAmount.forDisplayAmount(movement.currencyCode))
-        currency.editText?.setText(movement.currencyCode)
-        startingAmount.editText?.setText(movement.startingAmount.forDisplayAmount(movement.currencyCode))
-        frequency.editText?.setText(movement.frequency?.forDisplay())
-        description.editText?.setText(movement.description)
-        movement.accountId?.let {
-            entryMovementViewModel.setAccountId(it)
-            currency.isEnabled = false
+    /**
+     * Takes out fraction part of a double if there is any and is based on
+     * decimal point and zeros.
+     *
+     * @param amount representing an amount in [Double]
+     *
+     * @return [String] without decimal points and zeros if there is any.
+     *
+     */
+    private fun startAmountToString(amount: Double): String {
+        return if (BigDecimal(amount).hasUselessDecimals()) {
+            amount.toString().substring(0, amount.toString().indexOf("."))
+        } else {
+            amount.toString()
         }
-        movement.categoryId?.let { entryMovementViewModel.setCategoryId(it) }
-        movement.budgetId?.let { entryMovementViewModel.setBudgetId(it) }
     }
 
-    private fun setCurrencyListener() = with(binding.currency) {
-        isEndIconCheckable = false
-        val action = MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.CURRENCIES)
-        setEndIconOnClickListener { findNavController().navigate(action) }
-        arrayListOf(this, editText).forEach { it?.setOnClickListener { findNavController().navigate(action) } }
-    }
-
-    private fun setAccountListener() = with(binding.account) {
-        isEndIconCheckable = false
-        val action = MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.ACCOUNTS)
-        setEndIconOnClickListener { findNavController().navigate(action) }
-        arrayListOf(this, editText).forEach { it?.setOnClickListener { findNavController().navigate(action) } }
-    }
-
-    private fun setFrequencyListener() = with(binding.frequency) {
-        val action = EntryMovementFragmentDirections.actionEditMovementToEditFrequency(null)
-        setEndIconOnClickListener { findNavController().navigate(action) }
-        arrayListOf(this, editText).forEach { it?.setOnClickListener { findNavController().navigate(action) } }
-    }
-
-    private fun setCategoryListener() = with(binding.category) {
-        isEndIconCheckable = false
-        val action = MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.CATEGORIES)
-        setEndIconOnClickListener { findNavController().navigate(action) }
-        arrayListOf(this, editText).forEach { it?.setOnClickListener { findNavController().navigate(action) } }
-    }
-
-    private fun setBudgetListener() = with(binding.budget) {
-        isEndIconCheckable = false
-        val action = MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.BUDGETS)
-        setEndIconOnClickListener { findNavController().navigate(action) }
-        arrayListOf(this, editText).forEach { it?.setOnClickListener { findNavController().navigate(action) } }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.save_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_item_save -> {
-                done()
-                true
+    /**
+     * Populates editable text views with [Movement]'s data.
+     */
+    private fun populateUI(movement: Movement) {
+        with(binding) {
+            leftAmount.editText?.setText(movement.leftAmount.forDisplayAmount(movement.currencyCode))
+            startingAmount.editText?.setText(movement.startingAmount.forDisplayAmount(movement.currencyCode))
+            currency.editText?.setText(movement.currencyCode)
+            frequency.editText?.setText(movement.frequency?.forDisplay())
+            name.editText?.setText(movement.name)
+            description.editText?.setText(movement.description)
+            movement.accountId?.let {
+                entryMovementViewModel.setAccountId(it)
+                currency.isEnabled = false
             }
-            else -> super.onOptionsItemSelected(item)
+            movement.categoryId?.let { entryMovementViewModel.setCategoryId(it) }
+            movement.budgetId?.let { entryMovementViewModel.setBudgetId(it) }
         }
     }
 
+    /**
+     * Sets listeners for editable text views that trigger navigation to [SelectFragment]
+     */
+    private fun setSelectionListeners() {
+        with(binding) {
+            account.setNavigation(MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.ACCOUNTS))
+            budget.setNavigation(MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.BUDGETS))
+            category.setNavigation(MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.CATEGORIES))
+            currency.setNavigation(MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.CURRENCIES))
+            frequency.setNavigation(EntryMovementFragmentDirections.actionEditMovementToEditFrequency(entryMovementViewModel.getSingleFrequency()))
+            startingAmount.setEndIconOnClickListener {
+                val currentText = binding.startingAmount.editText?.text.toString()
+                val action = MainNavGraphDirections.actionGlobalCalculatorFragment4(currentText)
+                findNavController().navigate(action)
+            }
+        }
+    }
+
+    /**
+     * Listens for text changed and clears error message if there was any and the error no longer is there.
+     */
+    private fun setCleanErrorOnChangedText() {
+        with(binding) {
+            arrayOf(startingAmount, leftAmount, currency, category, name, frequency).forEach {
+                it.editText?.doOnTextChanged { text, _, _, _ ->
+                    if (text.toString().isNotEmpty()) {
+                        it.error = null
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Sets navigation action behaviour for layouts user may use to edit data.
+     */
+    private fun TextInputLayout.setNavigation(action: NavDirections) {
+        (editText as? AutoCompleteTextView)?.let {
+            isEndIconCheckable = false
+        }
+        setEndIconOnClickListener { findNavController().navigate(action) }
+        arrayListOf(this, editText).forEach { it?.setOnClickListener { findNavController().navigate(action) } }
+    }
+
+
+    /**
+     * Deletes the movement.
+     */
+    private fun delete() {
+        entryMovementViewModel.delete()
+    }
+
+    /**
+     * Called when user is intended to save data. Checks if required info is
+     * filled and performs saving action calling ViewModel.
+     * Finally, navigates up. TODO("Navigate up")
+     */
     private fun done() {
         if (isRequiredInfoCompleted()) {
-            val prefix = if (binding.chipExpense.isChecked) "-" else ""
-            val startAmount = (prefix + binding.startingAmount.editText!!.text.toString()).toDouble()
-            val id = if (args.movementUI != null) args.movementUI!!.id else Constants.nan
+            val startAmount = binding.startingAmount.editText!!.text.toString().toDouble()
+            //val id = if (args.movementUI != null) args.movementUI!!.id else Constants.nan
             entryMovementViewModel.save(
-                id,
-                if (args.movementId == Constants.nan) startAmount else binding.leftAmount.editText!!.text.toString().toDouble(),
+                args.movementId,
+                if (args.movementId == Constants.nan) startAmount else binding.leftAmount.editText?.text.toString().toDouble() ?: 0.0,
                 startAmount,
                 binding.currency.editText!!.text.toString(),
                 binding.name.editText!!.text.toString(),
                 binding.description.editText!!.text.toString()
             )
-            //findNavController().navigateUp()
+            findNavController().navigateUp()
         }
     }
 
+    /**
+     * Checks if required form data is filled, one by one.
+     * If not, triggers an error.
+     *
+     * @return [Boolean] whether all info is filled.
+     */
     private fun isRequiredInfoCompleted(): Boolean {
-        /*with(binding) {
-            arrayOf(binding.startingAmount, binding.leftAmount, binding.currency, binding.category, binding.name, binding.frequency).forEach {
-                if (it.editText?.text.toString().isNotEmpty()) {
-                    it.error = Strings.get(R.string.mandatory)
-                    return false
-                }
-            }
-        }*/
         binding.startingAmount.let {
+            // Checks starting amount is filled
             if (it.editText?.text.toString().isEmpty()) {
                 it.error = Strings.get(R.string.mandatory)
                 return false
             }
         }
         binding.leftAmount.let {
-            if (args.movementId != Constants.nan && it.editText?.text.toString().isEmpty()) {
+            val leftText = it.editText?.text.toString()
+            val startingText = binding.startingAmount.editText?.text.toString()
+            // Checks left amount is
+            if (args.movementId != Constants.nan && leftText.isEmpty()) {
                 it.error = Strings.get(R.string.mandatory)
                 return false
             }
+            /*if (args.movementId != Constants.nan
+                && (leftText.isNotEmpty() && startingText.isNotEmpty() && leftText.toDouble() <= startingText.toDouble())
+            ) {
+                it.error = Strings.get(R.string.mandatory)
+                return false
+            }*/
         }
         binding.currency.let {
             if (it.editText?.text.toString().isEmpty()) {
@@ -262,115 +350,34 @@ class EntryMovementFragment : Fragment() {
         return true
     }
 
-    /*private fun showDialog() {
-        val fragmentManager = requireActivity().supportFragmentManager
-        //val newFragment = CalculatorDialogFragment()
-        val newFragment = SelectionFragment()
-
-        // The device is smaller, so show the fragment fullscreen
-        val transaction = fragmentManager.beginTransaction()
-        // For a little polish, specify a transition animation
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        // To make it fullscreen, use the 'content' root view as the container
-        // for the fragment, which is always the root view for the activity
-        transaction
-            .add(android.R.id.content, newFragment)
-            .addToBackStack(null)
-            .commit()
-    }*/
-
-    private fun yearMonthChooser() = AlertDialog.Builder(requireContext()).apply {
-        setTitle("Prueba")
-        val inflater = requireActivity().layoutInflater
-        val dialogView: View =
-            inflater.inflate(R.layout.alert_dialog_date_selector, binding.root, false)
-        setView(dialogView)
-
-        val c = Calendar.getInstance()
-        val currentYear = c.get(Calendar.YEAR)
-        val currentMonth = c.get(Calendar.MONTH) + 1
-
-        val monthPicker = dialogView.findViewById<View>(R.id.month_picker) as NumberPicker
-        monthPicker.maxValue = 12
-        monthPicker.minValue = 1
-        monthPicker.value = currentMonth
-        val yearPicker = dialogView.findViewById<View>(R.id.year_picker) as NumberPicker
-
-        yearPicker.maxValue = 2500
-        yearPicker.minValue = 1900
-        yearPicker.value = currentYear
-
-        setPositiveButton("Ok") { dialog, _ ->
-            dialog.dismiss()
-            dateResult = "${monthPicker.value}/${yearPicker.value}"
-            Toast.makeText(requireContext(), dateResult, Toast.LENGTH_SHORT).show()
-            //binding.account2.editText?.setText(dateResult)
-        }
-        setOnDismissListener {
-            //(binding.account2.editText as? AutoCompleteTextView)?.clearFocus()
-        }
-
-    }
-
-    var iconResId = R.drawable.ic_category
-
-    private fun dialogChangeColor() = MaterialAlertDialogBuilder(requireContext())
-        .setAdapter(object : ArrayAdapter<Int>(
-            requireContext(),
-            R.layout.item_dialog_color_selection,
-            R.id.text_view,
-            Colors.colorsResIds
-        ) {
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val v = super.getView(position, convertView, parent)
-                (v.findViewById<View>(R.id.text_view) as TextView).let {
-                    it.setBackgroundColor(
-                        getColor(
-                            resources,
-                            Colors.colorsResIds[position],
-                            null
-                        )
-                    )
-                    it.text = ""
+    /**
+     * Triggers dialog warning left amount changing.
+     */
+    private fun warnLeftAmountChanging() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.action_cant_be_undone)
+            .setMessage(R.string.warn_left_amount_changing_message)
+            .setNegativeButton(Strings.get(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
+            .setNeutralButton(Strings.get(R.string.reestablish)) { _, _ ->
+                // Sets left amount to starting amount
+                val originalLeftAmount = binding.leftAmount.editText?.text.toString()
+                Snackbar.make(binding.entryMovementCardView, R.string.left_amount_was_set_back_to_starting_amount, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.undo) { binding.leftAmount.editText?.setText(originalLeftAmount) }
+                    .show()
+                binding.leftAmount.editText?.setText(binding.startingAmount.editText?.text.toString())
+            }
+            .setPositiveButton(Strings.get(R.string.edit)) { _, _ ->
+                binding.leftAmount.editText?.apply {
+                    if (!isEnabled) {
+                        isEnabled = true
+                        requestFocus()
+                    }
                 }
-                return v
-            }
-        }) { dialog, item ->
-            // Save the color and dismiss dialog
-            val color =
-                Colors.get(Colors.colorsResIds[item])
-            // Do something
-            Toast.makeText(requireContext(), "$item", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
-        }
-        .setNegativeButton(resources.getString(R.string.cancel), null).create().show()
-
-    private fun dialogChangeIcon() {
-
-        var iconDialog: AlertDialog? = null
-        val builder = AlertDialog.Builder(requireContext())
-
-        val gridView = GridView(requireContext())
-        val iconItems =
-            ImageAdapter(requireContext(), CategoriesResourceInts.categoriesIntIds.toMutableList())
-        gridView.apply {
-            adapter = iconItems
-            numColumns = 4
-            choiceMode = GridView.CHOICE_MODE_SINGLE
-            onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-                // Do something
-                iconDialog!!.dismiss()
-            }
-        }
-
-        builder.setView(gridView).setTitle("Select an icon")
-        iconDialog = builder.create()
-        iconDialog.show()
+            }.show()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        selectionViewModel.clearSelectedData()
         entryMovementViewModel.clearAllSelectedData()
     }
 

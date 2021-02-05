@@ -10,13 +10,13 @@ import com.ekosoftware.financialpreview.core.BaseListAdapter
 import com.ekosoftware.financialpreview.data.model.movement.MovementUI
 import com.ekosoftware.financialpreview.databinding.BaseListFragmentBinding
 import com.ekosoftware.financialpreview.databinding.ItemPendingMovementBinding
-import com.ekosoftware.financialpreview.presentation.MainViewModel
+import com.ekosoftware.financialpreview.presentation.HomeViewModel
 import com.ekosoftware.financialpreview.ui.pending.tabs.adapters.PendingMovementListAdapter
 
 class PendingMovementsFragment(private val onItemClicked: ((v: View, id: String) -> Unit)?) :
     BaseTabbedListFragment<MovementUI, ItemPendingMovementBinding>() {
 
-    private val viewModel by activityViewModels<MainViewModel>()
+    private val viewModel by activityViewModels<HomeViewModel>()
 
     override val title: String get() = Strings.get(R.string.pending_movements)
 

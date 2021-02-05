@@ -2,26 +2,21 @@ package com.ekosoftware.financialpreview.ui.pending.tabs
 
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.core.BaseListAdapter
 import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.databinding.BaseListFragmentBinding
 import com.ekosoftware.financialpreview.databinding.ItemPendingBudgetBinding
-import com.ekosoftware.financialpreview.presentation.MainViewModel
-import com.ekosoftware.financialpreview.ui.pending.PendingFragmentDirections
+import com.ekosoftware.financialpreview.presentation.HomeViewModel
 import com.ekosoftware.financialpreview.ui.pending.tabs.adapters.PendingBudgetsListAdapter
 
 
 class PendingBudgetsFragment(private val onItemClicked: ((v: View, id: String) -> Unit)?) :
     BaseTabbedListFragment<Budget, ItemPendingBudgetBinding>() {
 
-    private val viewModel by activityViewModels<MainViewModel>()
+    private val viewModel by activityViewModels<HomeViewModel>()
 
     override var editable: Boolean = arguments?.getBoolean("editable") ?: false
     override val title: String get() = Strings.get(R.string.pending_budgets)

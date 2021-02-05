@@ -40,15 +40,6 @@ interface AccountDao : BaseDao<Account> {
     @Query("SELECT accountName FROM accounts WHERE accountId = :accountId")
     fun getAccountName(accountId: String): LiveData<String>
 
-    /*@Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAccounts(vararg account: Account)
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateAccounts(vararg account: Account)
-
-    @Delete
-    suspend fun deleteAccounts(vararg account: Account)*/
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAccountTypes(vararg accountType: AccountType)
 
@@ -73,10 +64,6 @@ interface AccountDao : BaseDao<Account> {
     )
     fun getAccountsAsSimpleData(searchPhrase: String): LiveData<List<SimpleQueryData>>
 
-    @Query(
-        """
-        SELECT accountCurrencyCode FROM accounts WHERE accountId = :accountId
-    """
-    )
-    fun getCurrencyCodeForAccountId(accountId: String): String
+    @Query("SELECT accountCurrencyCode FROM accounts WHERE accountId = :accountId")
+    fun getCurrencyCodeForAccountId(accountId: String): LiveData<String>
 }

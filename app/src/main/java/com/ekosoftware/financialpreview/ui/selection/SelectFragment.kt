@@ -8,7 +8,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -40,8 +39,7 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
 
     private val adapter = SimpleDisplayableDataAdapter { _, item -> goBack(item) }
 
-    override val listAdapter: BaseListAdapter<SimpleDisplayableData, ItemSelectionExtendedBinding>
-        get() = adapter
+    override val listAdapter: BaseListAdapter<SimpleDisplayableData, ItemSelectionExtendedBinding> get() = adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +48,6 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(true)
         setData()
     }
 
@@ -125,10 +122,7 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
             SelectionViewModel.ACCOUNTS -> selectionViewModel.setAccountId(item?.id)
             SelectionViewModel.BUDGETS -> selectionViewModel.setBudgetId(item?.id)
             SelectionViewModel.CATEGORIES -> selectionViewModel.setCategoryId(item?.id)
-            SelectionViewModel.CURRENCIES -> {
-                Log.d(TAG, "##goBack: back from SelectionFragment. Set id to ${item?.id}")
-                selectionViewModel.setCurrencyId(item?.id)
-            }
+            SelectionViewModel.CURRENCIES -> selectionViewModel.setCurrencyId(item?.id)
             SelectionViewModel.MOVEMENTS -> selectionViewModel.setMovementId(item?.id)
             SelectionViewModel.SETTLE_GROUPS -> selectionViewModel.setSettleGroupId(item?.id)
             else -> throw IllegalArgumentException("Given argument ${args.type} isn't a valid type to deploy an action in ${this.javaClass.name}")

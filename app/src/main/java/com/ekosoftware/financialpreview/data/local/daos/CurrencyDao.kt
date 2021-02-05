@@ -25,4 +25,8 @@ interface CurrencyDao : BaseDao<Currency> {
         ORDER BY currencyCode
     """)
     fun getCurrenciesAsSimpleData(searchPhrase: String) : LiveData<List<SimpleQueryData>>
+
+    @Query("SELECT currencyCodeId FROM currencies WHERE currencyCodeId = :id")
+    fun getCurrencyCode(id: String): LiveData<String>
+
 }

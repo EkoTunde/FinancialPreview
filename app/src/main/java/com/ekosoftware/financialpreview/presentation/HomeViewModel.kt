@@ -23,7 +23,7 @@ import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     @ApplicationContext private val appContext: Context,
     private val mainRepository: MainRepository,
      private val savedStateHandle: SavedStateHandle

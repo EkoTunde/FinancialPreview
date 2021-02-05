@@ -1,15 +1,12 @@
 package com.ekosoftware.financialpreview.presentation
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.data.model.movement.Frequency
 import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.domain.local.EntryRepository
 import com.ekosoftware.financialpreview.util.forDatabaseAmount
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,47 +16,30 @@ class EntryMovementViewModel @Inject constructor(
 ) : EntryViewModel(entryRepository) {
 
     companion object {
-        private const val ENTRY_ACCOUNT_ID_KEY = "accountIdForMovement"
-        private const val ENTRY_BUDGET_ID_KEY = "budgetIdForMovement"
-        private const val ENTRY_CATEGORY_ID_KEY = "categoryIdForMovement"
-        private const val ENTRY_CURRENCY_ID_KEY = "currencyCodeForMovement"
-        private const val ENTRY_FREQUENCY_ID_KEY = "frequencyForMovement"
-        private const val ENTRY_MOVEMENT_ID_KEY = "movementId"
+        private const val ENTRY_ACCOUNT_ID_KEY = "accountIdForMovementKey"
+        private const val ENTRY_BUDGET_ID_KEY = "budgetIdForMovementKey"
+        private const val ENTRY_CATEGORY_ID_KEY = "categoryIdForMovementKey"
+        private const val ENTRY_CURRENCY_CODE_KEY = "currencyCodeForMovementKey"
+        private const val ENTRY_FREQUENCY_KEY = "frequencyForMovementKey"
+        private const val ENTRY_MOVEMENT_ID_KEY = "movementIdKey"
+        private const val ENTRY_LEFT_AMOUNT_KEY = "leftAmountKey"
 
-        private const val TAG = "EntryMovementViewModel"
+        private const val WAS_MOVEMENT_RETRIEVED_KEY = "was_movement_retrieved_ok"
     }
-
-    private var movementWasRetrieved = false
 
     fun movementRetrievedOk() {
-        movementWasRetrieved = true
-        wasMovementRetrieved.value = true
+        savedStateHandle[WAS_MOVEMENT_RETRIEVED_KEY] = true
     }
 
-    val movementId: MutableLiveData<String> = savedStateHandle.getLiveData(ENTRY_MOVEMENT_ID_KEY, null)
+    private val wasMovementRetrieved = savedStateHandle.getLiveData(WAS_MOVEMENT_RETRIEVED_KEY, false)
 
-    fun setMovementId(id: String) {
-        movementId.value = id
-    }
+    private var _movement: LiveData<Movement?>? = null
 
-    val wasMovementRetrieved = savedStateHandle.getLiveData("movement_retrieved", false)
-
-    private var m: LiveData<Movement?>? = null
-
-    fun get(id: String): LiveData<Movement?> {
-        Log.d(TAG, "get: GET")
-        return m ?: wasMovementRetrieved.distinctUntilChanged().switchMap { wasRetrieved ->
-            liveData<Movement?>(viewModelScope.coroutineContext + Dispatchers.IO) {
-                if (wasRetrieved) emit(null) else emit(entryRepository.getMovement(id))
-            }.also {
-                m = it
-            }
-        }
-    }
-
-    val movement: LiveData<Movement?> = movementId.distinctUntilChanged().switchMap { id ->
+    fun movement(id: String): LiveData<Movement?> = _movement ?: wasMovementRetrieved.switchMap { wasRetrieved ->
         liveData<Movement?>(viewModelScope.coroutineContext + Dispatchers.IO) {
-            if (movementWasRetrieved) emit(null) else entryRepository.getMovement(id)
+            if (!wasRetrieved) emit(entryRepository.getMovement(id))
+        }.also {
+            _movement = it
         }
     }
 
@@ -74,8 +54,6 @@ class EntryMovementViewModel @Inject constructor(
     fun accountName(): LiveData<String> = _accountName ?: accountId.distinctUntilChanged().switchMap { id ->
         liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
             if (id != null) {
-                val currencyCode = entryRepository.getAccountCurrencyCode(id)
-                CoroutineScope(Dispatchers.Main).launch { setCurrencyId(currencyCode) }
                 emitSource(entryRepository.getAccountName(id))
             } else emit("")
         }
@@ -109,63 +87,84 @@ class EntryMovementViewModel @Inject constructor(
 
     fun categoryName(): LiveData<String> = _categoryName ?: categoryId.distinctUntilChanged().switchMap { id ->
         liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
-            if (id != null) {
-                Log.d(TAG, "categoryName: EMITTING AGAIN. id is = $id")
-                emitSource(entryRepository.getCategoryName(id))
-            } else emit("")
+            if (id != null) emitSource(entryRepository.getCategoryName(id)) else emit("")
         }
-    }.also {
-        _categoryName = it
-    }
+    }.also { _categoryName = it }
 
-    private val currencyId: MutableLiveData<String?> = savedStateHandle.getLiveData(ENTRY_CURRENCY_ID_KEY, null)
-
-    fun setCurrencyId(id: String?) {
-        currencyId.value = id
+    fun setCurrencyCode(code: String?) {
+        savedStateHandle[ENTRY_CURRENCY_CODE_KEY] = code
     }
 
     private var _currencyCode: LiveData<String>? = null
 
-    fun currencyCode(): LiveData<String> = _currencyCode ?: currencyId.distinctUntilChanged().switchMap { code ->
-        liveData(viewModelScope.coroutineContext) {
-            if (code != null) emit(code) else emit("")
+    fun currencyCode(): LiveData<String> = _currencyCode ?: /*currencyId*/accountId.distinctUntilChanged().switchMap { id ->
+        liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
+            if (id != null) {
+                emitSource(entryRepository.getAccountCurrencyCode(id))
+            } else {
+                emitSource(savedStateHandle.getLiveData(ENTRY_CURRENCY_CODE_KEY, ""))
+            }
         }
-    }.also {
-        _currencyCode = it
+    }.also { _currencyCode = it }
+
+    private var _frequency: LiveData<Frequency?>? = null
+
+    fun setFrequency(frequency: Frequency?) {
+        savedStateHandle[ENTRY_FREQUENCY_KEY] = frequency
     }
 
-    val frequency = savedStateHandle.getLiveData<Frequency>(ENTRY_FREQUENCY_ID_KEY, null)
+    fun getSingleFrequency(): Frequency? {
+        return savedStateHandle[ENTRY_FREQUENCY_KEY]
+    }
 
-    fun setFrequency(frequency: Frequency) {
-        savedStateHandle[ENTRY_FREQUENCY_ID_KEY] = frequency
+    fun frequency(): LiveData<Frequency?> = _frequency ?: liveData {
+        emitSource(savedStateHandle.getLiveData<Frequency>(ENTRY_FREQUENCY_KEY, null))
+    }.also {
+        _frequency = it
+    }
+
+    private var _leftAmount: LiveData<Double?>? = null
+
+    fun setLeftAmount(amount: Double?) {
+        savedStateHandle[ENTRY_LEFT_AMOUNT_KEY] = amount
+    }
+
+    fun getLeftAmount(): LiveData<Double?> = _leftAmount ?: liveData<Double?> {
+        emitSource(savedStateHandle.getLiveData<Double?>(ENTRY_LEFT_AMOUNT_KEY, null))
+    }.also {
+        _leftAmount = it
     }
 
     fun save(id: String, leftAmount: Double, startingAmount: Double, currencyCode: String, name: String, description: String) {
-        /*addData(*/
-            val m = Movement(
+        addData(
+            Movement(
                 id,
                 leftAmount = leftAmount.forDatabaseAmount(),
                 startingAmount = startingAmount.forDatabaseAmount(),
                 currencyCode = currencyCode,
                 name = name,
                 description = if (description.isEmpty()) null else description,
-                frequency = frequency.value,
+                frequency = savedStateHandle[ENTRY_FREQUENCY_KEY],
                 accountId = accountId.value,
                 categoryId = categoryId.value,
                 budgetId = budgetId.value
-            )/*,
+            ),
             id
-        )*/
-        Log.d(TAG, "save: $m")
+        )
+    }
+
+    fun delete() {
+        delete()
     }
 
     fun clearAllSelectedData() {
-        accountId.value = null
         savedStateHandle[ENTRY_ACCOUNT_ID_KEY] = null
         savedStateHandle[ENTRY_BUDGET_ID_KEY] = null
         savedStateHandle[ENTRY_CATEGORY_ID_KEY] = null
-        savedStateHandle[ENTRY_CURRENCY_ID_KEY] = null
-        savedStateHandle[ENTRY_FREQUENCY_ID_KEY] = null
+        savedStateHandle[ENTRY_CURRENCY_CODE_KEY] = null
+        savedStateHandle[ENTRY_FREQUENCY_KEY] = null
         savedStateHandle[ENTRY_MOVEMENT_ID_KEY] = null
+        savedStateHandle[WAS_MOVEMENT_RETRIEVED_KEY] = false
+        _movement = null
     }
 }

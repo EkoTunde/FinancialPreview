@@ -5,8 +5,8 @@
     android:id="@+id/entryMovementCardView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="0dp"
     android:transitionName="@string/movement_card_detail_transition_name"
+    app:cardCornerRadius="0dp"
     tools:context=".ui.entry.EntryMovementFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,9 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="2dp"
                 android:hint="@string/left_amount"
-                app:errorEnabled="true"
                 android:labelFor="@id/actv_3"
                 android:textColorHint="@color/filledEditTextLightWhite"
                 android:visibility="gone"
@@ -50,17 +49,19 @@
                 app:endIconDrawable="@drawable/ic_edit"
                 app:endIconMode="custom"
                 app:endIconTint="@color/colorWhite"
+                app:errorEnabled="true"
                 app:hintTextColor="@color/filledEditTextLightWhite"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
                 app:prefixTextColor="@color/filledEditTextLightWhite"
                 app:startIconTint="@color/colorWhite">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/left_amount_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
                     android:fontFamily="@font/quicksand_regular"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionDone"
                     android:inputType="numberDecimal"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/filledEditTextLightWhite"
@@ -98,26 +99,26 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:hint="@string/starting_amount"
-                        android:labelFor="@id/left_amount_et"
+                        android:labelFor="@id/starting_amount_et"
                         app:boxCornerRadiusTopEnd="4dp"
                         app:boxCornerRadiusTopStart="4dp"
                         app:endIconDrawable="@drawable/ic_dialpad"
                         app:endIconMode="custom"
+                        app:errorEnabled="true"
                         app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_weight="9"
                         app:layout_constraintStart_toEndOf="@+id/currency"
-                        app:errorEnabled="true"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/left_amount_et"
+                            android:id="@+id/starting_amount_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/quicksand_regular"
-                            android:imeOptions="actionNext"
-                            android:inputType="numberDecimal" />
+                            android:imeOptions="actionDone"
+                            android:inputType="numberSigned|numberDecimal" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -132,11 +133,11 @@
                         app:boxCornerRadiusTopEnd="4dp"
                         app:boxCornerRadiusTopStart="4dp"
                         app:endIconMode="dropdown_menu"
+                        app:errorEnabled="true"
                         app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
                         app:layout_constraintEnd_toStartOf="@+id/starting_amount"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_weight="5"
-                        app:errorEnabled="true"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -152,7 +153,7 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <HorizontalScrollView
+                <!--<HorizontalScrollView
                     android:id="@+id/chip_group_container_two"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -187,19 +188,20 @@
 
                     </com.google.android.material.chip.ChipGroup>
 
-                </HorizontalScrollView>
+                </HorizontalScrollView>-->
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/account"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:hint="@string/account"
                     android:labelFor="@id/account_et"
                     app:boxCornerRadiusTopEnd="4dp"
                     app:boxCornerRadiusTopStart="4dp"
                     app:endIconMode="dropdown_menu"
+                    app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
                     app:startIconDrawable="@drawable/ic_account_balance">
 
@@ -217,12 +219,12 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:hint="@string/not_repeats"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/frequency"
                     android:labelFor="@id/frequency_et"
                     app:boxCornerRadiusTopEnd="4dp"
                     app:boxCornerRadiusTopStart="4dp"
-                    app:endIconMode="none"
+                    app:endIconMode="dropdown_menu"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
                     app:startIconDrawable="@drawable/ic_repeat">
@@ -241,7 +243,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:hint="@string/category"
                     android:labelFor="@id/category_et"
                     app:boxCornerRadiusTopEnd="4dp"
@@ -265,13 +267,13 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:hint="@string/name"
-                    app:errorEnabled="true"
+                    android:labelFor="@+id/name_et"
                     app:boxCornerRadiusTopEnd="4dp"
                     app:boxCornerRadiusTopStart="4dp"
-                    android:labelFor="@+id/name_et"
                     app:endIconMode="clear_text"
+                    app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
                     app:startIconDrawable="@drawable/ic_label">
 
@@ -289,13 +291,13 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:hint="@string/description"
+                    android:labelFor="@+id/description_et"
                     app:boxCornerRadiusTopEnd="4dp"
                     app:boxCornerRadiusTopStart="4dp"
                     app:counterEnabled="true"
                     app:counterMaxLength="100"
-                    android:labelFor="@+id/description_et"
                     app:endIconMode="clear_text"
                     app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
                     app:startIconDrawable="@drawable/ic_description">
@@ -314,7 +316,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:hint="@string/budget"
                     android:labelFor="@id/budget_et"
                     app:boxCornerRadiusTopEnd="4dp"

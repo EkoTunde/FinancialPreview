@@ -1,7 +1,6 @@
 package com.ekosoftware.financialpreview.presentation
 
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.BaseViewModel
 import com.ekosoftware.financialpreview.core.Resource
@@ -77,10 +76,10 @@ class SelectionViewModel @Inject constructor(
     val accountId: MutableLiveData<String?> = savedStateHandle.getLiveData(SELECTION_ACCOUNT_ID_KEY, null)
 
     fun setAccountId(id: String?) {
-        accountId.value = id
+        savedStateHandle[SELECTION_ACCOUNT_ID_KEY] = id
     }
 
-    val budgetId = MutableLiveData<String?>()
+    val budgetId: MutableLiveData<String?> = savedStateHandle.getLiveData(SELECTION_BUDGET_ID_KEY, null)
 
     fun setBudgetId(id: String?) {
         budgetId.value = id
@@ -89,31 +88,25 @@ class SelectionViewModel @Inject constructor(
     val categoryId: MutableLiveData<String?> = savedStateHandle.getLiveData(SELECTION_CATEGORY_ID_KEY, null)
 
     fun setCategoryId(id: String?) {
-        categoryId.value = id
+        savedStateHandle[SELECTION_CATEGORY_ID_KEY] = id
     }
 
     val currencyId: MutableLiveData<String?> = savedStateHandle.getLiveData(SELECTION_CURRENCY_ID_KEY, null)
 
     fun setCurrencyId(id: String?) {
-        Log.d(TAG, "##setCurrencyId: currency set to $id from SelectFragment")
-        currencyId.value = id
+        savedStateHandle[SELECTION_CURRENCY_ID_KEY] = id
     }
 
     val movementId: MutableLiveData<String?> = savedStateHandle.getLiveData(SELECTION_MOVEMENT_ID_KEY, null)
 
     fun setMovementId(id: String?) {
-        movementId.value = id
+        savedStateHandle[SELECTION_MOVEMENT_ID_KEY] = id
     }
 
     val settleGroupId: MutableLiveData<String?> = savedStateHandle.getLiveData(SELECTION_SETTLE_GROUP_ID_KEY, null)
 
     fun setSettleGroupId(id: String?) {
-        settleGroupId.value = id
-    }
-
-    fun clearSelectedData() {
-        setCategoryId(null)
-        savedStateHandle[SELECTION_CATEGORY_ID_KEY] = null
+        savedStateHandle[SELECTION_SETTLE_GROUP_ID_KEY] = id
     }
 
     override fun onCleared() {
@@ -127,22 +120,3 @@ class SelectionViewModel @Inject constructor(
         savedStateHandle[SELECTION_SETTLE_GROUP_ID_KEY] = null
     }
 }
-
-
-/*
-fun displayableItems(type: Int = SelectionViewModel.ACCOUNTS) = searchText.distinctUntilChanged().switchMap { searchText ->
-    liveData<Resource<List<SimpleDisplayableData>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
-        emit(Resource.Loading())
-        try {
-            emitSource(
-                selectionRepository.getSimpleQueryData(type, searchText).map {
-                    it.map { queryData -> queryData.forDisplay(type) }
-                }.map {
-                    Resource.Success(it)
-                }
-            )
-        } catch (e: Exception) {
-            emit(Resource.Failure(e))
-        }
-    }
-}*/

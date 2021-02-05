@@ -15,9 +15,11 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
             app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/Theme.AppCompat.Light" />
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
+            app:title="@string/calculator" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
@@ -38,17 +40,17 @@
                 android:layout_height="0dp"
                 android:layout_margin="16dp"
                 android:background="@android:color/transparent"
-                android:fontFamily="@font/quicksand_regular"
+                android:fontFamily="@font/work_sans_light"
                 android:gravity="center|end"
                 android:importantForAutofill="no"
                 android:lines="1"
+                android:scrollHorizontally="true"
                 android:text="@string/_0"
                 android:textAlignment="gravity"
                 android:textColor="@color/colorWhite"
                 android:textSize="100sp"
                 app:autoSizeMaxTextSize="100sp"
                 app:autoSizeMinTextSize="18sp"
-                app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -188,7 +190,7 @@
                         style="@style/Button.Numpad.Num"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="@string/comma" />
+                        android:text="@string/decimal_point" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/num_backspace"
@@ -216,28 +218,32 @@
                     style="@style/Button.Operator"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:text="@string/div" />
+                    android:text="@string/div"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/op_mult"
                     style="@style/Button.Operator"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:text="@string/mult" />
+                    android:text="@string/mult"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/op_minus"
                     style="@style/Button.Operator"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:text="@string/minus" />
+                    android:text="@string/minus"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/op_plus"
                     style="@style/Button.Operator"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:text="@string/plus" />
+                    android:text="@string/plus"
+                    android:textStyle="bold" />
 
 
                 <com.google.android.material.button.MaterialButton
@@ -245,7 +251,8 @@
                     style="@style/Button.Operator"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:text="@string/equal" />
+                    android:text="@string/equal"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

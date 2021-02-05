@@ -10,14 +10,14 @@
     <style name="Button.Operator" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
-        <item name="fontFamily">@font/quicksand_regular</item>
+        <item name="fontFamily">@font/work_sans_light</item>
         <item name="android:textSize">32sp</item>
     </style>
 
     <style name="Button.Numpad.Num" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
-        <item name="fontFamily">@font/quicksand_light</item>
+        <item name="fontFamily">@font/work_sans_light</item>
         <item name="android:textSize">36sp</item>
     </style>
 

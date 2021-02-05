@@ -15,15 +15,18 @@ import com.ekosoftware.financialpreview.presentation.SimpleDisplayableData
 import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 import org.joda.time.Days
 import org.joda.time.LocalDateTime
+import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.*
 
 private const val TAG = "DataExtensions"
 
+
 /**
  * Returns the year, e.g.: 2019 from [Int] representing a year and a month, e.g.: 201907.
  */
 fun Int.getYear() = this.toString().substring(0, 4).toInt()
+
 
 /**
  * Returns the month, e.g.: 7 from [Int] representing a year and a month, e.g.: 201907.
@@ -32,10 +35,35 @@ fun Int.getMonth(): Int {
     return this.toString().substring(4).toInt()
 }
 
+
 /**
  * Returns the month as String, e.g.: 07 from [Int] representing a year and a month, e.g.: 201907.
  */
-fun Int.getMonthAsString(): String = this.toString().substring(4)
+fun Int.getMonthAsString(): String = this.getMonth().toString().padStart(2, '0')
+
+
+/**
+ * Returns the result of given input month represented as an [Int] (e.g.: 1 for January)
+ * into a [String] representing the abbreviated format of the month (e.g.: Jan for January).
+ */
+fun Int.parseToAbbreviatedString(): String = Strings.get(
+    when (this) {
+        1 -> R.string.month_jan_key
+        2 -> R.string.month_feb_key
+        3 -> R.string.month_mar_key
+        4 -> R.string.month_apr_key
+        5 -> R.string.month_may_key
+        6 -> R.string.month_jun_key
+        7 -> R.string.month_jul_key
+        8 -> R.string.month_aug_key
+        9 -> R.string.month_sep_key
+        10 -> R.string.month_oct_key
+        11 -> R.string.month_nov_key
+        12 -> R.string.month_dec_key
+        else -> throw IllegalArgumentException("Given parameter $this isn't a value month to be parsed to abbreviated string.")
+    }
+)
+
 
 /**
  * Returns the result of adding the [this] month and the given months.
@@ -71,6 +99,7 @@ fun Int.plusMonths(months: Int): Int {
     }".toInt() // Pad starts puts a zero before one digit months
 }
 
+
 /**
  * Transforms a [List] of [Movement]s into a [Double] representing the sum of the products between
  * [Movement]'s leftAmounts and the [SettleGroupWithMovements.settleGroup]'s taxes percentage rate.
@@ -91,6 +120,7 @@ fun SettleGroupWithMovements.taxes(
                 && movement.currencyCode == currencyCode
                 && filter(movement)
     }.sumOf { it.leftAmount.times(this.settleGroup.percentage / 100).toLong() }
+
 
 /**
  * Transforms a [List]<[SettleGroupWithMovements]> into a MonthSummary computing only
@@ -113,6 +143,7 @@ fun List<SettleGroupWithMovements>.summary(fromTo: Int, currency: String): Month
     return MonthSummary(currency, fromTo, incomesTotal.toLong(), expensesTotal.toLong())
 }
 
+
 /**
  * Combines two [LiveData] objects in one.
  * **See Also:**[StackOverflow](https://stackoverflow.com/a/57079290/10860780).
@@ -134,6 +165,15 @@ fun <T, K, R> LiveData<T>.combineWith(
     return result
 }
 
+
+/**
+ * Combines three [LiveData] objects in one.
+ * **See Also:**[StackOverflow](https://stackoverflow.com/a/57079290/10860780).
+ *
+ * @param liveData1 [LiveData] to combine to.
+ * @param liveData2 [LiveData] to combine to.
+ * @param block lambda code block.
+ */
 fun <X, Y, Z, R> LiveData<X>.combineWith(
     liveData1: LiveData<Y>,
     liveData2: LiveData<Z>,
@@ -152,6 +192,10 @@ fun <X, Y, Z, R> LiveData<X>.combineWith(
     return result
 }
 
+
+/**
+ * TODO()
+ */
 fun currentYearMonth(): Int {
     val c = Calendar.getInstance()
     val year = c.get(Calendar.YEAR)
@@ -159,6 +203,11 @@ fun currentYearMonth(): Int {
     return "$year$month".toInt()
 }
 
+
+/**
+ * Takes an [Int] representing a month and year, and returns
+ * it's corresponding month key in [String] format, e.g.: 202101 to "Jan".
+ */
 fun Int.monthNameKey(): String {
     return when (this.getMonth()) {
         1 -> Strings.get(R.string.month_jan_key)
@@ -172,34 +221,80 @@ fun Int.monthNameKey(): String {
         9 -> Strings.get(R.string.month_sep_key)
         10 -> Strings.get(R.string.month_oct_key)
         11 -> Strings.get(R.string.month_nov_key)
-        else -> Strings.get(R.string.month_dec_key)
+        12 -> Strings.get(R.string.month_dec_key)
+        else -> throw IllegalArgumentException("Given $this isn't a month")
     }
 }
 
+
+/**
+ * Takes a [Long] representing an amount which was parsed
+ * for [androidx.room]'s database and parses it back as
+ * a [Double]. For this process, amount must be divided
+ * by 10_000.0, the inverse process that was performed
+ * when parsing it for database.
+ */
 fun Long.forCommunicationAmount(): Double = this / 10_000.0
+
+
+/**
+ * Takes a [Long] representing and amount (times 10_000 because it was retrieved from database)
+ * and returns a [String] version considering the amount of decimal places the currency permits.
+ *
+ * @param currencyCode [String] representing currency's code
+ */
 fun Long.forDisplayAmount(currencyCode: String): String {
     val amount = (this / 10_000.0).toString().split(".")
+    // Part before the decimal indicator
     val preDecimal = amount[0]
+    // Part after decimal indicator
     val postDecimal = "." + amount[1]
-    println("currency is $currencyCode")
     return when (val maxDigits = Currency.getInstance(currencyCode).defaultFractionDigits) {
+        // When no decimal places allowed, return first part
         0 -> preDecimal
+        // When decimal places allowed, return first and second part, and pad to the end the
+        // amount of zeros needed to reach the amount of decimal places permitted by currency
         else -> preDecimal + postDecimal.take(maxDigits + 1).padEnd(maxDigits + 1, '0')
     }
 }
 
+
+/**
+ * Transforms a [Double] *this* (which represents and amount)
+ * into a [String] ready for displaying in UI, taking into an account
+ * the amount of fraction digits the provided *currency* allows.
+ *
+ * @param currencyCode [String] representing the currency of a [Movement]'s amount.
+ */
 fun Double.forDisplayAmount(currencyCode: String): String {
     val amount = this.toString().split(".")
     val preDecimal = amount[0]
     val postDecimal = "." + amount[1]
-
+    // Takes as a param the amount of
     return when (val maxDigits = Currency.getInstance(currencyCode).defaultFractionDigits) {
         0 -> preDecimal
         else -> preDecimal + postDecimal.take(maxDigits + 1).padEnd(maxDigits + 1, '0')
     }
 }
 
+
+/**
+ * Takes a [Double] representing an amount generated by
+ * user input, and parses it into a [Long]. For this process,
+ * amount must be multiplied by 10_000, to avoid floating points
+ * error when making future SQL operations. For this purpose,
+ * amounts ares multiplied and parsed to [Long] so operations
+ * are done with Real Numbers instead of Rational Numbers.
+ * The number 10_000 is needed because some currencies allow
+ * up to four fraction digits after decimal point.
+ *
+ */
 fun Double.forDatabaseAmount(): Long = (this * 10_000).toLong()
+
+
+/**
+ * TODO()
+ */
 private fun Date.asString(): String {
     val date = LocalDateTime(this)
     val current = LocalDateTime()
@@ -212,6 +307,12 @@ private fun Date.asString(): String {
     }
 }
 
+
+/**
+ * Takes a [MovementUI] *this* and returns a [String]
+ * containing the number of quota from total installments,
+ * as in *e.g.: " 8/12" for 8th quota from 12 in total*.
+ */
 fun MovementUI.installmentsCalc(): String {
     if (this.totalInstallments == null) return ""
     var current = this.fromYearMonth
@@ -220,10 +321,14 @@ fun MovementUI.installmentsCalc(): String {
         current = current.plusMonths(1)
         counter++
     }
-    return if (counter == 0) return ""
-    else " " + Strings.get(R.string.installments_placeholder, counter, this.totalInstallments!!)
+    return if (counter < 0) return ""
+    else " " + Strings.get(R.string.installments_placeholder, this.totalInstallments!! - counter, this.totalInstallments!!)
 }
 
+
+/**
+ * TODO()
+ */
 fun String.monthsCheckedSummary(): String {
     val builder = StringBuilder()
     builder.append(Strings.get(R.string.is_repeated_on))
@@ -250,42 +355,81 @@ fun String.monthsCheckedSummary(): String {
     return builder.toString()
 }
 
+
+/**
+ * Returns a summary of parts of the [Frequency].
+ *
+ * Depending on the information provided by the [Frequency] itself,
+ * the resulting [String] communicates different information. For instance,
+ * when the [Frequency.from] equals [Frequency.to], it indicates the
+ * [Frequency] is a one-time [Movement].
+ *
+ * @return [String] representing the summary result.
+ *
+ */
 fun Frequency?.forDisplay(): String {
     this?.let {
-        Log.d(TAG, "forDisplay: from>${it.from} to>${it.to} installments>${it.installments}")
+        Log.d(TAG, "forDisplay: from>${it.from} to>${it.to} installments>${it.installments} months>${it.monthsChecked}")
         return when {
+
+            // When ´from´ equals ´to´, it indicates the Frequency is a one-time Movement,
+            // so it returns the month's name (monthNameKey) and the year, as in "Jan-2021"
             it.from == it.to -> "${it.from!!.monthNameKey()}-${it.from!!.getYear()}"
+
+            // When ´to´ equals 999999, it means the Movement is a never ending
+            // repeated one. So result string indicates Movements repeats from
+            // certain month and year and whether all months are included or not.
             to == 999999 -> Strings.get(
                 R.string.repeats_placeholder_from,
                 it.from!!.monthNameKey(),
                 it.from!!.getYear(),
-                if (it.monthsChecked == Strings.get(R.string.all_months_checked_frequency)) {
-                    Strings.get(R.string.every_month)
-                } else Strings.get(R.string.some_months)
+                if (it.monthsChecked == Strings.get(R.string.all_months_checked_frequency)) Strings.get(R.string.every_month) else Strings.get(R.string.some_months)
             )
-            it.installments != null || it.installments!! > 0 -> Strings.get(R.string.installments_frequency_placeholder, it.installments!!)
+
+            // If there are any installments at all, just return how much
+            // of them and when it starts.
+            it.installments != null && it.installments!! > 1 -> Strings.get(
+                R.string.installments_frequency_placeholder,
+                it.installments!!,
+                (it.from?.getMonth() ?: 1).parseToAbbreviatedString(),
+                it.from!!.getYear()
+            )
+
+            // If none of above, summary must indicate it repeats,
+            // and from when till when, and if every month, or not.
             else -> Strings.get(
                 R.string.repeats_placeholder_to,
                 it.from!!.monthNameKey(),
                 it.from!!.getYear(),
                 it.to!!.monthNameKey(),
                 it.to!!.getYear(),
-                if (this.monthsChecked == Strings.get(R.string.all_months_checked_frequency)) {
-                    Strings.get(R.string.every_month)
-                } else Strings.get(R.string.some_months)
+                if (this.monthsChecked == Strings.get(R.string.all_months_checked_frequency)) Strings.get(R.string.every_month) else Strings.get(R.string.some_months)
             )
         }
     }
     return ""
 }
 
+
+/**
+ * Parses [SimpleQueryData] *this* to [SimpleDisplayableData].
+ * Called when data from database loaded with general purpose [SimpleQueryData] class,
+ * needs to be transform into displayable data, because of it's general purpose data needs
+ * to be adequate to be presented.
+ *
+ * @param type [Int] representing a constant value declared in [SelectionViewModel].
+ */
 fun SimpleQueryData.forDisplay(type: Int): SimpleDisplayableData {
     return SimpleDisplayableData(
         id,
         name,
+        // Description property varies for some of the object types.
         when (type) {
+            // When obj is an Account, description is the typeId, which stands for a @StringResId.
             SelectionViewModel.ACCOUNTS -> Strings.get(typeId!!)
+            // When a Currency, it's display name.
             SelectionViewModel.CURRENCIES -> Currency.getInstance(id).displayName.capitalize(Locale.ROOT)
+            // When a Movement, the currency and left amount.
             SelectionViewModel.MOVEMENTS -> Strings.get(
                 R.string.amount_holder,
                 currencyCode!!,
@@ -297,3 +441,17 @@ fun SimpleQueryData.forDisplay(type: Int): SimpleDisplayableData {
         iconResId
     )
 }
+
+/**
+ * Checks whether given number is a factor o 100.
+ * Called by [hasUselessDecimals].
+ */
+fun factor100(n: Number) = n.toDouble() % 100.0 == 0.0
+
+/**
+ * Returns true if given [BigDecimal]'s decimal point numbers are different from zeros.
+ * Checks whether given number times 100 is a factor of 100.
+ *
+ * @see factor100
+ */
+fun BigDecimal.hasUselessDecimals(): Boolean = factor100(times(BigDecimal("100")))

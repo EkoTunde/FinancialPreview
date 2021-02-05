@@ -51,7 +51,7 @@
     <fragment
         android:id="@+id/editMovementFragment"
         android:name="com.ekosoftware.financialpreview.ui.entry.EntryMovementFragment"
-        android:label="edit_fragment_movement"
+        android:label="@string/pending"
         tools:layout="@layout/entry_fragment_movement">
         <argument
             android:name="movementId"
@@ -60,8 +60,10 @@
         <action
             android:id="@+id/action_editMovement_to_editFrequency"
             app:destination="@id/editFrequencyFragment4"
-            app:enterAnim="@anim/enter_anim_selection"
-            app:popExitAnim="@anim/exit_anim_selection" />
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="movementUI"
             app:argType="com.ekosoftware.financialpreview.data.model.movement.MovementUI"
@@ -159,8 +161,17 @@
     <fragment
         android:id="@+id/calculatorFragment4"
         android:name="com.ekosoftware.financialpreview.ui.calc.CalculatorFragment"
-        android:label="fragment_calculator"
-        tools:layout="@layout/fragment_calculator" />
+        android:label="@string/calculator"
+        tools:layout="@layout/fragment_calculator">
+        <argument
+            android:name="amount"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="decimalPoints"
+            app:argType="integer"
+            android:defaultValue="2" />
+    </fragment>
     <action
         android:id="@+id/action_global_calculatorFragment4"
         app:destination="@id/calculatorFragment4"
