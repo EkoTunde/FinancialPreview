@@ -1,6 +1,8 @@
 package com.ekosoftware.financialpreview.presentation
 
 import android.content.Context
+import android.os.Parcelable
+import android.util.Log
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.BaseViewModel
 import com.ekosoftware.financialpreview.core.Resource
@@ -9,16 +11,16 @@ import com.ekosoftware.financialpreview.data.model.HomeData
 import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.data.model.movement.MovementUI
 import com.ekosoftware.financialpreview.domain.local.MainRepository
-import com.ekosoftware.financialpreview.util.combineWith
-import com.ekosoftware.financialpreview.util.currentYearMonth
-import com.ekosoftware.financialpreview.util.plusMonths
+import com.ekosoftware.financialpreview.util.*
 import dagger.assisted.Assisted
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.math.BigDecimal
 import java.util.*
 import javax.inject.Inject
 
@@ -26,7 +28,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     @ApplicationContext private val appContext: Context,
     private val mainRepository: MainRepository,
-     private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     init {
@@ -46,29 +48,35 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    data class HomeScreenConfiguration(
-        val searchPhrase: String = "",
-        val currencyCode: String = "ARS"/*localeCurrencyCode()*/,
-        val currentYearMonth: Int = 202101/*currentYearMonth()*/,
-        val lastUpdate: Long = 0
-    )
+     @Parcelize data class HomeScreenConfiguration(
+        var searchPhrase: String = "",
+        var currencyCode: String = "ARS"/*localeCurrencyCode()*/,
+        var currentYearMonth: Int = 202101/*currentYearMonth()*/,
+        var lastUpdate: Long = 0
+    ) : Parcelable
 
     private val selectedConfiguration =
         savedStateHandle.getLiveData(SELECTED_CONFIG_KEY, HomeScreenConfiguration())
 
     fun submitSearchQuery(query: String) {
-        val old = selectedConfiguration.value
-        setConfiguration(
-            HomeScreenConfiguration(
-                query,
-                old?.currencyCode ?: localeCurrencyCode(),
-                old?.currentYearMonth ?: currentYearMonth()
-            )
-        )
+        val old: HomeScreenConfiguration? = savedStateHandle[SELECTED_CONFIG_KEY]
+        savedStateHandle[SELECTED_CONFIG_KEY] = old.apply {
+            this?.searchPhrase = query
+        } ?: HomeScreenConfiguration()
     }
 
-    fun setConfiguration(homeScreenConfiguration: HomeScreenConfiguration) {
-        savedStateHandle[SELECTED_CONFIG_KEY] = homeScreenConfiguration
+    fun setConfiguration(currencyCode: String, currentYearMonth: Int) {
+        val old: HomeScreenConfiguration? = savedStateHandle[SELECTED_CONFIG_KEY]
+        savedStateHandle[SELECTED_CONFIG_KEY] = old.apply {
+            this?.currencyCode = currencyCode
+            this?.currentYearMonth = currentYearMonth
+        } ?: HomeScreenConfiguration()
+    }
+
+    fun refresh(): Boolean {
+        submitSearchQuery(" ")
+        submitSearchQuery("")
+        return true
     }
 
     val movements: LiveData<Resource<List<MovementUI>>> =
@@ -105,12 +113,31 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    val homeData: LiveData<Resource<HomeData>> = selectedConfiguration.switchMap { config ->
+    val homeData: LiveData<Resource<HomeData>> = selectedConfiguration.distinctUntilChanged().switchMap { config ->
         liveData<Resource<HomeData>>(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading())
             try {
                 val months = listOf(0..12).flatten().map {
                     withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
+                        if (it == 0) {
+                            val f = mainRepository.getMonthPendingSummary(
+                                config.currentYearMonth.plusMonths(it),
+                                config.currencyCode
+                            )
+                            Log.d("PRUEBA f", "$f")
+                            Log.d("PRUEBA f2", "${f.settleGroupsExpense}")
+                            Log.d("PRUEBA f3", f.yearMonth.monthNameKey())
+                            val a = (f.settleGroupsExpense ?: 0L).forCommunicationAmount()
+                            Log.d("PRUEBA a", "$a")
+                            val b = BigDecimal(a.toString())
+                            Log.d("PRUEBA b", "$b")
+                            val c = b.times(BigDecimal("0.012"))
+                            Log.d("PRUEBA c", "$c")
+                            val d = f.settleGroupsExpense?.times(0.012)
+                            Log.d("PRUEBA d", "$d")
+                            val r = BigDecimal((f.settleGroupsExpense ?: 0L).forCommunicationAmount().toString()).times(BigDecimal("0.012"))
+                            Log.d("PRUEBA r", "$r")
+                        }
                         mainRepository.getMonthPendingSummary(
                             config.currentYearMonth.plusMonths(it),
                             config.currencyCode

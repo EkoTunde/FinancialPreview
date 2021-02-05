@@ -254,4 +254,8 @@
         android:id="@+id/settleOptionsDialog"
         android:name="com.ekosoftware.financialpreview.ui.home.SettleOptionsDialog"
         android:label="SettleOptionsDialog" />
+    <action
+        android:id="@+id/action_global_pending_page_fragment"
+        app:destination="@id/pending_page_fragment"
+        app:popUpTo="@id/pending_page_fragment" />
 </navigation>

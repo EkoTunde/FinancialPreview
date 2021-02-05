@@ -270,7 +270,8 @@ class EntryMovementFragment : Fragment() {
      * Deletes the movement.
      */
     private fun delete() {
-        entryMovementViewModel.delete()
+        entryMovementViewModel.delete(args.movementId)
+        findNavController().navigate(MainNavGraphDirections.actionGlobalPendingPageFragment())
     }
 
     /**

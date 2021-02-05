@@ -77,4 +77,52 @@ interface SettleGroupDao : BaseDao<SettleGroup> {
     """
     )
     fun getSettleGroupsAsSimpleData(searchPhrase: String): LiveData<List<SimpleQueryData>>
+
+    /* @Query(
+         """
+         SELECT s.*, SUM(m.movementLeftAmount)
+         FROM settleGroups s
+         JOIN settleGroupMovementsCrossRefTable cf
+         ON s.settleGroupId = cf.settleGroupId
+         JOIN movements m ON m.movementId = cf.movementId
+         AND movementCurrencyCode = :currencyCode
+         AND movementFreqFrom <= :fromTo
+         AND movementFreqTo >= :fromTo
+         AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+         GROUP BY s.settleGroupName
+     """
+     )
+     fun g(
+         fromTo: Int,
+         currencyCode: String,
+         monthIncluded: String
+     ): LiveData<SettleGroupSummary>
+
+     data class SettleGroupSummary(
+         val settleGroup: SettleGroup,
+         val movementsBalance: Long
+     )
+
+     @Query(
+         """
+         SELECT (SUM(total))/100
+         FROM(
+             SELECT SUM(m.movementLeftAmount) * s.settleGroupPercentage AS total
+             FROM settleGroups s
+             JOIN settleGroupMovementsCrossRefTable cf
+             ON s.settleGroupId = cf.settleGroupId
+             JOIN movements m ON m.movementId = cf.movementId
+             WHERE movementLeftAmount < 0
+             AND movementCurrencyCode = :currencyCode
+             AND movementFreqFrom <= :fromTo
+             AND movementFreqTo >= :fromTo
+             AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+         )
+     """
+     )
+     fun asdasdg(
+         fromTo: Int,
+         currencyCode: String,
+         monthIncluded: String
+     ): LiveData<SettleGroupSummary>*/
 }

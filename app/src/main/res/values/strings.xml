@@ -323,5 +323,6 @@
     <string name="warn_left_amount_changing_message">Editar el saldo restante de este movimiento no crea ni quita un registro.</string>
     <string name="left_amount_was_set_back_to_starting_amount">El saldo restante se equiparó al original</string>
     <string name="undo">Deshacer</string>
+    <string name="refresh">Refrescar</string>
 
 </resources>

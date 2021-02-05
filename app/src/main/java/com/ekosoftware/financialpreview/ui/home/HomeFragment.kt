@@ -2,13 +2,15 @@ package com.ekosoftware.financialpreview.ui.home
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import com.ekosoftware.financialpreview.MainActivity
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Constants
 import com.ekosoftware.financialpreview.app.Constants.SETTLE_TYPE_LOAN_DEBT
@@ -32,6 +34,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.item_home_05_quick_view.view.*
 
 class HomeFragment : Fragment() {
@@ -48,8 +51,40 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        setupToolbar()
         return binding.root
     }
+
+    private fun setupToolbar() {
+        binding.toolbar.inflateMenu(
+            R.menu.home_menu
+        )
+        binding.toolbar.setOnMenuItemClickListener {
+            Toast.makeText(requireContext(), "REFRESH!", Toast.LENGTH_SHORT).show()
+            mainViewModel.refresh()
+            true
+        }
+        //(requireActivity() as MainActivity).setSupportActionBar(binding.toolbar)
+        //(requireActivity() as MainActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    /*override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.home_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    *//**
+     * Handles saving button onClickListener
+     *//*
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_item_refresh -> {
+                Toast.makeText(requireContext(), "r", Toast.LENGTH_SHORT).show()
+                mainViewModel.refresh()
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -72,16 +107,17 @@ class HomeFragment : Fragment() {
                     is Resource.Success -> {
                         progressBar.hide()
                         scrollViewContainer.show()
+                        Log.d("HOLA", "fetchData: ${result.data}")
                         setUpBalance(result.data.currencyCode, result.data.currentBalance)
                         setUpPendingSummary(
                             result.data.currencyCode,
                             when {
                                 result.data.incomes.isEmpty() -> 0.0
-                                else -> result.data.incomes[0].forCommunicationAmount()
+                                else -> result.data.incomes[0]
                             },
                             when {
                                 result.data.expenses.isEmpty() -> 0.0
-                                else -> result.data.expenses[0].forCommunicationAmount()
+                                else -> result.data.expenses[0]
                             }
                         )
                         setUpProjection(result.data)
@@ -100,38 +136,49 @@ class HomeFragment : Fragment() {
         currentTotal.applyMoneyFormat(currencyCode, balance)
     }
 
-    private fun setUpActions() = binding.actions.apply {
-        btnSettle.setOnClickListener {
-            val actions = HomeFragmentDirections.actionHomePageFragmentToSettleOptionsDialog()
-            findNavController().navigate(actions)
+    private fun setUpActions() {
+        /* = binding.actions.apply {*/
+        hashMapOf(
+            binding.actions.btnSettle to HomeFragmentDirections.actionHomePageFragmentToSettleOptionsDialog(),
+            binding.actions.btnAddPending to HomeFragmentDirections.actionGlobalEditMovementFragment(Constants.nan, null),
+            binding.actions.btnAddRecord to HomeFragmentDirections.actionGlobalSettleFragment(SETTLE_TYPE_SIMPLE_RECORD, null),
+            binding.actions.btnTransfer to HomeFragmentDirections.actionGlobalSettleFragment(SETTLE_TYPE_TRANSFER, null),
+            binding.actions.btnLoan to HomeFragmentDirections.actionGlobalSettleFragment(SETTLE_TYPE_LOAN_DEBT, null),
+        ).forEach { (btn, action) ->
+            btn.setOnClickListener { findNavController().navigate(action) }
         }
-        btnAddPending.setOnClickListener {
-            findNavController().navigate(
-                HomeFragmentDirections.actionGlobalEditMovementFragment(Constants.nan, null)
-            )
-        }
-        btnAddRecord.setOnClickListener {
-            findNavController().navigate(
-                HomeFragmentDirections.actionGlobalSettleFragment(
-                    SETTLE_TYPE_SIMPLE_RECORD,
-                    null
+        /*
+            btnSettle.setOnClickListener {
+                val actions = HomeFragmentDirections.actionHomePageFragmentToSettleOptionsDialog()
+                findNavController().navigate(actions)
+            }
+            btnAddPending.setOnClickListener {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionGlobalEditMovementFragment(Constants.nan, null)
                 )
-            )
-        }
-        btnTransfer.setOnClickListener {
-            findNavController().navigate(
-                HomeFragmentDirections.actionGlobalSettleFragment(
-                    SETTLE_TYPE_TRANSFER, null
+            }
+            btnAddRecord.setOnClickListener {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionGlobalSettleFragment(
+                        SETTLE_TYPE_SIMPLE_RECORD,
+                        null
+                    )
                 )
-            )
-        }
-        btnLoan.setOnClickListener {
-            findNavController().navigate(
-                HomeFragmentDirections.actionGlobalSettleFragment(
-                    SETTLE_TYPE_LOAN_DEBT, null
+            }
+            btnTransfer.setOnClickListener {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionGlobalSettleFragment(
+                        SETTLE_TYPE_TRANSFER, null
+                    )
                 )
-            )
-        }
+            }
+            btnLoan.setOnClickListener {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionGlobalSettleFragment(
+                        SETTLE_TYPE_LOAN_DEBT, null
+                    )
+                )
+            }*/
     }
 
     private fun setUpPendingSummary(
@@ -206,8 +253,8 @@ class HomeFragment : Fragment() {
 
         // Set data
         val barData = getBarData(
-            homeData.incomes.map { it.forCommunicationAmount() },
-            homeData.expenses.map { it.forCommunicationAmount() },
+            homeData.incomes,
+            homeData.expenses,
             homeData.monthsNames
         )
         val lineData =

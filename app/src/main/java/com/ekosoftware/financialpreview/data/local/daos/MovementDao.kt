@@ -190,11 +190,19 @@ interface MovementDao : BaseDao<Movement> {
         monthIncluded: String
     ): MonthSummary
 
+    /**
+     *
+     */
     @Transaction
     @Query(
         """
         SELECT :currencyCode AS currencyCode,
         :yearMonth AS yearMonth,
+        (
+            SELECT SUM(accountBalance) 
+            FROM accounts 
+            WHERE accountCurrencyCode = :currencyCode
+        ) AS currentAccountsBalance,
         (
             SELECT SUM(movementLeftAmount) 
             FROM movements 
@@ -230,7 +238,37 @@ interface MovementDao : BaseDao<Movement> {
             AND budgetFreqFrom <= :yearMonth 
             AND budgetFreqTo >= :yearMonth
             AND budgetFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
-        ) AS budgetExpense
+        ) AS budgetExpense,
+        (
+            SELECT SUM(total)/100
+            FROM(
+                    SELECT SUM(m.movementLeftAmount) * s.settleGroupPercentage AS total
+                    FROM settleGroups s
+                    JOIN settleGroupMovementsCrossRefTable cf 
+                    ON s.settleGroupId = cf.settleGroupId 
+                    JOIN movements m ON m.movementId = cf.movementId
+                    WHERE movementLeftAmount > 0
+                    AND movementCurrencyCode = :currencyCode 
+                    AND movementFreqFrom <= :yearMonth 
+                    AND movementFreqTo >= :yearMonth
+                    AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+            )        
+        ) AS settleGroupsIncome,
+        (
+            SELECT SUM(total)/100 
+            FROM (
+                    SELECT SUM(m.movementLeftAmount) * s.settleGroupPercentage AS total
+                    FROM settleGroups s
+                    JOIN settleGroupMovementsCrossRefTable cf 
+                    ON s.settleGroupId = cf.settleGroupId 
+                    JOIN movements m ON m.movementId = cf.movementId
+                    WHERE movementLeftAmount < 0
+                    AND movementCurrencyCode = :currencyCode 
+                    AND movementFreqFrom <= :yearMonth 
+                    AND movementFreqTo >= :yearMonth
+                    AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+            )
+        ) AS settleGroupsExpense
         """
     )
     fun getMonthPendingSummary(
@@ -275,7 +313,8 @@ interface MovementDao : BaseDao<Movement> {
         monthIncluded: String
     ): LiveData<List<MovementUI>>
 
-    @Query("""
+    @Query(
+        """
         SELECT movementId AS id, movementLeftAmount AS leftAmount, movementStartingAmount AS startingAmount,
         movementCurrencyCode AS currencyCode, movementName AS name, movementFreqFrom AS fromYearMonth, 
         movementFreqTo AS toYearMonth, movementFreqInstallments AS totalInstallments, movementFreqMonthsChecked as monthsChecked,
@@ -287,8 +326,9 @@ interface MovementDao : BaseDao<Movement> {
         LEFT JOIN categories ON movementCategoryId = categoryId
         LEFT JOIN budgets ON movementBudgetId = budgetId
         WHERE movementId = :id
-    """)
-    fun getMovementUI(id: String) : LiveData<MovementUI>
+    """
+    )
+    fun getMovementUI(id: String): LiveData<MovementUI>
 
     @Query("SELECT SUM(accountBalance) FROM accounts WHERE accountCurrencyCode = :currency")
     fun getAccountsTotalForCurrency(currency: String): LiveData<Double?>
@@ -316,4 +356,7 @@ interface MovementDao : BaseDao<Movement> {
     """
     )
     fun getMovementsAsSimpleData(searchPhrase: String): LiveData<List<SimpleQueryData>>
+
+    @Query("DELETE FROM movements WHERE movementId = :movementId")
+    suspend fun deleteWithId(movementId: String): Int
 }

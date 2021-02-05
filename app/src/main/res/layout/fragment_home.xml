@@ -5,31 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPlainBackground"
-    tools:context=".ui.home.HomeFragment"
-    android:paddingBottom="@dimen/bottom_app_bar_height">
+    android:paddingBottom="@dimen/bottom_app_bar_height"
+    tools:context=".ui.home.HomeFragment">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
         android:id="@+id/app_bar_layout"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            app:popupTheme="@style/Theme.AppCompat.Light"
-            app:titleTextColor="@color/colorWhite" >
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
+            app:titleTextColor="@color/colorWhite">
 
             <com.google.android.material.button.MaterialButton
-                android:layout_width="wrap_content"
                 style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAllCaps="false"
                 android:text="@string/example_options"
                 android:textAlignment="viewStart"
+                android:textAllCaps="false"
                 app:icon="@drawable/mini_ic_edit"
-                app:iconGravity="textEnd"/>
+                app:iconGravity="textEnd" />
 
         </androidx.appcompat.widget.Toolbar>
 

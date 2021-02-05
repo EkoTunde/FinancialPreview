@@ -96,6 +96,8 @@ class EntryRepository @Inject constructor(
         }
     }
 
+    suspend fun deleteWithId(id: String) = movementDao.deleteWithId(id)
+
     fun getAccount(id: String): LiveData<Account> = accountDao.getAccount(id)
 
     fun getBudget(id: String): LiveData<Budget> = budgetDao.getBudget(id)

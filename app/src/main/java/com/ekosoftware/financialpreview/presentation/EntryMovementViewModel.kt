@@ -7,6 +7,7 @@ import com.ekosoftware.financialpreview.domain.local.EntryRepository
 import com.ekosoftware.financialpreview.util.forDatabaseAmount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -153,8 +154,8 @@ class EntryMovementViewModel @Inject constructor(
         )
     }
 
-    fun delete() {
-        delete()
+    fun delete(id: String) {
+        viewModelScope.launch { entryRepository.deleteWithId(id) }
     }
 
     fun clearAllSelectedData() {
