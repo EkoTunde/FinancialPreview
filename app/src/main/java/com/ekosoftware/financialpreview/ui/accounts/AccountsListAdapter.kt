@@ -27,7 +27,7 @@ class AccountsListAdapter(private val onSelected: (v: View, Account) -> Unit) :
             )
     }
 
-    override fun viewBindingClass(parent: ViewGroup): ItemAccountBinding {
+    override fun inflateBinding(parent: ViewGroup): ItemAccountBinding {
         return ItemAccountBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
 }

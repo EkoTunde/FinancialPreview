@@ -7,6 +7,7 @@ import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCrossRef
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
+import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovementsCount
 import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 import kotlinx.coroutines.flow.Flow
 import java.util.*
@@ -20,8 +21,11 @@ interface SettleGroupDao : BaseDao<SettleGroup> {
     fun getSettleGroupsWithMovements(): LiveData<List<SettleGroupWithMovements>>
 
     @Transaction
-    @Query("SELECT * FROM settleGroups WHERE settleGroupId = :id")
+    @Query("SELECT * FROM settleGroups WHERE settleGroupId = :id LIMIT 1")
     fun getSingleSettleGroupWithMovements(id: String): LiveData<SettleGroupWithMovements>
+
+    @Query("SELECT * FROM settleGroups WHERE settleGroupId = :id LIMIT 1")
+    fun getSingleSettleGroup(id: String): LiveData<SettleGroup>
 
     @Query("SELECT * FROM settleGroups")
     fun getSettleGroups(): LiveData<List<SettleGroup>>
@@ -77,6 +81,26 @@ interface SettleGroupDao : BaseDao<SettleGroup> {
     """
     )
     fun getSettleGroupsAsSimpleData(searchPhrase: String): LiveData<List<SimpleQueryData>>
+
+    @Query(
+        """
+                SELECT s.settleGroupId AS id, s.settleGroupName AS name, s.settleGroupPercentage AS percentage, s.settleGroupDescription As description, COUNT(m.movementId) AS count 
+                FROM settleGroups s
+                JOIN settleGroupMovementsCrossRefTable cf 
+                ON s.settleGroupId = cf.settleGroupId 
+                JOIN movements m ON m.movementId = cf.movementId
+                WHERE movementLeftAmount < 0
+                AND movementCurrencyCode = :currencyCode 
+                AND movementFreqFrom <= :yearMonth 
+                AND movementFreqTo >= :yearMonth
+                AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+    """
+    )
+    fun getSettleGroupsWithMovementsCounts(
+        currencyCode: String,
+        yearMonth: Int,
+        monthIncluded: String
+    ): LiveData<List<SettleGroupWithMovementsCount>>
 
     /* @Query(
          """

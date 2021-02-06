@@ -11,10 +11,10 @@
     android:paddingTop="8dp">
 
     <com.google.android.material.card.MaterialCardView
-        android:transitionName="@string/movement_card_detail_transition_name"
         android:id="@+id/email_card_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:transitionName="@string/movement_card_detail_transition_name"
         app:cardElevation="8dp">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -146,6 +146,7 @@
                         android:layout_height="0dp"
                         android:layout_marginVertical="5dp"
                         android:background="@color/materialColor5"
+                        android:contentDescription="@string/app_name"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@+id/account_name"
                         app:layout_constraintStart_toStartOf="parent"

@@ -305,7 +305,7 @@
     <string name="title_add_movement">Nuevo pendiente</string>
     <string name="title_edit_movement">Editar pendiente</string>
     <string name="installments_frequency_placeholder">%1$d cuotas, desde %2$s-%3$d</string>
-    <string name="repeats_placeholder_from">Se repite desde el %1$s-%2$d, %3$s</string>
+    <string name="repeats_placeholder_from">Se repite desde %1$s-%2$d, %3$s</string>
     <string name="repeats_placeholder_to">Se repite entre %1$s-%2$d y %3$s-%4$d, %5$s</string>
     <string name="every_month">todos los meses</string>
     <string name="some_months">algunos meses</string>
@@ -324,5 +324,6 @@
     <string name="left_amount_was_set_back_to_starting_amount">El saldo restante se equiparó al original</string>
     <string name="undo">Deshacer</string>
     <string name="refresh">Refrescar</string>
+    <string name="of_">de</string>
 
 </resources>

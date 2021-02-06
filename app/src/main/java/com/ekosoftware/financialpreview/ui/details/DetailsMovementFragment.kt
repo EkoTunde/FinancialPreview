@@ -124,8 +124,12 @@ class DetailsMovementFragment : Fragment() {
 
         leftAmount.applyMoneyFormat(movementUI.currencyCode, movementUI.leftAmount.forCommunicationAmount())
         leftAmount.setTextColor(Colors.get(if (movementUI.leftAmount < 0) R.color.colorAmountNegative else R.color.colorAmountPositive))
-        startingAmount.applyMoneyFormat(movementUI.currencyCode, movementUI.startingAmount.forCommunicationAmount())
-        startingAmount.setTextColor(Colors.get(if (movementUI.startingAmount < 0) R.color.colorAmountNegative else R.color.colorAmountPositive))
+        startingAmount.applyMoneyFormatAndSpecifiedStart(
+            Strings.get(R.string.of_),
+            movementUI.currencyCode,
+            movementUI.startingAmount.forCommunicationAmount()
+        )
+        //startingAmount.setTextColor(Colors.get(if (movementUI.startingAmount < 0) R.color.colorAmountNegative else R.color.colorAmountPositive))
 
         val fullName = movementUI.name + movementUI.installmentsCalc()
         name.text = fullName
@@ -142,7 +146,8 @@ class DetailsMovementFragment : Fragment() {
             arrayOf(budgetName, imageViewSub).show()
         }
 
-        monthsIncluded.text = Frequency(movementUI.fromYearMonth,
+        monthsIncluded.text = Frequency(
+            movementUI.fromYearMonth,
             movementUI.toYearMonth,
             movementUI.totalInstallments,
             movementUI.monthsChecked

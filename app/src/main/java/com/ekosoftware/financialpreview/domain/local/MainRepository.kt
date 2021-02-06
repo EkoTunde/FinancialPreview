@@ -8,6 +8,7 @@ import com.ekosoftware.financialpreview.data.model.movement.MovementUI
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCrossRef
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
+import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovementsCount
 import com.ekosoftware.financialpreview.util.monthNameKey
 import javax.inject.Inject
 
@@ -21,7 +22,8 @@ class MainRepository @Inject constructor(
     private val someDao: SomeDao,
 ) {
 
-    fun insertSettleGroups(vararg settleGroupMovementsCrossRef: SettleGroupMovementsCrossRef) = someDao.insertSettleGroupCrossRef(*settleGroupMovementsCrossRef)
+    fun insertSettleGroups(vararg settleGroupMovementsCrossRef: SettleGroupMovementsCrossRef) =
+        someDao.insertSettleGroupCrossRef(*settleGroupMovementsCrossRef)
 
     fun getAccountsTotalForCurrency(currency: String): LiveData<Long?> =
         accountDao.getAccountsTotalForCurrency(currency)
@@ -52,4 +54,9 @@ class MainRepository @Inject constructor(
         fromTo: Int
     ): LiveData<List<Budget>> = budgetDao.getBudgets(searchPhrase, currencyCode, fromTo)
 
+    fun getSettleGroupsWithMovementsCount(
+        currencyCode: String,
+        yearMonth: Int
+    ): LiveData<List<SettleGroupWithMovementsCount>> =
+        settleGroupDao.getSettleGroupsWithMovementsCounts(currencyCode, yearMonth, yearMonth.monthNameKey())
 }

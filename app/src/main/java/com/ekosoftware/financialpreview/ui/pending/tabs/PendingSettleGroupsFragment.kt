@@ -8,13 +8,14 @@ import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.core.BaseListAdapter
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
+import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovementsCount
 import com.ekosoftware.financialpreview.databinding.BaseListFragmentBinding
 import com.ekosoftware.financialpreview.databinding.ItemPendingSettleGroupBinding
 import com.ekosoftware.financialpreview.presentation.HomeViewModel
 import com.ekosoftware.financialpreview.ui.pending.tabs.adapters.PendingSettleGroupsListAdapter
 
-class PendingSettleGroupsFragment(private val onItemClicked: ((v: View, settleGroupWithMovements: SettleGroupWithMovements) -> Unit)?) :
-    BaseTabbedListFragment<SettleGroupWithMovements, ItemPendingSettleGroupBinding>() {
+class PendingSettleGroupsFragment(private val onItemClicked: ((v: View, settleGroupWithMovementsCount: SettleGroupWithMovementsCount) -> Unit)?) :
+    BaseTabbedListFragment<SettleGroupWithMovementsCount, ItemPendingSettleGroupBinding>() {
 
     private val viewModel by activityViewModels<HomeViewModel>()
 
@@ -23,7 +24,7 @@ class PendingSettleGroupsFragment(private val onItemClicked: ((v: View, settleGr
 
     private val settleGroupAdapter = PendingSettleGroupsListAdapter { v, group -> onItemClicked?.let { it(v, group) } }
 
-    override val listAdapter: BaseListAdapter<SettleGroupWithMovements, ItemPendingSettleGroupBinding>
+    override val listAdapter: BaseListAdapter<SettleGroupWithMovementsCount, ItemPendingSettleGroupBinding>
         get() = settleGroupAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,14 +36,14 @@ class PendingSettleGroupsFragment(private val onItemClicked: ((v: View, settleGr
 
     override fun onRetry(binding: BaseListFragmentBinding) = setData()
 
-    private fun setData() = viewModel.homeData.observe(viewLifecycleOwner) { result ->
+    private fun setData() = viewModel.getSettleGroupsWithMovementsCount().observe(viewLifecycleOwner) { result ->
         when (result) {
             is Resource.Loading -> {
                 loading()
             }
             is Resource.Success -> {
                 success()
-                settleGroupAdapter.submitList(result.data.settleGroupsWithMovements)
+                settleGroupAdapter.submitList(result.data)
             }
             is Resource.Failure -> {
                 failure()

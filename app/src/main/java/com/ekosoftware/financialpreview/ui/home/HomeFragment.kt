@@ -60,34 +60,14 @@ class HomeFragment : Fragment() {
             R.menu.home_menu
         )
         binding.toolbar.setOnMenuItemClickListener {
-            Toast.makeText(requireContext(), "REFRESH!", Toast.LENGTH_SHORT).show()
             mainViewModel.refresh()
             true
         }
-        //(requireActivity() as MainActivity).setSupportActionBar(binding.toolbar)
-        //(requireActivity() as MainActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
     }
-
-    /*override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.home_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    *//**
-     * Handles saving button onClickListener
-     *//*
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_item_refresh -> {
-                Toast.makeText(requireContext(), "r", Toast.LENGTH_SHORT).show()
-                mainViewModel.refresh()
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainViewModel.refresh()
         fetchData()
         setUpActions()
         binding.balance.currentTotal.setOnClickListener {
@@ -137,7 +117,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpActions() {
-        /* = binding.actions.apply {*/
         hashMapOf(
             binding.actions.btnSettle to HomeFragmentDirections.actionHomePageFragmentToSettleOptionsDialog(),
             binding.actions.btnAddPending to HomeFragmentDirections.actionGlobalEditMovementFragment(Constants.nan, null),
@@ -147,80 +126,66 @@ class HomeFragment : Fragment() {
         ).forEach { (btn, action) ->
             btn.setOnClickListener { findNavController().navigate(action) }
         }
-        /*
-            btnSettle.setOnClickListener {
-                val actions = HomeFragmentDirections.actionHomePageFragmentToSettleOptionsDialog()
-                findNavController().navigate(actions)
-            }
-            btnAddPending.setOnClickListener {
-                findNavController().navigate(
-                    HomeFragmentDirections.actionGlobalEditMovementFragment(Constants.nan, null)
-                )
-            }
-            btnAddRecord.setOnClickListener {
-                findNavController().navigate(
-                    HomeFragmentDirections.actionGlobalSettleFragment(
-                        SETTLE_TYPE_SIMPLE_RECORD,
-                        null
-                    )
-                )
-            }
-            btnTransfer.setOnClickListener {
-                findNavController().navigate(
-                    HomeFragmentDirections.actionGlobalSettleFragment(
-                        SETTLE_TYPE_TRANSFER, null
-                    )
-                )
-            }
-            btnLoan.setOnClickListener {
-                findNavController().navigate(
-                    HomeFragmentDirections.actionGlobalSettleFragment(
-                        SETTLE_TYPE_LOAN_DEBT, null
-                    )
-                )
-            }*/
     }
 
-    private fun setUpPendingSummary(
-        currencyCode: String,
-        totalIncome: Double,
-        totalExpense: Double
-    ) = binding.pending.apply {
-        income.applyMoneyFormat(currencyCode, totalIncome)
-        income.applyShader(
-            R.color.colorAmountPositiveGradient1,
-            R.color.colorAmountPositiveGradient2,
-            R.color.colorAmountPositiveGradient3
-        )
-        expenses.applyMoneyFormat(currencyCode, totalExpense)
-        expenses.applyShader(
-            R.color.colorAmountNegativeGradient1,
-            R.color.colorAmountNegativeGradient2,
-            R.color.colorAmountNegativeGradient3
-        )
+    private fun setUpPendingSummary(currencyCode: String, totalIncome: Double, totalExpense: Double) {
+        with(binding.pending) {
+            income.applyMoneyFormat(currencyCode, totalIncome)
+            income.applyShader(R.color.colorAmountPositiveGradient1, R.color.colorAmountPositiveGradient2, R.color.colorAmountPositiveGradient3)
+            expenses.applyMoneyFormat(currencyCode, totalExpense)
+            expenses.applyShader(R.color.colorAmountNegativeGradient1, R.color.colorAmountNegativeGradient2, R.color.colorAmountNegativeGradient3)
+        }
     }
 
-    private fun setUpProjection(homeData: HomeData) = binding.projection.apply {
-        thisMonthSavingAmount.applyMoneyFormat(
+    private fun setUpProjection(homeData: HomeData) = with(binding.projection) {
+        thisMonthSavingAmount.applyMoneyFormatInK(
             homeData.currencyCode,
-            homeData.accumulatedBalances[0]
+            homeData.accumulatedBalances[1]
         )
-        sixMonthSavingAmount.applyMoneyFormat(
+        sixMonthSavingAmount.applyMoneyFormatInK(
             homeData.currencyCode,
-            homeData.accumulatedBalances[6]
+            homeData.accumulatedBalances[7]
         )
-        thisYearSavingAmount.applyMoneyFormat(
+        thisYearSavingAmount.applyMoneyFormatInK(
             homeData.currencyCode,
-            homeData.accumulatedBalances[12]
+            homeData.accumulatedBalances[13]
         )
     }
 
     private fun setUpQuickView(homeData: HomeData) = binding.quickView.apply {
         tf = ResourcesCompat.getFont(requireContext(), R.font.quicksand_medium)!!
         quickViewChart.setUpChart(homeData)
+        quickViewChart.setListener(homeData)
     }
 
     private fun CombinedChart.setUpChart(homeData: HomeData) = this.apply {
+        // Set data
+        val barData = getBarData(
+            homeData.incomes,
+            homeData.expenses,
+            homeData.monthsNames
+        )
+        val lineData =
+            getLineData(homeData.balances, homeData.accumulatedBalances, homeData.monthsNames)
+        val combinedData = CombinedData()
+        combinedData.setData(barData) // set BarData
+        combinedData.setData(lineData) // set LineData
+        data = combinedData
+        invalidate()
+
+        // Apply UI settings
+        this@setUpChart.description = null
+        applyXAxisSettings(resources.getStringArray(R.array.months_abr).toList())
+        applyLegendSettings()
+
+        // Apply typeface
+        arrayOf(axisLeft, axisRight).forEach { it.typeface = tf }
+
+        isDragEnabled = true
+        animateY(2000)
+    }
+
+    private fun CombinedChart.setListener(homeData: HomeData) {
         setOnChartValueSelectedListener(object :
             OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
@@ -250,31 +215,6 @@ class HomeFragment : Fragment() {
 
             override fun onNothingSelected() = Unit
         })
-
-        // Set data
-        val barData = getBarData(
-            homeData.incomes,
-            homeData.expenses,
-            homeData.monthsNames
-        )
-        val lineData =
-            getLineData(homeData.balances, homeData.accumulatedBalances, homeData.monthsNames)
-        val combinedData = CombinedData()
-        combinedData.setData(barData) // set BarData
-        combinedData.setData(lineData) // set LineData
-        data = combinedData
-        invalidate()
-
-        // Apply UI settings
-        this@setUpChart.description = null
-        applyXAxisSettings(resources.getStringArray(R.array.months_abr).toList())
-        applyLegendSettings()
-
-        // Apply typeface
-        arrayOf(axisLeft, axisRight).forEach { it.typeface = tf }
-
-        isDragEnabled = true
-        animateY(2000)
     }
 
     private fun getBarData(

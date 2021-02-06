@@ -255,7 +255,7 @@ interface MovementDao : BaseDao<Movement> {
             )        
         ) AS settleGroupsIncome,
         (
-            SELECT SUM(total)/100 
+            SELECT SUM(total)/100
             FROM (
                     SELECT SUM(m.movementLeftAmount) * s.settleGroupPercentage AS total
                     FROM settleGroups s
@@ -359,4 +359,29 @@ interface MovementDao : BaseDao<Movement> {
 
     @Query("DELETE FROM movements WHERE movementId = :movementId")
     suspend fun deleteWithId(movementId: String): Int
+
+    @Query(
+        """
+        SELECT 
+            movementId AS id, 
+            movementName AS name, 
+            movementCurrencyCode AS currencyCode, 
+            movementLeftAmount AS amount,
+            NULL AS typeId, 
+            NULL AS description, 
+            categories.categoryColorResId AS color, 
+            categories.categoryIconResId AS iconResId
+        FROM movements
+        INNER JOIN categories ON movementCategoryId = categoryId
+        WHERE movementId IN (
+            SELECT m.movementId 
+            FROM settleGroups s
+            JOIN settleGroupMovementsCrossRefTable cf ON s.settleGroupId = cf.settleGroupId
+            JOIN movements m ON m.movementId = cf.movementId
+            WHERE s.settleGroupId = :settleGroupId
+        )
+        ORDER BY movementName
+    """
+    )
+    fun getMovementsForSettleGroup(settleGroupId: String): LiveData<List<SimpleQueryData>>
 }

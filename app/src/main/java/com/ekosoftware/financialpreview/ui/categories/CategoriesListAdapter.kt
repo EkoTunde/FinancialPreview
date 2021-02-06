@@ -14,7 +14,7 @@ class CategoriesListAdapter(private val onSelected: (v: View, Category) -> Unit)
 
     }
 
-    override fun viewBindingClass(parent: ViewGroup): ItemSelectionExtendedBinding {
+    override fun inflateBinding(parent: ViewGroup): ItemSelectionExtendedBinding {
         return ItemSelectionExtendedBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,

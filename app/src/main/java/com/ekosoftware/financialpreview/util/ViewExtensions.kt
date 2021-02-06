@@ -13,6 +13,8 @@ import android.view.View
 import android.view.animation.Animation
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 fun TextView.applyMoneyFormat(currency: String, amount: Double) {
 
@@ -25,6 +27,40 @@ fun TextView.applyMoneyFormat(currency: String, amount: Double) {
         val decimalNo = withCurrencyFormat.split(".")[1]
         // Initialize a new String variable
         val inputText = "$currency $wholeNo $decimalNo"
+        SpannableStringBuilder(inputText).apply {
+            setSpan(
+                SuperscriptSpan(),  // Span to add
+                inputText.lastIndexOf(decimalNo),  // Start of the span (inclusive)
+                inputText.lastIndexOf(decimalNo) + decimalNo.length,  // End of the span (exclusive)
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE // Do not extend the span when text add later
+            )
+            setSpan(
+                RelativeSizeSpan(.45f),
+                inputText.lastIndexOf(decimalNo), // Start of the span (inclusive)
+                inputText.lastIndexOf(decimalNo) + decimalNo.length, // End of the span (exclusive)
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE // Do not extend the span when text add later
+            )
+        }
+    }
+}
+
+fun TextView.applyMoneyFormatInK(currency: String, amount: Double) {
+    val newAmount = BigDecimal(amount).div(BigDecimal("1000.00")).setScale(2, RoundingMode.DOWN)
+    val result = "$currency ${newAmount}k"
+    text = result
+}
+
+fun TextView.applyMoneyFormatAndSpecifiedStart(start: String, currency: String, amount: Double) {
+
+    val withCurrencyFormat = amount.forDisplayAmount(currency)
+
+    text = if (!withCurrencyFormat.contains(".")) {
+        withCurrencyFormat
+    } else {
+        val wholeNo = withCurrencyFormat.split(".")[0]
+        val decimalNo = withCurrencyFormat.split(".")[1]
+        // Initialize a new String variable
+        val inputText = "$start $currency $wholeNo $decimalNo"
         SpannableStringBuilder(inputText).apply {
             setSpan(
                 SuperscriptSpan(),  // Span to add

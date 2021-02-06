@@ -48,13 +48,14 @@
 
 
                     <TextView
-                        android:id="@+id/left_amount"
+                        android:id="@+id/name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:autoSizeTextType="uniform"
+                        android:ellipsize="marquee"
                         android:fontFamily="@font/quicksand_bold"
-                        android:lines="1"
+                        android:singleLine="true"
                         android:textAppearance="?attr/textAppearanceHeadline4"
                         app:autoSizeMaxTextSize="100sp"
                         app:autoSizeMinTextSize="24sp"
@@ -92,11 +93,12 @@
                         android:id="@+id/description"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/quicksand_bold"
                         android:textAlignment="gravity"
                         android:textAppearance="?attr/textAppearanceBody1"
-                        app:layout_constraintEnd_toEndOf="@+id/months_included"
-                        app:layout_constraintStart_toStartOf="@+id/months_included"
+                        app:layout_constraintEnd_toEndOf="@+id/movements_included"
+                        app:layout_constraintStart_toEndOf="@+id/image_view_quote"
                         app:layout_constraintTop_toTopOf="@+id/image_view_quote"
                         tools:text="Los saldos a liquidar de la tarjeta de crédito. Los impuestos incluyen bla bla bla." />
 
@@ -112,7 +114,7 @@
                         app:srcCompat="@drawable/ic_movement" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/months_included"
+                        android:id="@+id/movements_included"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"

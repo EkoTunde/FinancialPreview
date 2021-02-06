@@ -45,10 +45,10 @@ abstract class BaseListAdapter<T, K : ViewBinding>(
     /**
      * Called to provide the [ViewBinding] class holding a reference to item's xml.
      */
-    protected abstract fun viewBindingClass(parent: ViewGroup): K
+    protected abstract fun inflateBinding(parent: ViewGroup): K
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseListViewHolder {
-        return BaseListViewHolder(viewBindingClass(parent), onSelected)
+        return BaseListViewHolder(inflateBinding(parent), onSelected)
     }
 
     override fun onBindViewHolder(holderList: BaseListViewHolder, position: Int) {

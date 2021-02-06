@@ -13,6 +13,8 @@ import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.databinding.ItemPendingBudgetBinding
 import com.ekosoftware.financialpreview.util.forCommunicationAmount
 import com.ekosoftware.financialpreview.util.forDisplayAmount
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class PendingBudgetsListAdapter(onSelected: (v: View, Budget) -> Unit) :
     BaseListAdapter<Budget, ItemPendingBudgetBinding>(onSelected) {
@@ -21,7 +23,8 @@ class PendingBudgetsListAdapter(onSelected: (v: View, Budget) -> Unit) :
 
         this.root.transitionName = item.id
 
-        val percentLeft = (((item.leftAmount/10000.0) * 100) / (item.startingAmount/10000.0))
+        val percentLeft = BigDecimal(item.leftAmount.toString()).times(BigDecimal("100.00")).div(BigDecimal(item.startingAmount.toString()))
+            .setScale(2, RoundingMode.DOWN)
         budgetPercent.text = Strings.get(R.string.budget_percent, percentLeft, "%")
 
         budgetName.text = item.name
@@ -48,7 +51,7 @@ class PendingBudgetsListAdapter(onSelected: (v: View, Budget) -> Unit) :
         budgetLeftAmount.setTextColor(progressColor)
     }
 
-    override fun viewBindingClass(parent: ViewGroup): ItemPendingBudgetBinding {
+    override fun inflateBinding(parent: ViewGroup): ItemPendingBudgetBinding {
         return ItemPendingBudgetBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
 }

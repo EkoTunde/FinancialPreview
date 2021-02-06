@@ -91,12 +91,12 @@
                         app:layout_constraintTop_toBottomOf="@+id/starting_amount"
                         tools:layout_editor_absoluteX="16dp" />
 
-                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                    <ProgressBar
                         android:id="@+id/left_progress"
+                        style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:progress="78"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/name" />
@@ -133,7 +133,6 @@
                         android:layout_marginTop="16dp"
                         android:contentDescription="@string/app_name"
                         android:scaleType="center"
-                        app:layout_constraintEnd_toEndOf="@+id/category_color"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txt_progress"
                         app:srcCompat="@drawable/ic_calendar_month_outline" />
@@ -158,6 +157,7 @@
                         android:contentDescription="@string/app_name"
                         android:cropToPadding="true"
                         android:scaleType="center"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/image_view_event"
                         app:srcCompat="@drawable/ic_quote" />
@@ -169,8 +169,9 @@
                         android:fontFamily="@font/quicksand_bold"
                         android:textAlignment="gravity"
                         android:textAppearance="?attr/textAppearanceBody1"
-                        app:layout_constraintEnd_toEndOf="@+id/months_included"
-                        app:layout_constraintStart_toStartOf="@+id/months_included"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="@+id/movements_included"
+                        app:layout_constraintStart_toStartOf="@+id/movements_included"
                         app:layout_constraintTop_toTopOf="@+id/image_view_quote"
                         tools:text="La categoría en realidad es un chiste irónico porque una persona se creyó con la capacidad de juzgar y decidir si la forma en que utilizo mi dinero estaba bien o mal." />
 

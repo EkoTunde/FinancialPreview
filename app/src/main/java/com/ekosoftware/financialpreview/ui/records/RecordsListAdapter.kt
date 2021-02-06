@@ -35,7 +35,7 @@ class RecordsListAdapter(private var onSelected: (v: View, RecordSummary) -> Uni
         }
     }
 
-    override fun viewBindingClass(parent: ViewGroup): ItemRecordBinding {
+    override fun inflateBinding(parent: ViewGroup): ItemRecordBinding {
         return ItemRecordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     }
 }

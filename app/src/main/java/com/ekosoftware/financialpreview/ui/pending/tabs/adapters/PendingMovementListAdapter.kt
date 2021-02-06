@@ -25,7 +25,7 @@ class PendingMovementListAdapter(onSelected: (v: View, MovementUI) -> Unit) :
         pendingAmount.setTextColor(Colors.get(if (item.leftAmount < 0) R.color.colorAmountNegative else R.color.colorAmountPositive))
     }
 
-    override fun viewBindingClass(parent: ViewGroup): ItemPendingMovementBinding {
+    override fun inflateBinding(parent: ViewGroup): ItemPendingMovementBinding {
         return ItemPendingMovementBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,

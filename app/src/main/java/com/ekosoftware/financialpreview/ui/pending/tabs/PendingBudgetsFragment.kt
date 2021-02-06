@@ -21,7 +21,11 @@ class PendingBudgetsFragment(private val onItemClicked: ((v: View, id: String) -
     override var editable: Boolean = arguments?.getBoolean("editable") ?: false
     override val title: String get() = Strings.get(R.string.pending_budgets)
 
-    private val pendingBudgetsListAdapter = PendingBudgetsListAdapter { v, budget -> onItemClicked?.let { it(v, budget.id) } }
+    private val pendingBudgetsListAdapter = PendingBudgetsListAdapter { v, budget ->
+        onItemClicked?.let {
+            it(v, budget.id)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

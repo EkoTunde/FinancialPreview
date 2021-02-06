@@ -218,8 +218,8 @@
         android:name="com.ekosoftware.financialpreview.ui.details.DetailsSettleGroupFragment"
         android:label="DetailsSettleGroupFragment">
         <argument
-            android:name="settleGroupWithMovement"
-            app:argType="com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements" />
+            android:name="settleGroupId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/editFrequencyFragment4"

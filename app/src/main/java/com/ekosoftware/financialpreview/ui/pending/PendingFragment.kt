@@ -43,7 +43,7 @@ class PendingFragment : Fragment() {
     }
 
     private fun setUpAdapter() {
-        adapter = PendingPagerAdapter(requireActivity()) { cardView, id, position, settleGroupWithMovements ->
+        adapter = PendingPagerAdapter(requireActivity()) { cardView, id, position, settleGroupWithMovementsCount ->
             exitTransition = MaterialElevationScale(false).apply {
                 duration = resources.getInteger(R.integer.motion_duration_large).toLong()
             }
@@ -57,7 +57,7 @@ class PendingFragment : Fragment() {
                 else -> FragmentNavigatorExtras(
                     cardView to Strings.get(
                         R.string.settle_group_card_detail_transition_name,
-                        settleGroupWithMovements!!.settleGroup.id
+                        settleGroupWithMovementsCount!!.id
                     )
                 )
             }
@@ -65,7 +65,7 @@ class PendingFragment : Fragment() {
                 when (position) {
                     0 -> PendingFragmentDirections.actionPendingPageFragmentToDetailsMovementFragment(id)
                     1 -> PendingFragmentDirections.actionPendingPageFragmentToDetailsBudgetFragment(id)
-                    else -> PendingFragmentDirections.actionPendingPageFragmentToDetailsSettleGroupFragment(settleGroupWithMovements!!)
+                    else -> PendingFragmentDirections.actionPendingPageFragmentToDetailsSettleGroupFragment(settleGroupWithMovementsCount!!.id)
                 }
             findNavController().navigate(directions, extras)
         }

@@ -490,3 +490,11 @@ fun factor100(n: Number) = n.toDouble() % 100.0 == 0.0
  * @see factor100
  */
 fun BigDecimal.hasUselessDecimals(): Boolean = factor100(times(BigDecimal("100")))
+
+fun String.removeZeros(): String {
+    return if (this.contains(".") && (this.endsWith("0") || this.endsWith("."))) {
+        this.substring(0, this.length - 1).removeZeros()
+    } else {
+        this
+    }
+}
