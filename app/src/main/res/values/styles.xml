@@ -21,6 +21,13 @@
         <item name="android:textSize">36sp</item>
     </style>
 
+    <style name="Button.MoreVert" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="fontFamily">@font/work_sans_light</item>
+        <item name="android:textSize">36sp</item>
+    </style>
+
     <style name="Widget.ScheduledDialog.Toolbar" parent="Widget.AppCompat.Toolbar">
         <!--<item name="android:background">@color/colorPrimary</item>-->
         <item name="android:theme">@style/Theme.AppCompat.DayNight.DarkActionBar</item>

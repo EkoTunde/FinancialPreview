@@ -96,11 +96,22 @@ class EntryRepository @Inject constructor(
         }
     }
 
-    suspend fun deleteWithId(id: String) = movementDao.deleteWithId(id)
+    suspend fun deleteMovementWithId(id: String) = movementDao.deleteWithId(id)
+
+    suspend fun deleteBudgetWithId(id: String) = budgetDao.deleteWithId(id)
+
+    suspend fun deleteSettleGroupWithId(id: String) {
+        settleGroupDao.deleteWithId(id)
+        settleGroupDao.deleteRefWithId(id)
+    }
+
+    suspend fun deleteCrossRef(settleGroupId: String, movementId: String) {
+        settleGroupDao.delete(SettleGroupMovementsCrossRef(settleGroupId, movementId))
+    }
 
     fun getAccount(id: String): LiveData<Account> = accountDao.getAccount(id)
 
-    fun getBudget(id: String): LiveData<Budget> = budgetDao.getBudget(id)
+    fun getBudget(id: String): Budget = budgetDao.getBudget(id)
 
     fun getCategory(id: String): LiveData<Category> = categoryDao.getCategory(id)
 

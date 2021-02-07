@@ -62,6 +62,12 @@ interface SettleGroupDao : BaseDao<SettleGroup> {
     @Delete
     suspend fun delete(settleGroupMovementsCrossRef: SettleGroupMovementsCrossRef)
 
+    @Query("DELETE FROM settleGroups WHERE settleGroupId = :settleGroupId")
+    suspend fun deleteWithId(settleGroupId: String): Int
+
+    @Query("DELETE FROM settleGroupMovementsCrossRefTable WHERE settleGroupId = :settleGroupId")
+    suspend fun deleteRefWithId(settleGroupId: String): Int
+
     @Query(
         """
         SELECT 
@@ -84,16 +90,24 @@ interface SettleGroupDao : BaseDao<SettleGroup> {
 
     @Query(
         """
-                SELECT s.settleGroupId AS id, s.settleGroupName AS name, s.settleGroupPercentage AS percentage, s.settleGroupDescription As description, COUNT(m.movementId) AS count 
+                SELECT s.settleGroupId AS id,
+                s.settleGroupName AS name, 
+                s.settleGroupPercentage AS percentage, 
+                s.settleGroupDescription As description, 
+                COUNT(m.movementId) AS count 
                 FROM settleGroups s
-                JOIN settleGroupMovementsCrossRefTable cf 
+                LEFT JOIN settleGroupMovementsCrossRefTable cf 
                 ON s.settleGroupId = cf.settleGroupId 
-                JOIN movements m ON m.movementId = cf.movementId
-                WHERE movementLeftAmount < 0
-                AND movementCurrencyCode = :currencyCode 
-                AND movementFreqFrom <= :yearMonth 
-                AND movementFreqTo >= :yearMonth
-                AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+                LEFT JOIN (
+                    SELECT * FROM movements                
+                    WHERE movementLeftAmount < 0
+                    AND movementCurrencyCode = :currencyCode 
+                    AND movementFreqFrom <= :yearMonth 
+                    AND movementFreqTo >= :yearMonth
+                    AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+                ) m ON m.movementId = cf.movementId
+                
+                GROUP BY settleGroupName
     """
     )
     fun getSettleGroupsWithMovementsCounts(

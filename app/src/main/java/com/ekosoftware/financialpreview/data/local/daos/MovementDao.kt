@@ -12,12 +12,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MovementDao : BaseDao<Movement> {
 
-    /*@Transaction
-    open fun updateData(users: List<User>) {
-        deleteAllUsers()
-        insertAll(users)
-    }*/
-
     /**
      * Emits live results of performing a sum to
      * all movements and budget corresponding to
@@ -141,7 +135,7 @@ interface MovementDao : BaseDao<Movement> {
      * @return a [MonthSummary].
      *
      */
-    @Query(
+    /*@Query(
         """
         SELECT :currencyCode AS currencyCode,
         :fromTo AS yearMonth, 
@@ -188,7 +182,7 @@ interface MovementDao : BaseDao<Movement> {
         fromTo: Int,
         currencyCode: String,
         monthIncluded: String
-    ): MonthSummary
+    ): MonthSummary*/
 
     /**
      *
@@ -276,6 +270,177 @@ interface MovementDao : BaseDao<Movement> {
         yearMonth: Int,
         monthIncluded: String
     ): MonthSummary
+
+    /**
+     *
+     */
+    @Transaction
+    @Query(
+        """
+        SELECT :currencyCode AS currencyCode,
+        :yearMonth AS yearMonth,
+        (
+            SELECT SUM(accountBalance) 
+            FROM accounts 
+            WHERE accountCurrencyCode = :currencyCode
+        ) AS currentAccountsBalance,
+        (
+            SELECT SUM(movementLeftAmount) 
+            FROM movements 
+            WHERE movementLeftAmount >= 0 
+            AND movementCurrencyCode = :currencyCode 
+            AND movementFreqFrom <= :yearMonth 
+            AND movementFreqTo >= :yearMonth
+            AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS movementIncome,
+        (
+            SELECT SUM(budgetLeftAmount) 
+            FROM budgets 
+            WHERE budgetLeftAmount >= 0 
+            AND budgetCurrencyCode = :currencyCode 
+            AND budgetFreqFrom <= :yearMonth 
+            AND budgetFreqTo >= :yearMonth
+            AND budgetFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS budgetIncome,
+        (
+            SELECT SUM(movementLeftAmount) 
+            FROM movements 
+            WHERE movementLeftAmount < 0 
+            AND movementCurrencyCode = :currencyCode 
+            AND movementFreqFrom <= :yearMonth 
+            AND movementFreqTo >= :yearMonth
+            AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS movementExpense,
+        (
+            SELECT SUM(budgetLeftAmount) 
+            FROM budgets 
+            WHERE budgetLeftAmount < 0 
+            AND budgetCurrencyCode = :currencyCode 
+            AND budgetFreqFrom <= :yearMonth 
+            AND budgetFreqTo >= :yearMonth
+            AND budgetFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS budgetExpense,
+        (
+            SELECT SUM(total)/100
+            FROM(
+                    SELECT SUM(m.movementLeftAmount) * s.settleGroupPercentage AS total
+                    FROM settleGroups s
+                    JOIN settleGroupMovementsCrossRefTable cf 
+                    ON s.settleGroupId = cf.settleGroupId 
+                    JOIN movements m ON m.movementId = cf.movementId
+                    WHERE movementLeftAmount > 0
+                    AND movementCurrencyCode = :currencyCode 
+                    AND movementFreqFrom <= :yearMonth 
+                    AND movementFreqTo >= :yearMonth
+                    AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+            )        
+        ) AS settleGroupsIncome,
+        (
+            SELECT SUM(total)/100
+            FROM (
+                    SELECT SUM(m.movementLeftAmount) * s.settleGroupPercentage AS total
+                    FROM settleGroups s
+                    JOIN settleGroupMovementsCrossRefTable cf 
+                    ON s.settleGroupId = cf.settleGroupId 
+                    JOIN movements m ON m.movementId = cf.movementId
+                    WHERE movementLeftAmount < 0
+                    AND movementCurrencyCode = :currencyCode 
+                    AND movementFreqFrom <= :yearMonth 
+                    AND movementFreqTo >= :yearMonth
+                    AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+            )
+        ) AS settleGroupsExpense
+        """
+    )
+    fun getLiveMonthPendingSummaries(
+        currencyCode: String,
+        yearMonth: Int,
+        monthIncluded: String
+    ): LiveData<MonthSummary>
+
+    @Transaction
+    @Query(
+        """
+        SELECT :currencyCode AS currencyCode,
+        :yearMonth AS yearMonth,
+        (
+            SELECT SUM(accountBalance) 
+            FROM accounts 
+            WHERE accountCurrencyCode = :currencyCode
+        ) AS currentAccountsBalance,
+        (
+            SELECT SUM(movementLeftAmount) 
+            FROM movements 
+            WHERE movementLeftAmount >= 0 
+            AND movementCurrencyCode = :currencyCode 
+            AND movementFreqFrom <= :yearMonth 
+            AND movementFreqTo >= :yearMonth
+            AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS movementIncome,
+        (
+            SELECT SUM(budgetLeftAmount) 
+            FROM budgets 
+            WHERE budgetLeftAmount >= 0 
+            AND budgetCurrencyCode = :currencyCode 
+            AND budgetFreqFrom <= :yearMonth 
+            AND budgetFreqTo >= :yearMonth
+            AND budgetFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS budgetIncome,
+        (
+            SELECT SUM(movementLeftAmount) 
+            FROM movements 
+            WHERE movementLeftAmount < 0 
+            AND movementCurrencyCode = :currencyCode 
+            AND movementFreqFrom <= :yearMonth 
+            AND movementFreqTo >= :yearMonth
+            AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS movementExpense,
+        (
+            SELECT SUM(budgetLeftAmount) 
+            FROM budgets 
+            WHERE budgetLeftAmount < 0 
+            AND budgetCurrencyCode = :currencyCode 
+            AND budgetFreqFrom <= :yearMonth 
+            AND budgetFreqTo >= :yearMonth
+            AND budgetFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+        ) AS budgetExpense,
+        (
+            SELECT SUM(total)/100
+            FROM(
+                    SELECT SUM(m.movementLeftAmount) * s.settleGroupPercentage AS total
+                    FROM settleGroups s
+                    JOIN settleGroupMovementsCrossRefTable cf 
+                    ON s.settleGroupId = cf.settleGroupId 
+                    JOIN movements m ON m.movementId = cf.movementId
+                    WHERE movementLeftAmount > 0
+                    AND movementCurrencyCode = :currencyCode 
+                    AND movementFreqFrom <= :yearMonth 
+                    AND movementFreqTo >= :yearMonth
+                    AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+            )        
+        ) AS settleGroupsIncome,
+        (
+            SELECT SUM(total)/100
+            FROM (
+                    SELECT SUM(m.movementLeftAmount) * s.settleGroupPercentage AS total
+                    FROM settleGroups s
+                    JOIN settleGroupMovementsCrossRefTable cf 
+                    ON s.settleGroupId = cf.settleGroupId 
+                    JOIN movements m ON m.movementId = cf.movementId
+                    WHERE movementLeftAmount < 0
+                    AND movementCurrencyCode = :currencyCode 
+                    AND movementFreqFrom <= :yearMonth 
+                    AND movementFreqTo >= :yearMonth
+                    AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+            )
+        ) AS settleGroupsExpense
+        """
+    )
+    fun getLiveMonthPendingSummaries23456(
+        currencyCode: String,
+        yearMonth: Int,
+        monthIncluded: String
+    ): LiveData<List<MonthSummary>>
 
     /**
      * Queries for all [Movement]s in database but outputs only specified

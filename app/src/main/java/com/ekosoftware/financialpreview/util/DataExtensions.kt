@@ -134,25 +134,10 @@ fun SettleGroupWithMovements.taxes(
                     && movement.currencyCode == currencyCode
                     && filter(movement)
         }.sumOf {
-            Log.d("HOLA3", "taxes: $it")
-
             val left = BigDecimal(it.leftAmount)
-            //Log.d("HOLA3", "left: $left")
-
-            //Log.d("HOLA3", "taxes??: ${this.settleGroup.percentage/100}")
-
             val percent = BigDecimal(this.settleGroup.percentage / 100) /*/ BigDecimal("100.0")*/
-            //Log.d("HOLA3", "percent: $percent")
-
             val result = left.times(percent)
-            //Log.d("HOLA3", "result: $result")
-
-            //Log.d("HOLA3", "taxes: ${it.leftAmount.times(this.settleGroup.percentage / 100).toLong()}")
-
-            //Log.d("HOLA3", "\n")
-
             result.toLong()
-
         }
     }
 

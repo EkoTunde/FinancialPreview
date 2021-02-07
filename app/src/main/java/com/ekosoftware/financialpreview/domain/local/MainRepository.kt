@@ -37,6 +37,9 @@ class MainRepository @Inject constructor(
     fun getMonthPendingSummary(fromTo: Int, currencyCode: String): MonthSummary =
         movementDao.getMonthPendingSummary(currencyCode, fromTo, fromTo.monthNameKey())
 
+    fun getLiveMonthPendingSummary(fromTo: Int, currencyCode: String): LiveData<MonthSummary> =
+        movementDao.getLiveMonthPendingSummaries(currencyCode, fromTo, fromTo.monthNameKey())
+
     fun getMovementsSummaries(
         searchPhrase: String,
         currencyCode: String,

@@ -64,10 +64,6 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
-        <argument
-            android:name="movementUI"
-            app:argType="com.ekosoftware.financialpreview.data.model.movement.MovementUI"
-            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/editBudgetFragment"
@@ -114,9 +110,9 @@
         android:label="edit_fragment_settle_group"
         tools:layout="@layout/entry_fragment_settle_group">
         <argument
-            android:name="settleGroupWithMovements"
-            app:argType="com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements"
-            app:nullable="true" />
+            android:name="settleGroupId"
+            app:argType="string"
+            android:defaultValue="NaN" />
     </fragment>
     <fragment
         android:id="@+id/home_page_fragment"
@@ -191,9 +187,7 @@
         app:popExitAnim="@anim/exit_anim_dialog" />
     <action
         android:id="@+id/action_global_editBudgetFragment"
-        app:destination="@id/editBudgetFragment"
-        app:enterAnim="@anim/enter_anim_dialog"
-        app:popExitAnim="@anim/exit_anim_dialog" />
+        app:destination="@id/editBudgetFragment" />
     <action
         android:id="@+id/action_global_editMovementFragment"
         app:destination="@id/editMovementFragment" />

@@ -20,7 +20,7 @@ class DetailsRepository @Inject constructor(
 
     fun getMovement(id: String): LiveData<MovementUI> = movementDao.getMovementUI(id)
 
-    fun getBudget(id: String): LiveData<Budget> = budgetDao.getBudget(id)
+    fun getBudget(id: String): LiveData<Budget> = budgetDao.getLiveBudget(id)
 
     fun getSingleSettleGroup(id: String): LiveData<SettleGroup> = settleGroupDao.getSingleSettleGroup(id)
 

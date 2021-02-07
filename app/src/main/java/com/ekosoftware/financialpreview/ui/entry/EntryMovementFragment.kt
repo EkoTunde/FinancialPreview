@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.AutoCompleteTextView
-import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -160,28 +159,15 @@ class EntryMovementFragment : Fragment() {
         with(entryMovementViewModel) {
             accountName().observe(viewLifecycleOwner) { name -> binding.account.editText?.setText(name) }
             budgetName().observe(viewLifecycleOwner) { name -> binding.budget.editText?.setText(name) }
-            categoryName().observe(viewLifecycleOwner) { name ->
-                Log.d(TAG, "fetchSelectionData: categoryName() triggered with code: s${name}s")
-                binding.category.editText?.setText(name)
-            }
-            currencyCode().observe(viewLifecycleOwner) { code ->
-                Log.d(TAG, "fetchSelectionData: currencyCode() triggered with code: s${code}s")
-                binding.currency.editText?.setText(code)
-            }
+            categoryName().observe(viewLifecycleOwner) { name -> binding.category.editText?.setText(name) }
+            currencyCode().observe(viewLifecycleOwner) { code -> binding.currency.editText?.setText(code) }
             frequency().observe(viewLifecycleOwner) { frequency -> binding.frequency.editText?.setText(frequency.forDisplay()) }
             getLeftAmount().observe(viewLifecycleOwner) { leftAmount ->
                 leftAmount?.let {
                     val asText = startAmountToString(it)
-                    binding.startingAmount.editText?.setText(asText)
-                }
+                    binding.startingAmount.editText?.setText(asText) }
             }
         }
-        /*entryMovementViewModel.accountName().observe(viewLifecycleOwner) { name -> binding.account.editText?.setText(name) }
-        entryMovementViewModel.budgetName().observe(viewLifecycleOwner) { name -> binding.budget.editText?.setText(name) }
-        entryMovementViewModel.categoryName().observe(viewLifecycleOwner) { name -> binding.category.editText?.setText(name) }
-        entryMovementViewModel.currencyCode().observe(viewLifecycleOwner) { code -> binding.currency.editText?.setText(code) }
-        entryMovementViewModel.frequency().observe(viewLifecycleOwner) { frequency -> binding.frequency.editText?.setText(frequency.forDisplay()) }
-        entryMovementViewModel.getLeftAmount().observe(viewLifecycleOwner) { leftAmount -> leftAmount?.let { binding.leftAmount.editText?.setText(it.toString()) } }*/
     }
 
     /**
@@ -222,7 +208,7 @@ class EntryMovementFragment : Fragment() {
     }
 
     /**
-     * Sets listeners for editable text views that trigger navigation to [SelectFragment]
+     * Sets listeners for editable text views that trigger navigation to [SelectFragment].
      */
     private fun setSelectionListeners() {
         with(binding) {
@@ -277,7 +263,7 @@ class EntryMovementFragment : Fragment() {
     /**
      * Called when user is intended to save data. Checks if required info is
      * filled and performs saving action calling ViewModel.
-     * Finally, navigates up. TODO("Navigate up")
+     * Finally, navigates up.
      */
     private fun done() {
         if (isRequiredInfoCompleted()) {

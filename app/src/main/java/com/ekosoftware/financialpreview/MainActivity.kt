@@ -120,9 +120,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         val action = when (position) {
-            NavigationViewModel.OPTION_ADD_MOVEMENT -> MainNavGraphDirections.actionGlobalEditMovementFragment(movementId = Constants.nan, movementUI = null)
+            NavigationViewModel.OPTION_ADD_MOVEMENT -> MainNavGraphDirections.actionGlobalEditMovementFragment()
             NavigationViewModel.OPTION_ADD_BUDGET -> MainNavGraphDirections.actionGlobalEditBudgetFragment()
-            NavigationViewModel.OPTION_ADD_GROUP -> MainNavGraphDirections.actionGlobalEditSettleGroupFragment(null)
+            NavigationViewModel.OPTION_ADD_GROUP -> MainNavGraphDirections.actionGlobalEditSettleGroupFragment()
             NavigationViewModel.OPTION_ADD_ACCOUNT -> MainNavGraphDirections.actionGlobalEditAccountFragment()
             else -> MainNavGraphDirections.actionGlobalSettleFragment(0, "")
         }

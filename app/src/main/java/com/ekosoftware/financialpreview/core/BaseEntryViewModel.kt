@@ -1,6 +1,5 @@
-package com.ekosoftware.financialpreview.presentation
+package com.ekosoftware.financialpreview.core
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ekosoftware.financialpreview.app.Constants
@@ -10,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-abstract class EntryViewModel(
+abstract class BaseEntryViewModel(
     private val entryRepository: EntryRepository
 ) : ViewModel() {
 

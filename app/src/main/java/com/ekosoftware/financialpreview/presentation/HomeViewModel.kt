@@ -1,22 +1,21 @@
 package com.ekosoftware.financialpreview.presentation
 
 import android.os.Parcelable
+import android.util.Log
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.BaseViewModel
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.DummyData
 import com.ekosoftware.financialpreview.data.model.HomeData
 import com.ekosoftware.financialpreview.data.model.budget.Budget
+import com.ekosoftware.financialpreview.data.model.movement.MonthSummary
 import com.ekosoftware.financialpreview.data.model.movement.MovementUI
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovementsCount
 import com.ekosoftware.financialpreview.domain.local.MainRepository
 import com.ekosoftware.financialpreview.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.android.parcel.Parcelize
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.util.*
 import javax.inject.Inject
 
@@ -69,10 +68,11 @@ class HomeViewModel @Inject constructor(
         } ?: HomeScreenConfiguration()
     }
 
-    fun refresh(): Boolean {
-        submitSearchQuery(" ")
-        submitSearchQuery("")
-        return true
+    fun refresh() {
+        val old: HomeScreenConfiguration? = savedStateHandle[SELECTED_CONFIG_KEY]
+        savedStateHandle[SELECTED_CONFIG_KEY] = old.apply {
+            this?.lastUpdate = System.currentTimeMillis()
+        } ?: HomeScreenConfiguration()
     }
 
     val movements: LiveData<Resource<List<MovementUI>>> =
@@ -127,10 +127,11 @@ class HomeViewModel @Inject constructor(
             settleGroupsWithMovementsCount = it
         }
 
-    val homeData: LiveData<Resource<HomeData>> = selectedConfiguration.distinctUntilChanged().switchMap { config ->
+    val homeData: LiveData<Resource<HomeData>> = selectedConfiguration.switchMap { config ->
         liveData<Resource<HomeData>>(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading())
             try {
+                //Log.d("HOME_VIEW_MODEL", "config: ${config.lastUpdate}")
                 val months = listOf(0..12).flatten().map {
                     withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
                         mainRepository.getMonthPendingSummary(
@@ -149,19 +150,6 @@ class HomeViewModel @Inject constructor(
                         )
                     )
                 )
-                /*val liveData1 = mainRepository.getAccountsTotalForCurrency(config.currencyCode)
-                val liveData2 = mainRepository.getSettleGroupsWithMovements()
-                val result =
-                    liveData1.combineWith(liveData2) { balance, groups ->
-                        HomeData(
-                            config.currencyCode,
-                            config.currentYearMonth,
-                            balance ?: 0,
-                            months,
-                            groups ?: emptyList()
-                        )
-                    }
-                emitSource(result.map { Resource.Success(it) })*/
             } catch (e: Exception) {
                 emit(Resource.Failure(e))
             }

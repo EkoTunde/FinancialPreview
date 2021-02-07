@@ -87,7 +87,7 @@ class DetailsMovementFragment : Fragment() {
                 }
                 R.id.fab_edit -> {
                     Toast.makeText(requireContext(), "Editar!", Toast.LENGTH_SHORT).show()
-                    val action = MainNavGraphDirections.actionGlobalEditMovementFragment(args.movementId, null)
+                    val action = MainNavGraphDirections.actionGlobalEditMovementFragment(args.movementId)
                     findNavController().navigate(action)
                     binding.speedDial.close() // To close the Speed Dial with animation
                     return@setOnActionSelectedListener true // false will close it without animation

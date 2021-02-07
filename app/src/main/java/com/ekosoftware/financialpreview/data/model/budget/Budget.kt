@@ -29,5 +29,5 @@ data class Budget(
     var startingAmount: Long,
 
     @Embedded(prefix = "budget")
-    var frequency: Frequency,
+    var frequency: Frequency?,
 )

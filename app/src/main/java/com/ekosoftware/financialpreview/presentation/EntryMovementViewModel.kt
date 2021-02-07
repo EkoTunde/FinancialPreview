@@ -1,6 +1,7 @@
 package com.ekosoftware.financialpreview.presentation
 
 import androidx.lifecycle.*
+import com.ekosoftware.financialpreview.core.BaseEntryViewModel
 import com.ekosoftware.financialpreview.data.model.movement.Frequency
 import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.domain.local.EntryRepository
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class EntryMovementViewModel @Inject constructor(
     private val entryRepository: EntryRepository,
     private val savedStateHandle: SavedStateHandle
-) : EntryViewModel(entryRepository) {
+) : BaseEntryViewModel(entryRepository) {
 
     companion object {
         private const val ENTRY_ACCOUNT_ID_KEY = "accountIdForMovementKey"
@@ -155,7 +156,7 @@ class EntryMovementViewModel @Inject constructor(
     }
 
     fun delete(id: String) {
-        viewModelScope.launch { entryRepository.deleteWithId(id) }
+        viewModelScope.launch { entryRepository.deleteMovementWithId(id) }
     }
 
     fun clearAllSelectedData() {

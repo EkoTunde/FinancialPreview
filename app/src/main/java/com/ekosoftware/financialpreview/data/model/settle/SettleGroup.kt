@@ -22,5 +22,8 @@ data class SettleGroup(
     @ColumnInfo(name = "settleGroupPercentage")
     var percentage: Double,
 
+    @ColumnInfo(name = "settleGroupColorResId")
+    var colorResId: Int,
+
     ) : Parcelable
 

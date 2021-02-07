@@ -1,5 +1,6 @@
 package com.ekosoftware.financialpreview.presentation
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.budget.Budget
@@ -125,6 +126,10 @@ class DetailsViewModel @Inject constructor(
                 emit(Resource.Failure(e))
             }
         }
+    }
+
+    fun clearData() {
+        budget = null
     }
 
 }

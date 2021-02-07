@@ -87,7 +87,6 @@ class HomeFragment : Fragment() {
                     is Resource.Success -> {
                         progressBar.hide()
                         scrollViewContainer.show()
-                        Log.d("HOLA", "fetchData: ${result.data}")
                         setUpBalance(result.data.currencyCode, result.data.currentBalance)
                         setUpPendingSummary(
                             result.data.currencyCode,
@@ -119,7 +118,7 @@ class HomeFragment : Fragment() {
     private fun setUpActions() {
         hashMapOf(
             binding.actions.btnSettle to HomeFragmentDirections.actionHomePageFragmentToSettleOptionsDialog(),
-            binding.actions.btnAddPending to HomeFragmentDirections.actionGlobalEditMovementFragment(Constants.nan, null),
+            binding.actions.btnAddPending to HomeFragmentDirections.actionGlobalEditMovementFragment(Constants.nan),
             binding.actions.btnAddRecord to HomeFragmentDirections.actionGlobalSettleFragment(SETTLE_TYPE_SIMPLE_RECORD, null),
             binding.actions.btnTransfer to HomeFragmentDirections.actionGlobalSettleFragment(SETTLE_TYPE_TRANSFER, null),
             binding.actions.btnLoan to HomeFragmentDirections.actionGlobalSettleFragment(SETTLE_TYPE_LOAN_DEBT, null),

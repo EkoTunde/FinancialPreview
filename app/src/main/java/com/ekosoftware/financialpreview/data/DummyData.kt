@@ -238,7 +238,8 @@ object DummyData {
             id = "settle 1",
             name = "MasterCard",
             description = "",
-            percentage = 0.012
+            percentage = 0.012,
+            colorResId = R.color.materialColor12
         ),
     )
 
