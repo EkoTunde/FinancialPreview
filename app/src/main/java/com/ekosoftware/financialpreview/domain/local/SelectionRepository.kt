@@ -15,7 +15,7 @@ class SelectionRepository @Inject constructor(
     private val settleGroupDao: SettleGroupDao
 ) {
 
-    fun getSimpleQueryData(type: Int, queryText: String): LiveData<List<SimpleQueryData>> {
+    fun getSimpleQueryData(type: Int, queryText: String, genericId: String? = null): LiveData<List<SimpleQueryData>> {
         return when (type) {
             SelectionViewModel.ACCOUNTS -> accountDao.getAccountsAsSimpleData(queryText)
             SelectionViewModel.BUDGETS -> budgetDao.getBudgetsAsSimpleData(queryText)
@@ -23,6 +23,7 @@ class SelectionRepository @Inject constructor(
             SelectionViewModel.CURRENCIES -> currencyDao.getCurrenciesAsSimpleData(queryText)
             SelectionViewModel.MOVEMENTS -> movementDao.getMovementsAsSimpleData(queryText)
             SelectionViewModel.SETTLE_GROUPS -> settleGroupDao.getSettleGroupsAsSimpleData(queryText)
+            SelectionViewModel.SETTLE_GROUPS_TO_ADD_TO_MOVEMENTS -> settleGroupDao.getSettleGroupsAsSimpleDataForMovementSelection(queryText, genericId ?: "")
             else -> throw IllegalArgumentException("Error at: ${this.javaClass}. Given type $type isn't a value parameter.")
         }
     }

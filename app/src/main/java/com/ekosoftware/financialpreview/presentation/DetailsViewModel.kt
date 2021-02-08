@@ -10,6 +10,7 @@ import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovemen
 import com.ekosoftware.financialpreview.domain.local.DetailsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -128,8 +129,14 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    fun addSettleGroupAndMovementRef(settleGroupId: String, movementId: String) {
+        viewModelScope.launch { detailsRepository.addSettleGroupMovementCrossRef(settleGroupId, movementId) }
+    }
+
     fun clearData() {
         budget = null
+        settleGroupWithMovements = null
+        movementsInSettleGroup = null
     }
 
 }

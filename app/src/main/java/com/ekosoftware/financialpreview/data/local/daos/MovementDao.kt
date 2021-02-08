@@ -246,6 +246,7 @@ interface MovementDao : BaseDao<Movement> {
                     AND movementFreqFrom <= :yearMonth 
                     AND movementFreqTo >= :yearMonth
                     AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+                    GROUP BY s.settleGroupName
             )        
         ) AS settleGroupsIncome,
         (
@@ -261,6 +262,7 @@ interface MovementDao : BaseDao<Movement> {
                     AND movementFreqFrom <= :yearMonth 
                     AND movementFreqTo >= :yearMonth
                     AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
+                    GROUP BY s.settleGroupName
             )
         ) AS settleGroupsExpense
         """

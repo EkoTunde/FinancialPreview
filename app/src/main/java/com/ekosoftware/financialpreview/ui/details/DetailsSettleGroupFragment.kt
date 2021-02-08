@@ -130,6 +130,11 @@ class DetailsSettleGroupFragment : Fragment() {
         description.text = settleGroup.description
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        detailsViewModel.clearData()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null

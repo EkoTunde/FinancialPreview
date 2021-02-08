@@ -6,8 +6,10 @@ import com.ekosoftware.financialpreview.data.local.daos.MovementDao
 import com.ekosoftware.financialpreview.data.local.daos.RecordDao
 import com.ekosoftware.financialpreview.data.local.daos.SettleGroupDao
 import com.ekosoftware.financialpreview.data.model.budget.Budget
+import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.data.model.movement.MovementUI
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
+import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCrossRef
 import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 import javax.inject.Inject
 
@@ -26,5 +28,9 @@ class DetailsRepository @Inject constructor(
 
     fun getSimpleMovementsForSettleGroupId(settleGroupId: String): LiveData<List<SimpleQueryData>> =
         movementDao.getMovementsForSettleGroup(settleGroupId)
+
+    suspend fun addSettleGroupMovementCrossRef(settleGroupId: String, movementId: String) {
+        settleGroupDao.insertSettleGroupMovementsCrossRef(SettleGroupMovementsCrossRef(settleGroupId, movementId))
+    }
 
 }

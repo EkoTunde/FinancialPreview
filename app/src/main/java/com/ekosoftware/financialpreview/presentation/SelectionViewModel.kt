@@ -32,6 +32,7 @@ class SelectionViewModel @Inject constructor(
         const val CURRENCIES = 3
         const val MOVEMENTS = 4
         const val SETTLE_GROUPS = 5
+        const val SETTLE_GROUPS_TO_ADD_TO_MOVEMENTS = 6
 
         private const val TAG = "SelectionViewModel"
     }
@@ -44,12 +45,12 @@ class SelectionViewModel @Inject constructor(
 
     private val items: LiveData<Resource<List<SimpleDisplayableData>>>? = null
 
-    fun get(type: Int = ACCOUNTS) = items ?: searchText.distinctUntilChanged().switchMap { searchText ->
+    fun get(type: Int = ACCOUNTS, genericId: String? = null) = items ?: searchText.distinctUntilChanged().switchMap { searchText ->
         liveData<Resource<List<SimpleDisplayableData>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading())
             try {
                 emitSource(
-                    selectionRepository.getSimpleQueryData(type, searchText).map {
+                    selectionRepository.getSimpleQueryData(type, searchText, genericId).map {
                         it.map { queryData -> queryData.forDisplay(type) }
                     }.map {
                         Resource.Success(it)
@@ -72,6 +73,12 @@ class SelectionViewModel @Inject constructor(
     val movements = searchText.distinctUntilChanged().switchMap { query -> selectionRepository.getSimpleQueryData(MOVEMENTS, query) }
 
     val settleGroups = searchText.distinctUntilChanged().switchMap { query -> selectionRepository.getSimpleQueryData(SETTLE_GROUPS, query) }
+
+    val settleGroupsToAddToMovements = searchText.distinctUntilChanged().switchMap { query ->
+        selectionRepository.getSimpleQueryData(
+            SETTLE_GROUPS_TO_ADD_TO_MOVEMENTS, query
+        )
+    }
 
     val accountId: MutableLiveData<String?> = savedStateHandle.getLiveData(SELECTION_ACCOUNT_ID_KEY, null)
 
@@ -103,15 +110,32 @@ class SelectionViewModel @Inject constructor(
         savedStateHandle[SELECTION_MOVEMENT_ID_KEY] = id
     }
 
+    private var _settleGroupId: LiveData<String?>? = null
+
     val settleGroupId: MutableLiveData<String?> = savedStateHandle.getLiveData(SELECTION_SETTLE_GROUP_ID_KEY, null)
 
     fun setSettleGroupId(id: String?) {
         savedStateHandle[SELECTION_SETTLE_GROUP_ID_KEY] = id
     }
 
+    fun getSettleGroupId(): LiveData<String?> = _settleGroupId ?: liveData<String?> {
+        emitSource(savedStateHandle.getLiveData(SELECTION_SETTLE_GROUP_ID_KEY, null))
+    }.also {
+        _settleGroupId = it
+    }
+
     override fun onCleared() {
         super.onCleared()
         setSearchText("")
+        savedStateHandle[SELECTION_ACCOUNT_ID_KEY] = null
+        savedStateHandle[SELECTION_BUDGET_ID_KEY] = null
+        savedStateHandle[SELECTION_CATEGORY_ID_KEY] = null
+        savedStateHandle[SELECTION_CURRENCY_ID_KEY] = null
+        savedStateHandle[SELECTION_MOVEMENT_ID_KEY] = null
+        savedStateHandle[SELECTION_SETTLE_GROUP_ID_KEY] = null
+    }
+
+    fun clearData() {
         savedStateHandle[SELECTION_ACCOUNT_ID_KEY] = null
         savedStateHandle[SELECTION_BUDGET_ID_KEY] = null
         savedStateHandle[SELECTION_CATEGORY_ID_KEY] = null

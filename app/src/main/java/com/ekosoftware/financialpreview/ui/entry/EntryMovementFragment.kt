@@ -2,7 +2,6 @@ package com.ekosoftware.financialpreview.ui.entry
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.AutoCompleteTextView
 import androidx.core.widget.doOnTextChanged
@@ -120,7 +119,7 @@ class EntryMovementFragment : Fragment() {
             binding.startingAmount.editText?.doOnTextChanged { text, _, _, _ -> binding.leftAmount.editText?.setText(text) }
         }
         fetchSelectionData()
-        setSelectionListeners()
+        setSelectionClickListeners()
         setCleanErrorOnChangedText()
     }
 
@@ -210,7 +209,7 @@ class EntryMovementFragment : Fragment() {
     /**
      * Sets listeners for editable text views that trigger navigation to [SelectFragment].
      */
-    private fun setSelectionListeners() {
+    private fun setSelectionClickListeners() {
         with(binding) {
             account.setNavigation(MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.ACCOUNTS))
             budget.setNavigation(MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.BUDGETS))

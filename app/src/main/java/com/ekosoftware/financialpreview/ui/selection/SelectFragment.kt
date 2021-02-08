@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -48,6 +49,7 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Toast.makeText(requireContext(), "${args.type}", Toast.LENGTH_SHORT).show()
         setData()
     }
 
@@ -64,7 +66,7 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
             SelectionViewModel.CATEGORIES -> Strings.get(R.string.category)
             SelectionViewModel.CURRENCIES -> Strings.get(R.string.currency)
             SelectionViewModel.MOVEMENTS -> Strings.get(R.string.movement)
-            SelectionViewModel.SETTLE_GROUPS -> Strings.get(R.string.settle_group)
+            SelectionViewModel.SETTLE_GROUPS, SelectionViewModel.SETTLE_GROUPS_TO_ADD_TO_MOVEMENTS -> Strings.get(R.string.settle_group)
             else -> throw IllegalArgumentException("Given argument ${args.type} isn't a valid type for toolbar in ${this.javaClass.name}")
         }
     }
@@ -81,12 +83,10 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
         object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 selectionViewModel.setSearchText(query)
-                Log.d(TAG, "onQueryTextSubmit: $query")
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                Log.d(TAG, "onQueryTextChange: $newText")
                 selectionViewModel.setSearchText(newText)
                 return false
             }
@@ -107,7 +107,7 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
         }
     }
 
-    private fun setData() = selectionViewModel.get(args.type).fetchData { adapter.submitList(it) }
+    private fun setData() = selectionViewModel.get(args.type, args.genericId).fetchData { adapter.submitList(it) }
 
     override fun recyclerViewDividerOrientation(): Int = LinearLayout.VERTICAL
 
@@ -124,7 +124,7 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
             SelectionViewModel.CATEGORIES -> selectionViewModel.setCategoryId(item?.id)
             SelectionViewModel.CURRENCIES -> selectionViewModel.setCurrencyId(item?.id)
             SelectionViewModel.MOVEMENTS -> selectionViewModel.setMovementId(item?.id)
-            SelectionViewModel.SETTLE_GROUPS -> selectionViewModel.setSettleGroupId(item?.id)
+            SelectionViewModel.SETTLE_GROUPS, SelectionViewModel.SETTLE_GROUPS_TO_ADD_TO_MOVEMENTS -> selectionViewModel.setSettleGroupId(item?.id)
             else -> throw IllegalArgumentException("Given argument ${args.type} isn't a valid type to deploy an action in ${this.javaClass.name}")
         }
         findNavController().navigateUp()

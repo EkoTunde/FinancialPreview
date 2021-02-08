@@ -20,6 +20,7 @@ import com.ekosoftware.financialpreview.data.model.movement.Frequency
 import com.ekosoftware.financialpreview.data.model.movement.MovementUI
 import com.ekosoftware.financialpreview.databinding.DetailsFragmentMovementBinding
 import com.ekosoftware.financialpreview.presentation.DetailsViewModel
+import com.ekosoftware.financialpreview.presentation.SelectionViewModel
 import com.ekosoftware.financialpreview.util.*
 import com.google.android.material.transition.MaterialContainerTransform
 import com.leinardi.android.speeddial.SpeedDialActionItem
@@ -31,6 +32,7 @@ class DetailsMovementFragment : Fragment() {
     private val args: DetailsMovementFragmentArgs by navArgs()
 
     private val detailsViewModel: DetailsViewModel by activityViewModels()
+    private val selectionViewModel: SelectionViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +44,7 @@ class DetailsMovementFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DetailsFragmentMovementBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -54,30 +52,22 @@ class DetailsMovementFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         detailsViewModel.setMovementId(args.movementId)
+        setSpeedDial()
         fetchData()
         binding.navigationIcon.setOnClickListener { findNavController().navigateUp() }
+        observeAddToSettleGroup()
+    }
 
-        binding.speedDial.addActionItem(
-            SpeedDialActionItem.Builder(R.id.fab_settle, R.drawable.ic_check)
-                .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorWhite, requireContext().theme))
-                .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.colorBlack, requireContext().theme))
-                .setLabel(getString(R.string.settle))
-                .create()
-        )
-        binding.speedDial.addActionItem(
-            SpeedDialActionItem.Builder(R.id.fab_edit, R.drawable.ic_edit)
-                .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorWhite, requireContext().theme))
-                .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.colorBlack, requireContext().theme))
-                .setLabel(getString(R.string.edit))
-                .create()
-        )
-        binding.speedDial.addActionItem(
-            SpeedDialActionItem.Builder(R.id.fab_add_to_group, R.drawable.ic_add)
-                .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorWhite, requireContext().theme))
-                .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.colorBlack, requireContext().theme))
-                .setLabel(getString(R.string.add_to_group))
-                .create()
-        )
+    /**
+     * Setups speed dial buttons and listeners when onClicked.
+     */
+    private fun setSpeedDial() {
+        val ids = arrayOf(R.id.fab_settle, R.id.fab_edit, R.id.fab_add_to_group)
+        val drawables = arrayOf(R.drawable.ic_check, R.drawable.ic_edit, R.drawable.ic_add)
+        val labels = arrayOf(R.string.settle, R.string.edit, R.string.add_to_group)
+        listOf(0, 1, 2).forEach { index ->
+            addButton(ids[index], drawables[index], labels[index])
+        }
         binding.speedDial.setOnActionSelectedListener { actionItem ->
             when (actionItem.id) {
                 R.id.fab_settle -> {
@@ -86,20 +76,34 @@ class DetailsMovementFragment : Fragment() {
                     return@setOnActionSelectedListener true // false will close it without animation
                 }
                 R.id.fab_edit -> {
-                    Toast.makeText(requireContext(), "Editar!", Toast.LENGTH_SHORT).show()
                     val action = MainNavGraphDirections.actionGlobalEditMovementFragment(args.movementId)
                     findNavController().navigate(action)
                     binding.speedDial.close() // To close the Speed Dial with animation
                     return@setOnActionSelectedListener true // false will close it without animation
                 }
                 R.id.fab_add_to_group -> {
-                    Toast.makeText(requireContext(), "Agregar a un grupo", Toast.LENGTH_SHORT).show()
+                    val action =
+                        MainNavGraphDirections.actionGlobalSelectFragment(SelectionViewModel.SETTLE_GROUPS_TO_ADD_TO_MOVEMENTS, args.movementId)
+                    findNavController().navigate(action)
                     binding.speedDial.close() // To close the Speed Dial with animation
                     return@setOnActionSelectedListener true // false will close it without animation
                 }
             }
             false
         }
+    }
+
+    /**
+     * Adds a button with an id, drawable and string.
+     */
+    private fun addButton(id: Int, drawableResId: Int, stringResId: Int) {
+        binding.speedDial.addActionItem(
+            SpeedDialActionItem.Builder(id, drawableResId)
+                .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorWhite, requireContext().theme))
+                .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.colorBlack, requireContext().theme))
+                .setLabel(Strings.get(stringResId))
+                .create()
+        )
     }
 
     private fun fetchData() = detailsViewModel.movementUI.observe(viewLifecycleOwner) { result ->
@@ -154,8 +158,43 @@ class DetailsMovementFragment : Fragment() {
         ).forDisplay()
     }
 
+    private fun observeAddToSettleGroup() {
+        selectionViewModel.getSettleGroupId().observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            it?.let { settleGroupId ->
+                detailsViewModel.addSettleGroupAndMovementRef(settleGroupId, args.movementId)
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        selectionViewModel.clearData()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 }
+/*binding.speedDial.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_settle, R.drawable.ic_check)
+                .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorWhite, requireContext().theme))
+                .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.colorBlack, requireContext().theme))
+                .setLabel(Strings.get(R.string.settle))
+                .create()
+        )
+        binding.speedDial.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_edit, R.drawable.ic_edit)
+                .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorWhite, requireContext().theme))
+                .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.colorBlack, requireContext().theme))
+                .setLabel(Strings.get(R.string.edit))
+                .create()
+        )
+        binding.speedDial.addActionItem(
+            SpeedDialActionItem.Builder(R.id.fab_add_to_group, R.drawable.ic_add)
+                .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorWhite, requireContext().theme))
+                .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.colorBlack, requireContext().theme))
+                .setLabel(Strings.get(R.string.add_to_group))
+                .create()
+        )*/

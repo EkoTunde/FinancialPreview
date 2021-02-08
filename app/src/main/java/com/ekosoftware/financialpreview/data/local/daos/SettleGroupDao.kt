@@ -88,6 +88,36 @@ interface SettleGroupDao : BaseDao<SettleGroup> {
     )
     fun getSettleGroupsAsSimpleData(searchPhrase: String): LiveData<List<SimpleQueryData>>
 
+    /**
+     * Queries for [SettleGroup]s which aren't related to specified movementId
+     * in SimpleQueryData format.
+     */
+    @Query(
+        """
+        SELECT 
+            settleGroupId AS id, 
+            settleGroupName AS name, 
+            NULL AS currencyCode, 
+            NULL AS amount,
+            NULL AS typeId, 
+            CAST(settleGroupPercentage AS description), 
+            NULL AS color, 
+            NULL AS iconResId
+        FROM settleGroups
+        WHERE settleGroupId NOT IN (
+            SELECT settleGroupId AS groupId 
+            FROM settleGroupMovementsCrossRefTable
+            WHERE movementId = :movementId
+        ) AND (
+            settleGroupName LIKE '%' || :searchPhrase || '%' 
+            OR settleGroupDescription LIKE '%' || :searchPhrase || '%'
+            OR settleGroupPercentage LIKE '%' || :searchPhrase || '%'
+        )
+        ORDER BY settleGroupName
+    """
+    )
+    fun getSettleGroupsAsSimpleDataForMovementSelection(searchPhrase: String, movementId: String): LiveData<List<SimpleQueryData>>
+
     @Query(
         """
                 SELECT s.settleGroupId AS id,
@@ -115,52 +145,4 @@ interface SettleGroupDao : BaseDao<SettleGroup> {
         yearMonth: Int,
         monthIncluded: String
     ): LiveData<List<SettleGroupWithMovementsCount>>
-
-    /* @Query(
-         """
-         SELECT s.*, SUM(m.movementLeftAmount)
-         FROM settleGroups s
-         JOIN settleGroupMovementsCrossRefTable cf
-         ON s.settleGroupId = cf.settleGroupId
-         JOIN movements m ON m.movementId = cf.movementId
-         AND movementCurrencyCode = :currencyCode
-         AND movementFreqFrom <= :fromTo
-         AND movementFreqTo >= :fromTo
-         AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
-         GROUP BY s.settleGroupName
-     """
-     )
-     fun g(
-         fromTo: Int,
-         currencyCode: String,
-         monthIncluded: String
-     ): LiveData<SettleGroupSummary>
-
-     data class SettleGroupSummary(
-         val settleGroup: SettleGroup,
-         val movementsBalance: Long
-     )
-
-     @Query(
-         """
-         SELECT (SUM(total))/100
-         FROM(
-             SELECT SUM(m.movementLeftAmount) * s.settleGroupPercentage AS total
-             FROM settleGroups s
-             JOIN settleGroupMovementsCrossRefTable cf
-             ON s.settleGroupId = cf.settleGroupId
-             JOIN movements m ON m.movementId = cf.movementId
-             WHERE movementLeftAmount < 0
-             AND movementCurrencyCode = :currencyCode
-             AND movementFreqFrom <= :fromTo
-             AND movementFreqTo >= :fromTo
-             AND movementFreqMonthsChecked LIKE '%' || :monthIncluded || '%'
-         )
-     """
-     )
-     fun asdasdg(
-         fromTo: Int,
-         currencyCode: String,
-         monthIncluded: String
-     ): LiveData<SettleGroupSummary>*/
 }
