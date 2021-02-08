@@ -1,14 +1,12 @@
 package com.ekosoftware.financialpreview.ui.selection
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import androidx.appcompat.widget.SearchView
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -16,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.ekosoftware.financialpreview.MainActivity
+import com.ekosoftware.financialpreview.MainNavGraphDirections
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.core.BaseListAdapter
@@ -49,12 +48,10 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Toast.makeText(requireContext(), "${args.type}", Toast.LENGTH_SHORT).show()
         setData()
     }
 
     override fun onCreateToolbar(appBarLayout: AppBarLayout, toolbar: Toolbar) {
-        setHasOptionsMenu(true)
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         toolbar.inflateMenu(R.menu.selection_menu)
@@ -117,6 +114,19 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
         //findNavController().navigate(SelectAccountFragmentDirections.selectAccountToAccounts())
     }
 
+    override fun onFabPressed() {
+        val action = when (args.type) {
+            SelectionViewModel.ACCOUNTS -> MainNavGraphDirections.actionGlobalEditAccountFragment()
+            SelectionViewModel.BUDGETS -> MainNavGraphDirections.actionGlobalEditBudgetFragment()
+            SelectionViewModel.CATEGORIES -> SelectFragmentDirections.actionSelectFragmentToEditCategoryFragment2()
+            SelectionViewModel.CURRENCIES -> MainNavGraphDirections.actionGlobalEntryCurrencyFragment()
+            SelectionViewModel.MOVEMENTS -> MainNavGraphDirections.actionGlobalEditMovementFragment()
+            SelectionViewModel.SETTLE_GROUPS, SelectionViewModel.SETTLE_GROUPS_TO_ADD_TO_MOVEMENTS -> MainNavGraphDirections.actionGlobalEditSettleGroupFragment()
+            else -> throw IllegalArgumentException("Given argument ${args.type} isn't a valid type to deploy an action in ${this.javaClass.name}")
+        }
+        findNavController().navigate(action)
+    }
+
     private fun goBack(item: SimpleDisplayableData?) {
         when (args.type) {
             SelectionViewModel.ACCOUNTS -> selectionViewModel.setAccountId(item?.id)
@@ -129,4 +139,6 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
         }
         findNavController().navigateUp()
     }
+
+    override fun makeFabVisible(): Boolean = true
 }

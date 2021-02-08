@@ -1,7 +1,5 @@
 package com.ekosoftware.financialpreview.util
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.text.SpannableStringBuilder
@@ -10,7 +8,6 @@ import android.text.TextPaint
 import android.text.style.RelativeSizeSpan
 import android.text.style.SuperscriptSpan
 import android.view.View
-import android.view.animation.Animation
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import java.math.BigDecimal
@@ -35,7 +32,7 @@ fun TextView.applyMoneyFormat(currency: String, amount: Double) {
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE // Do not extend the span when text add later
             )
             setSpan(
-                RelativeSizeSpan(.45f),
+                RelativeSizeSpan(.5f),
                 inputText.lastIndexOf(decimalNo), // Start of the span (inclusive)
                 inputText.lastIndexOf(decimalNo) + decimalNo.length, // End of the span (exclusive)
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE // Do not extend the span when text add later

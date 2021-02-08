@@ -45,22 +45,23 @@ class SelectionViewModel @Inject constructor(
 
     private val items: LiveData<Resource<List<SimpleDisplayableData>>>? = null
 
-    fun get(type: Int = ACCOUNTS, genericId: String? = null) = items ?: searchText.distinctUntilChanged().switchMap { searchText ->
-        liveData<Resource<List<SimpleDisplayableData>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
-            emit(Resource.Loading())
-            try {
-                emitSource(
-                    selectionRepository.getSimpleQueryData(type, searchText, genericId).map {
-                        it.map { queryData -> queryData.forDisplay(type) }
-                    }.map {
-                        Resource.Success(it)
-                    }
-                )
-            } catch (e: Exception) {
-                emit(Resource.Failure(e))
+    fun get(type: Int = ACCOUNTS, genericId: String? = null): LiveData<Resource<List<SimpleDisplayableData>>> =
+        items ?: searchText.distinctUntilChanged().switchMap { searchText ->
+            liveData<Resource<List<SimpleDisplayableData>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
+                emit(Resource.Loading())
+                try {
+                    emitSource(
+                        selectionRepository.getSimpleQueryData(type, searchText, genericId).map {
+                            it.map { queryData -> queryData.forDisplay(type) }
+                        }.map {
+                            Resource.Success(it)
+                        }
+                    )
+                } catch (e: Exception) {
+                    emit(Resource.Failure(e))
+                }
             }
         }
-    }
 
     val accounts = searchText.distinctUntilChanged().switchMap { query -> selectionRepository.getSimpleQueryData(ACCOUNTS, query) }
 

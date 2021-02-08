@@ -15,42 +15,43 @@ data class HomeData(
     /**
      * Gets the current balance as a Double.
      */
-    val currentBalance: Double get() = currentAccountsBalance.forCommunicationAmount()
+    fun currentBalance(): Double = currentAccountsBalance.forCommunicationAmount()
 
     /**
      * Maps each MonthSummary to corresponding month name.
      */
-    val monthsNames: List<String> get() = monthSummaries.map { month -> month.monthNameAbbr ?: "" }
+    fun monthsNames(): List<String> = monthSummaries.map { month -> month.monthNameAbbr ?: "" }
 
     /**
      * Gets total income, made up from the sum of all pending movements, budgets and
      * taxes (settle groups percentage times included movements) when their amount is more than zero.
      */
-    val incomes: List<Double> get() = monthSummaries.map { it.getTotalIncomes().forCommunicationAmount() }
+    fun incomes(): List<Double> = monthSummaries.map { it.getTotalIncomes().forCommunicationAmount() }
 
     /**
      * Gets total expenses, made up from the sum of all pending movements, budgets and
      * taxes (settle groups percentage times included movements) when their amount is less than zero.
      */
-    val expenses: List<Double> get() = monthSummaries.map { it.getTotalExpenses().forCommunicationAmount() }
+    fun expenses(): List<Double> = monthSummaries.map { it.getTotalExpenses().forCommunicationAmount() }
 
 
     /**
      * The result of adding total incomes and total expenses.
      */
-    val balances: List<Double> get() = monthSummaries.map { it.getBalance().forCommunicationAmount() }
+    fun balances(): List<Double> = monthSummaries.map { it.getBalance().forCommunicationAmount() }
 
     /**
      * The result of adding month by month incomes and expenses
      * while adding the accumulated balance from previous months.
      * Adds current balance to first month.
      */
-    val accumulatedBalances
-        get() = monthSummaries.map {
+    fun accumulatedBalances(): List<Double> {
+        return monthSummaries.map {
             Log.d("PRUEBA REAL B", "$it")
             it.getBalance()
         }.scan(currentAccountsBalance) { acc, balance ->
             Log.d("PRUEBA REAL A", "${balance + acc}")
             balance + acc
         }.map { it.forCommunicationAmount() }
+    }
 }

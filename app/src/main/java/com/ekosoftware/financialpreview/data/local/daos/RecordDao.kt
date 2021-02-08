@@ -3,32 +3,48 @@ package com.ekosoftware.financialpreview.data.local.daos
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.ekosoftware.financialpreview.core.BaseDao
-import com.ekosoftware.financialpreview.data.model.Category
 import com.ekosoftware.financialpreview.data.model.record.Record
-import com.ekosoftware.financialpreview.data.model.record.RecordSummary
+import com.ekosoftware.financialpreview.data.model.record.RecordUI
+import com.ekosoftware.financialpreview.data.model.record.RecordUIShort
 import java.util.*
 
 @Dao
 interface RecordDao : BaseDao<Record> {
-
     @Query(
         """
-        SELECT recordId AS id, recordDate AS date, recordAmount AS amount, recordCurrencyCode as currencyCode 
-        ,recordName AS name, categoryName AS categoryName, categoryIconResId AS categoryIconResId,  
-        categoryColorResId AS categoryColorResId
-        FROM records INNER JOIN categories ON recordOld_movementCategoryId = categoryId
+        SELECT 
+            r.recordId AS id,
+            r.recordDate AS date,
+            r.recordAmount AS amount,
+            r.recordCurrencyCode as currencyCode,
+            r.recordName AS name,
+            c.categoryName AS categoryName, 
+            c.categoryIconResId AS categoryIconResId,  
+            c.categoryColorResId AS categoryColorResId
+        FROM records r 
+        LEFT JOIN categories c ON recordCategoryId = categoryId
         WHERE recordAccountId = :accountId
         AND recordDate >= :topDate
-        AND recordAmount BETWEEN :amountMin AND :amountMax
+        AND recordAmount BETWEEN :amountMin AND :amountMax 
+        AND (
+            (recordName LIKE '%' || :searchPhrase || '%') 
+            OR (recordDescription LIKE '%' || :searchPhrase || '%')
+            OR (recordCurrencyCode LIKE '%' || :searchPhrase || '%')
+            OR (recordOld_movementName LIKE '%' || :searchPhrase || '%')
+            OR (recordOld_movementDescription LIKE '%' || :searchPhrase || '%')
+            OR (recordOld_movementCurrencyCode LIKE '%' || :searchPhrase || '%')
+            OR (categoryName LIKE '%' || :searchPhrase || '%')
+        )
         ORDER BY recordDate
     """
     )
-    fun getRecords(
+    fun getRecordsUI(
         accountId: String,
+        searchPhrase: String = "",
         topDate: Date,
-        amountMax: Double = -100_000.0,
-        amountMin: Double = 100_000.0
-    ): LiveData<List<RecordSummary>>
+        amountMax: Long = 1_000_000_000_000,
+        amountMin: Long = -1_000_000_000_000
+    ): LiveData<List<RecordUIShort>>
 
     @Query("SELECT * FROM records WHERE recordId = :id")
     fun getRecord(id: String): LiveData<Record>
@@ -36,10 +52,10 @@ interface RecordDao : BaseDao<Record> {
 
     /*@Query(
         """
-        SELECT * 
-        FROM registryTable 
+        SELECT *
+        FROM registryTable
         WHERE recordDate BETWEEN :fromDate AND :toDate
-        ORDER BY recordDate DESC 
+        ORDER BY recordDate DESC
         LIMIT :limit"""
     )
     fun getMovements(

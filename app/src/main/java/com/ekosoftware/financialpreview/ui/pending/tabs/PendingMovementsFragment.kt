@@ -42,7 +42,7 @@ class PendingMovementsFragment(private val onItemClicked: ((v: View, id: String)
 
     private fun setData() = viewModel.movements.fetchData {
         movementListAdapter.submitList(it)
-        hideFab()
+        //hideFab()
     }
 }
 

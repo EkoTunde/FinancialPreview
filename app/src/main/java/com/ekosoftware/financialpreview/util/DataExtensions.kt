@@ -113,33 +113,32 @@ fun SettleGroupWithMovements.taxes(
     fromTo: Int,
     currencyCode: String,
     filter: (Movement) -> Boolean
-): Long /*=*/
-    {
+): Long /*=*/ {
 
-        Log.d(
-            "HOLA6", "taxes: ${
-                this.movements.filter { movement ->
-                    Log.d("HOLA5", "taxes: $movement")
-                    movement.frequency!!.from!! <= fromTo
-                            && fromTo <= movement.frequency!!.to!!
-                            && movement.currencyCode == currencyCode
-                            && filter(movement)
-                }
-            }"
-        )
+    Log.d(
+        "HOLA6", "taxes: ${
+            this.movements.filter { movement ->
+                Log.d("HOLA5", "taxes: $movement")
+                movement.frequency!!.from!! <= fromTo
+                        && fromTo <= movement.frequency!!.to!!
+                        && movement.currencyCode == currencyCode
+                        && filter(movement)
+            }
+        }"
+    )
 
-        return this.movements.filter { movement ->
-            movement.frequency!!.from!! <= fromTo
-                    && fromTo <= movement.frequency!!.to!!
-                    && movement.currencyCode == currencyCode
-                    && filter(movement)
-        }.sumOf {
-            val left = BigDecimal(it.leftAmount)
-            val percent = BigDecimal(this.settleGroup.percentage / 100) /*/ BigDecimal("100.0")*/
-            val result = left.times(percent)
-            result.toLong()
-        }
+    return this.movements.filter { movement ->
+        movement.frequency!!.from!! <= fromTo
+                && fromTo <= movement.frequency!!.to!!
+                && movement.currencyCode == currencyCode
+                && filter(movement)
+    }.sumOf {
+        val left = BigDecimal(it.leftAmount)
+        val percent = BigDecimal(this.settleGroup.percentage / 100) /*/ BigDecimal("100.0")*/
+        val result = left.times(percent)
+        result.toLong()
     }
+}
 
 
 /**
@@ -482,4 +481,10 @@ fun String.removeZeros(): String {
     } else {
         this
     }
+}
+
+fun getDaysAgo(days: Int): Date {
+    val today = LocalDateTime()
+    val aWeekAgo = today.minusDays(days)
+    return aWeekAgo.toDate()
 }

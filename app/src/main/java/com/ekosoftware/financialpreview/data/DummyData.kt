@@ -238,7 +238,7 @@ object DummyData {
             id = "settle 1",
             name = "MasterCard",
             description = "",
-            percentage = 0.012,
+            percentage = 1.2,
             colorResId = R.color.materialColor12
         ),
     )
@@ -258,7 +258,7 @@ object DummyData {
             }.timeInMillis),
             name = "Oftalmóloga (pago parcial)",
             currencyCode = "ARS",
-            accountId = 1,
+            accountId = "ac1 Bapro",
             amount = -15_000_000,
             movement = Movement(
                 id = "mov6",

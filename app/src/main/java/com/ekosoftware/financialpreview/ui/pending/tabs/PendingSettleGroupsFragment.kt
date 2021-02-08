@@ -49,6 +49,6 @@ class PendingSettleGroupsFragment(private val onItemClicked: ((v: View, settleGr
                 failure()
             }
         }
-        hideFab()
+        //hideFab()
     }
 }

@@ -12,8 +12,9 @@
             android:id="@+id/action_detailsRecordFragment_to_editRecordFragment"
             app:destination="@id/editRecordFragment" />
         <argument
-            android:name="recordSummary"
-            app:argType="com.ekosoftware.financialpreview.data.model.record.RecordSummary" />
+            android:name="recordId"
+            app:argType="string"
+            android:defaultValue="NaN" />
     </fragment>
     <fragment
         android:id="@+id/accounts"
@@ -35,8 +36,9 @@
             android:id="@+id/action_records_to_detailsRecordFragment"
             app:destination="@id/detailsRecordFragment" />
         <argument
-            android:name="account"
-            app:argType="com.ekosoftware.financialpreview.data.model.account.Account" />
+            android:name="accountId"
+            app:argType="string"
+            android:defaultValue="NaN" />
     </fragment>
     <fragment
         android:id="@+id/editRecordFragment"
@@ -92,7 +94,12 @@
         android:id="@+id/editCategoryFragment"
         android:name="com.ekosoftware.financialpreview.ui.entry.EntryCategoryFragment"
         android:label="edit_fragment_category"
-        tools:layout="@layout/entry_fragment_category" />
+        tools:layout="@layout/entry_fragment_category" >
+        <argument
+            android:name="categoryId"
+            app:argType="string"
+            android:defaultValue="NaN" />
+    </fragment>
     <fragment
         android:id="@+id/selectFragment"
         android:name="com.ekosoftware.financialpreview.ui.selection.SelectFragment"
@@ -257,4 +264,14 @@
         android:id="@+id/action_global_pending_page_fragment"
         app:destination="@id/pending_page_fragment"
         app:popUpTo="@id/pending_page_fragment" />
+    <fragment
+        android:id="@+id/entryCurrencyFragment"
+        android:name="com.ekosoftware.financialpreview.ui.entry.EntryCurrencyFragment"
+        android:label="EntryCurrencyFragment" >
+        <argument
+            android:name="currencyId"
+            app:argType="string"
+            android:defaultValue="NaN" />
+    </fragment>
+    <action android:id="@+id/action_global_entryCurrencyFragment" app:destination="@id/entryCurrencyFragment" />
 </navigation>

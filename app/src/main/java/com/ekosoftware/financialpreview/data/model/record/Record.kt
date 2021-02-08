@@ -33,7 +33,7 @@ data class Record(
     var currencyCode: String,
 
     @ColumnInfo(name = "recordAccountId")
-    var accountId: Int,
+    var accountId: String,
 
     @ColumnInfo(name = "recordCurrentPendingMovementId")
     var currentPendingMovementId: String?,

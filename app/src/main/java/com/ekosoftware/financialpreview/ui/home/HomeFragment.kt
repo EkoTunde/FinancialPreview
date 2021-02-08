@@ -77,7 +77,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchData() {
-        mainViewModel.homeData.observe(viewLifecycleOwner, { result ->
+        mainViewModel.getHomeData().observe(viewLifecycleOwner, { result ->
             with(binding) {
                 when (result) {
                     is Resource.Loading -> {
@@ -87,18 +87,8 @@ class HomeFragment : Fragment() {
                     is Resource.Success -> {
                         progressBar.hide()
                         scrollViewContainer.show()
-                        setUpBalance(result.data.currencyCode, result.data.currentBalance)
-                        setUpPendingSummary(
-                            result.data.currencyCode,
-                            when {
-                                result.data.incomes.isEmpty() -> 0.0
-                                else -> result.data.incomes[0]
-                            },
-                            when {
-                                result.data.expenses.isEmpty() -> 0.0
-                                else -> result.data.expenses[0]
-                            }
-                        )
+                        setUpBalance(result.data.currencyCode, result.data.currentBalance())
+                        setUpPendingSummary(result.data)
                         setUpProjection(result.data)
                         setUpQuickView(result.data)
                     }
@@ -127,11 +117,11 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setUpPendingSummary(currencyCode: String, totalIncome: Double, totalExpense: Double) {
+    private fun setUpPendingSummary(homeData: HomeData) {
         with(binding.pending) {
-            income.applyMoneyFormat(currencyCode, totalIncome)
+            income.applyMoneyFormat(homeData.currencyCode, homeData.incomes()[0])
             income.applyShader(R.color.colorAmountPositiveGradient1, R.color.colorAmountPositiveGradient2, R.color.colorAmountPositiveGradient3)
-            expenses.applyMoneyFormat(currencyCode, totalExpense)
+            expenses.applyMoneyFormat(homeData.currencyCode, homeData.expenses()[0])
             expenses.applyShader(R.color.colorAmountNegativeGradient1, R.color.colorAmountNegativeGradient2, R.color.colorAmountNegativeGradient3)
         }
     }
@@ -139,15 +129,15 @@ class HomeFragment : Fragment() {
     private fun setUpProjection(homeData: HomeData) = with(binding.projection) {
         thisMonthSavingAmount.applyMoneyFormatInK(
             homeData.currencyCode,
-            homeData.accumulatedBalances[1]
+            homeData.accumulatedBalances()[1]
         )
         sixMonthSavingAmount.applyMoneyFormatInK(
             homeData.currencyCode,
-            homeData.accumulatedBalances[7]
+            homeData.accumulatedBalances()[7]
         )
         thisYearSavingAmount.applyMoneyFormatInK(
             homeData.currencyCode,
-            homeData.accumulatedBalances[13]
+            homeData.accumulatedBalances()[13]
         )
     }
 
@@ -160,12 +150,12 @@ class HomeFragment : Fragment() {
     private fun CombinedChart.setUpChart(homeData: HomeData) = this.apply {
         // Set data
         val barData = getBarData(
-            homeData.incomes,
-            homeData.expenses,
-            homeData.monthsNames
+            homeData.incomes(),
+            homeData.expenses(),
+            homeData.monthsNames()
         )
         val lineData =
-            getLineData(homeData.balances, homeData.accumulatedBalances, homeData.monthsNames)
+            getLineData(homeData.balances(), homeData.accumulatedBalances(), homeData.monthsNames())
         val combinedData = CombinedData()
         combinedData.setData(barData) // set BarData
         combinedData.setData(lineData) // set LineData

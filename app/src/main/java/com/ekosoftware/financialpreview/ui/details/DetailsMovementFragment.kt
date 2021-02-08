@@ -160,7 +160,6 @@ class DetailsMovementFragment : Fragment() {
 
     private fun observeAddToSettleGroup() {
         selectionViewModel.getSettleGroupId().observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             it?.let { settleGroupId ->
                 detailsViewModel.addSettleGroupAndMovementRef(settleGroupId, args.movementId)
             }

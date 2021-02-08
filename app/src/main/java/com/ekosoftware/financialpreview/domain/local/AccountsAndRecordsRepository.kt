@@ -3,6 +3,8 @@ package com.ekosoftware.financialpreview.domain.local
 import androidx.lifecycle.LiveData
 import com.ekosoftware.financialpreview.data.local.daos.*
 import com.ekosoftware.financialpreview.data.model.account.Account
+import com.ekosoftware.financialpreview.data.model.record.RecordUI
+import com.ekosoftware.financialpreview.data.model.record.RecordUIShort
 import java.util.*
 import javax.inject.Inject
 
@@ -16,8 +18,9 @@ class AccountsAndRecordsRepository @Inject constructor(
 
     fun getRecords(
         accountId: String,
+        searchPhrase: String,
         topDate: Date,
-        amountMax: Double = -100_000.0,
-        amountMin: Double = 100_000.0
-    ) = recordDao.getRecords(accountId, topDate, amountMax, amountMin)
+        amountMax: Long = 1_000_000_000_000,
+        amountMin: Long = -1_000_000_000_000
+    ): LiveData<List<RecordUIShort>> = recordDao.getRecordsUI(accountId, searchPhrase, topDate, amountMax, amountMin)
 }

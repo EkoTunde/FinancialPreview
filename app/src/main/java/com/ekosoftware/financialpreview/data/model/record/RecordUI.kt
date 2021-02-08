@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-data class RecordSummary(
+data class RecordUI(
     var id: String,
     var date: Date?,
     var currencyCode: String,

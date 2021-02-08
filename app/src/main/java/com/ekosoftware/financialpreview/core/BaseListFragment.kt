@@ -28,7 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
  * Provides fully automatic UI responses to [LiveData] objects
  * that contain [Resource]s wrapping [T] data.
  * It uses [ViewBinding] features with [K] provided to bind [BaseListAdapter]
- * sublclass items to views.
+ * subclass items to views.
  * Also supports failure and "Retry Policy".
  *
  */
@@ -57,6 +57,7 @@ abstract class BaseListFragment<T, K : ViewBinding> : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpRetryButton()
         setUpRecyclerView()
+        binding.fabAdd.setOnClickListener { onFabPressed() }
     }
 
 
@@ -104,7 +105,7 @@ abstract class BaseListFragment<T, K : ViewBinding> : Fragment() {
     /**
      * Called to trigger success UI responses when it contains data.
      */
-    fun success() = toggleVisibility(recyclerViewVisible = true, fabVisible = true)
+    fun success() = toggleVisibility(recyclerViewVisible = true/*, fabVisible = true*/)
 
     /**
      * Called to trigger success UI responses when on data was returned.
@@ -116,6 +117,11 @@ abstract class BaseListFragment<T, K : ViewBinding> : Fragment() {
      */
     fun failure() = toggleVisibility(errorRetryLayoutVisible = true)
 
+    open fun makeFabVisible(): Boolean {
+        return false
+    }
+
+    open fun onFabPressed() {}
 
     /**
      * Toggles [K]'s [View]s responsible for UI states visibility
@@ -137,7 +143,7 @@ abstract class BaseListFragment<T, K : ViewBinding> : Fragment() {
         if (recyclerViewVisible) binding.recyclerView.show() else binding.recyclerView.hide()
         if (noItemLayoutVisible) binding.noItemLayout.show() else binding.noItemLayout.hide()
         if (errorRetryLayoutVisible) binding.errorRetryLayout.show() else binding.errorRetryLayout.hide()
-        if (fabVisible) binding.fabAdd.show() else binding.fabAdd.hide()
+        if (fabVisible && makeFabVisible()) binding.fabAdd.show() else binding.fabAdd.hide()
     }
 
     /**

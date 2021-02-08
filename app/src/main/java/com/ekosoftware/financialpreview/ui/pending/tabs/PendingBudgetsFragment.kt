@@ -41,6 +41,6 @@ class PendingBudgetsFragment(private val onItemClicked: ((v: View, id: String) -
 
     private fun setData() = viewModel.budgets.fetchData {
         pendingBudgetsListAdapter.submitList(it)
-        hideFab()
+        //hideFab()
     }
 }

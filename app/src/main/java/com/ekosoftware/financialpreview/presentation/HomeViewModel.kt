@@ -127,11 +127,12 @@ class HomeViewModel @Inject constructor(
             settleGroupsWithMovementsCount = it
         }
 
-    val homeData: LiveData<Resource<HomeData>> = selectedConfiguration.switchMap { config ->
+    private var _homeData: LiveData<Resource<HomeData>>? = null
+
+    fun getHomeData(): LiveData<Resource<HomeData>> = _homeData ?: selectedConfiguration.switchMap { config ->
         liveData<Resource<HomeData>>(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading())
             try {
-                //Log.d("HOME_VIEW_MODEL", "config: ${config.lastUpdate}")
                 val months = listOf(0..12).flatten().map {
                     withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
                         mainRepository.getMonthPendingSummary(
@@ -140,19 +141,31 @@ class HomeViewModel @Inject constructor(
                         )
                     }
                 }
-                emit(
-                    Resource.Success(
-                        HomeData(
-                            currencyCode = config.currencyCode,
-                            currentYearMonth = config.currentYearMonth,
-                            currentAccountsBalance = months[0].currentAccountsBalance ?: 0,
-                            monthSummaries = months
-                        )
-                    )
-                )
+                emit(Resource.Success(HomeData(config.currencyCode, config.currentYearMonth, months[0].currentAccountsBalance ?: 0, months)))
             } catch (e: Exception) {
                 emit(Resource.Failure(e))
             }
         }
+    }.also {
+        _homeData = it
     }
+
+    /*val homeData: LiveData<Resource<HomeData>> = selectedConfiguration.switchMap { config ->
+        liveData<Resource<HomeData>>(viewModelScope.coroutineContext + Dispatchers.IO) {
+            emit(Resource.Loading())
+            try {
+                val months = listOf(0..12).flatten().map {
+                    withContext(viewModelScope.coroutineContext + Dispatchers.IO) {
+                        mainRepository.getMonthPendingSummary(
+                            config.currentYearMonth.plusMonths(it),
+                            config.currencyCode
+                        )
+                    }
+                }
+                emit(Resource.Success(HomeData(config.currencyCode, config.currentYearMonth, months[0].currentAccountsBalance ?: 0, months)))
+            } catch (e: Exception) {
+                emit(Resource.Failure(e))
+            }
+        }
+    }*/
 }

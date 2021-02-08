@@ -1,14 +1,16 @@
 package com.ekosoftware.financialpreview.presentation
 
-import android.content.Context
+import android.os.Parcelable
+import android.util.Log
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.BaseViewModel
 import com.ekosoftware.financialpreview.core.Resource
-import com.ekosoftware.financialpreview.data.model.record.RecordSummary
+import com.ekosoftware.financialpreview.data.model.record.RecordUI
+import com.ekosoftware.financialpreview.data.model.record.RecordUIShort
 import com.ekosoftware.financialpreview.domain.local.AccountsAndRecordsRepository
-import dagger.assisted.Assisted
+import com.ekosoftware.financialpreview.util.getDaysAgo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.Dispatchers
 import java.util.*
 import javax.inject.Inject
@@ -16,14 +18,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountsAndRecordsViewModel @Inject constructor(
-    @ApplicationContext private val appContext: Context,
     private val accountsAndRecordsRepository: AccountsAndRecordsRepository,
-     private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     companion object {
         private const val ACCOUNTS_SEARCH_STRING_KEY = "accountsSearchStringKey"
         private const val SELECTED_FILTER_OPTIONS_KEY = "selectedFilterOptionsKey"
+    }
+
+    init {
+        setFilterOptions(RecordsFilterOptions())
     }
 
     private val accountSearchPhrase = savedStateHandle.getLiveData(ACCOUNTS_SEARCH_STRING_KEY, "")
@@ -40,53 +45,53 @@ class AccountsAndRecordsViewModel @Inject constructor(
         accountsAndRecordsRepository.getAccounts(searchPhrase)
     }
 
-    val recordsFilterOptions: MutableLiveData<RecordsFilterOptions> =
+    private val recordsFilterOptions: MutableLiveData<RecordsFilterOptions> =
         savedStateHandle.getLiveData(SELECTED_FILTER_OPTIONS_KEY, RecordsFilterOptions())
 
-    fun recordSearch(phrase: String) {
-        val old = currentFilterOptions
+    fun recordSearch(query: String) {
+        Log.d("RECORDS", "recordSearch -> $query")
+        val old: RecordsFilterOptions? = savedStateHandle[SELECTED_FILTER_OPTIONS_KEY]
         setFilterOptions(
-            RecordsFilterOptions(
-                phrase,
-                old.accountId,
-                old.topDate,
-                old.amountMax,
-                old.amountMin
-            )
+            old?.apply {
+                searchString = query
+            } ?: RecordsFilterOptions(searchString = query)
         )
     }
 
     fun setFilterOptions(recordsFilterOptions: RecordsFilterOptions) {
-        this.recordsFilterOptions.value = recordsFilterOptions
+        savedStateHandle[SELECTED_FILTER_OPTIONS_KEY] = recordsFilterOptions
+        //this.recordsFilterOptions.value = recordsFilterOptions
     }
 
-    val currentFilterOptions get() = recordsFilterOptions.value!!
+    private var _records: LiveData<Resource<List<RecordUIShort>>>? = null
 
-    val records = recordsFilterOptions.distinctUntilChanged().switchMap { options ->
-        liveData<Resource<List<RecordSummary>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
-            emit(Resource.Loading())
-            try {
-                emitSource(
-                    accountsAndRecordsRepository.getRecords(
-                        options.accountId,
-                        options.topDate,
-                        options.amountMax,
-                        options.amountMin
-                    ).map {
-                        Resource.Success(it)
-                    })
-            } catch (e: Exception) {
-                emit(Resource.Failure(e))
+    fun records(accountId: String): LiveData<Resource<List<RecordUIShort>>> =
+        _records ?: recordsFilterOptions.switchMap { options ->
+            Log.d("RECORDS", "options -> $options")
+            liveData<Resource<List<RecordUIShort>>>(viewModelScope.coroutineContext + Dispatchers.IO) {
+                Log.d("RECORDS", "records: Looking for some records")
+                Log.d("RECORDS", "records: $options")
+                Log.d("RECORDS", "records: -$accountId-")
+                emitSource(accountsAndRecordsRepository.getRecords(
+                    accountId,
+                    options.searchString,
+                    options.topDate,
+                    options.amountMax,
+                    options.amountMin
+                ).map {
+                    Resource.Success(it)
+                })
             }
+        }.also {
+            _records = it
         }
-    }
 
 }
 
+@Parcelize
 data class RecordsFilterOptions(
     var searchString: String = "",
-    var accountId: String = "",
-    var topDate: Date = Date(),
-    var amountMax: Double = -100_000.0,
-    var amountMin: Double = 100_000.0
-)
+    var topDate: Date = getDaysAgo(1000),
+    var amountMax: Long = 1_000_000_000_000,
+    var amountMin: Long = -1_000_000_000_000
+) : Parcelable

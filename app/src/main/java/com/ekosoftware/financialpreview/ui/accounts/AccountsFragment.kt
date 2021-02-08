@@ -3,8 +3,7 @@ package com.ekosoftware.financialpreview.ui.accounts
 import android.os.Bundle
 import android.view.*
 import android.widget.LinearLayout
-import android.widget.SearchView
-import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -26,12 +25,16 @@ class AccountsFragment : BaseListFragment<Account, ItemAccountBinding>() {
     private val viewModel by activityViewModels<AccountsAndRecordsViewModel>()
 
     private val accountListAdapter = AccountsListAdapter { _, account ->
-        val directions = AccountsFragmentDirections.actionAccountsFragmentToRecordsFragment(account)
+        val directions = AccountsFragmentDirections.actionAccountsFragmentToRecordsFragment(account.id)
         findNavController().navigate(directions)
     }
 
-    override val listAdapter: BaseListAdapter<Account, ItemAccountBinding>
-        get() = accountListAdapter
+    override val listAdapter: BaseListAdapter<Account, ItemAccountBinding> get() = accountListAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,28 +44,18 @@ class AccountsFragment : BaseListFragment<Account, ItemAccountBinding>() {
     override fun onCreateToolbar(appBarLayout: AppBarLayout, toolbar: Toolbar) {
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.setupWithNavController(navController, appBarConfiguration)
         toolbar.inflateMenu(R.menu.only_search_menu)
+        (requireActivity() as MainActivity).setSupportActionBar(toolbar)
+        toolbar.setupWithNavController(navController, appBarConfiguration)
         toolbar.title = Strings.get(R.string.accounts)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
         inflater.inflate(R.menu.only_search_menu, menu)
-        val searchView = SearchView((requireContext() as MainActivity).supportActionBar?.themedContext ?: requireContext())
-        menu.findItem(R.id.menu_item_search).apply {
-            setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_IF_ROOM)
-            actionView = searchView
-        }
-
+        val searchView: SearchView = menu.findItem(R.id.menu_item_search).actionView as SearchView
         searchView.setOnQueryTextListener(queryListener)
-        searchView.setOnClickListener {view ->
-            Toast.makeText(
-                requireContext(),
-                "hola",
-                Toast.LENGTH_SHORT
-            ).show()}
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private val queryListener by lazy {
@@ -85,14 +78,3 @@ class AccountsFragment : BaseListFragment<Account, ItemAccountBinding>() {
         accountListAdapter.submitList(it)
     }
 }
-
-/*override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle item selection
-        return when (item.itemId) {
-            R.id.menu_item_search -> {
-                newGame()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }*/

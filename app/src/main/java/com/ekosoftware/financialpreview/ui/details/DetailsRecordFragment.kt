@@ -14,7 +14,7 @@ import com.ekosoftware.financialpreview.app.Constants.CATEGORY_ADJUSTMENT_ID
 import com.ekosoftware.financialpreview.app.Constants.CATEGORY_DEBT_LOAN_ID
 import com.ekosoftware.financialpreview.app.Constants.CATEGORY_TRANSFER_ID
 import com.ekosoftware.financialpreview.app.Strings
-import com.ekosoftware.financialpreview.data.model.record.RecordSummary
+import com.ekosoftware.financialpreview.data.model.record.RecordUI
 import com.ekosoftware.financialpreview.databinding.DetailsFragmentRecordBinding
 import com.ekosoftware.financialpreview.util.applyMoneyFormat
 import com.ekosoftware.financialpreview.util.forCommunicationAmount
@@ -55,7 +55,7 @@ class DetailsRecordFragment : Fragment() {
         binding.navigationIcon.setOnClickListener { findNavController().navigateUp() }
     }
 
-    fun feedUI(record: RecordSummary) = with(binding) {
+    fun feedUI(record: RecordUI) = with(binding) {
         accountName.text = record.accountName
         accountColor.setBackgroundColor(
             Colors.get(
