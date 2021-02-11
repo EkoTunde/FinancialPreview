@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.AutoCompleteTextView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -23,6 +24,8 @@ import com.ekosoftware.financialpreview.presentation.FrequencyViewModel
 import com.ekosoftware.financialpreview.presentation.SelectionViewModel
 import com.ekosoftware.financialpreview.util.hasUselessDecimals
 import com.ekosoftware.financialpreview.util.themeColor
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.MaterialContainerTransform
 import java.math.BigDecimal
@@ -141,5 +144,4 @@ abstract class BaseEntryFragment : Fragment() {
         setEndIconOnClickListener { findNavController().navigate(action) }
         arrayListOf(this, editText).forEach { it?.setOnClickListener { findNavController().navigate(action) } }
     }
-
 }

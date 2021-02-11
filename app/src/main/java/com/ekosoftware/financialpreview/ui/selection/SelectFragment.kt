@@ -24,6 +24,7 @@ import com.ekosoftware.financialpreview.databinding.ItemSelectionExtendedBinding
 import com.ekosoftware.financialpreview.presentation.SelectionViewModel
 import com.ekosoftware.financialpreview.presentation.SimpleDisplayableData
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -140,5 +141,5 @@ class SelectFragment : BaseListFragment<SimpleDisplayableData, ItemSelectionExte
         findNavController().navigateUp()
     }
 
-    override fun makeFabVisible(): Boolean = true
+    override fun implementsFab(fab: FloatingActionButton): Boolean = true
 }

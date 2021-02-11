@@ -249,7 +249,8 @@
         <argument
             android:name="id"
             app:argType="string"
-            app:nullable="true" />
+            app:nullable="true"
+            android:defaultValue="NaN" />
     </fragment>
     <action
         android:id="@+id/action_global_settleFragment"

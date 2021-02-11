@@ -7,13 +7,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ekosoftware.financialpreview.app.Constants.DATABASE_NAME
 import com.ekosoftware.financialpreview.app.Constants.PREPOPULATE_ACCOUNT_TYPES
 import com.ekosoftware.financialpreview.app.Constants.PREPOPULATE_BASIC_CATEGORIES_DATA
-import com.ekosoftware.financialpreview.data.DummyData
 import com.ekosoftware.financialpreview.data.local.AppDatabase
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.DefineComponent
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton

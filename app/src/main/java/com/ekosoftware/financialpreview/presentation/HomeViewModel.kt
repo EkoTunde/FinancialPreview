@@ -1,14 +1,12 @@
 package com.ekosoftware.financialpreview.presentation
 
 import android.os.Parcelable
-import android.util.Log
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.BaseViewModel
 import com.ekosoftware.financialpreview.core.Resource
-import com.ekosoftware.financialpreview.data.DummyData
+import com.ekosoftware.financialpreview.app.injection.DummyData
 import com.ekosoftware.financialpreview.data.model.HomeData
 import com.ekosoftware.financialpreview.data.model.budget.Budget
-import com.ekosoftware.financialpreview.data.model.movement.MonthSummary
 import com.ekosoftware.financialpreview.data.model.movement.MovementUI
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovementsCount
 import com.ekosoftware.financialpreview.domain.local.MainRepository

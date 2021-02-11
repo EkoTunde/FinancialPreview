@@ -71,4 +71,5 @@ object Constants {
 
     const val nan = "NaN"
     const val noMonth = "000"
+    const val kRepr = "1000.0"
 }

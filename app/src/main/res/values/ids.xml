@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Settle a movement, budget or settle group -->
     <item name="fab_settle" type="id" />
+
+    <!-- Edit a movement, budget, settle group, account or record -->
     <item name="fab_edit" type="id" />
+
+    <!-- Add a movement to a group -->
     <item name="fab_add_to_group" type="id" />
+
+    <!-- Add a movement to a settle group -->
+    <item name="fab_add_movement" type="id" />
+
+    <!-- Restore a record if it can be restored -->
     <item name="fab_restore" type="id" />
+
+    <!-- Create a record from a budget -->
+    <item name="fab_create_record_from_budget" type="id" />
+
+    <!-- Create a movement from a budget -->
+    <item name="fab_create_movement_from_budget" type="id" />
+
 </resources>

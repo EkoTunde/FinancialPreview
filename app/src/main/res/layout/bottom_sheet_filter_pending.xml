@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/type_chip_group"
+            android:id="@+id/time_chip_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:selectionRequired="true"
@@ -186,7 +186,7 @@
         android:layout_marginHorizontal="16dp">
 
         <com.google.android.material.slider.RangeSlider
-            android:id="@+id/range_amount"
+            android:id="@+id/range_slider_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/slider_indicator_max"

@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.data.model.movement.MovementUI
+import com.ekosoftware.financialpreview.data.model.record.RecordUI
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
 import com.ekosoftware.financialpreview.domain.local.DetailsRepository
@@ -118,6 +119,15 @@ class DetailsViewModel @Inject constructor(
 
     val recordId: MutableLiveData<String> = savedStateHandle.getLiveData(RECORD_ID_KEY)
 
+    private var _recordUI: LiveData<RecordUI>? = null
+
+    fun getRecordUI(id: String): LiveData<RecordUI> = _recordUI ?: liveData<RecordUI>(viewModelScope.coroutineContext + Dispatchers.IO) {
+        Log.d("TAG", "getRecordUI: $id")
+        emitSource(detailsRepository.getRecord(id))
+    }.also {
+        _recordUI = it
+    }
+
     val recordUI = movementId.distinctUntilChanged().switchMap { id ->
         liveData<Resource<MovementUI>>(viewModelScope.coroutineContext + Dispatchers.IO) {
             emit(Resource.Loading())
@@ -137,6 +147,7 @@ class DetailsViewModel @Inject constructor(
         budget = null
         settleGroupWithMovements = null
         movementsInSettleGroup = null
+        _recordUI = null
     }
 
 }

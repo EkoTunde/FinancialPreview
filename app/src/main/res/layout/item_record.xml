@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:transitionName="@string/record_card_transition_name"
+    app:cardCornerRadius="0dp"
     app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +21,7 @@
             app:civ_circle_background_color="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/transparent_drawable" />
+            android:src="@drawable/transparent_drawable"  />
 
         <ImageView
             android:id="@+id/record_icon"
@@ -41,6 +42,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/quicksand_semi_bold"
+            android:lines="1"
             android:textColor="@color/colorBlack"
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/record_amount"

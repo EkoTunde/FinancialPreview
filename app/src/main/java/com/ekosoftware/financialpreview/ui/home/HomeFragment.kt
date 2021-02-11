@@ -187,8 +187,8 @@ class HomeFragment : Fragment() {
                     0 -> context.getString(R.string.from_income)
                     1 -> context.getString(R.string.from_expense)
                     else -> when (h?.dataSetIndex) {
-                        0 -> context.getString(R.string.from_accumulated)
-                        else -> context.getString(R.string.from_balance)
+                        0 -> context.getString(R.string.from_balance)
+                        else -> context.getString(R.string.from_accumulated)
                     }
                 }
                 val output =

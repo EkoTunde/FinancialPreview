@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             if (destination.id in arrayOf(
                     R.id.pending_page_fragment,
                     R.id.accounts,
-                    R.id.records
+                    //R.id.records
                 )
             ) binding.mainFab.show() else binding.mainFab.hide()
 

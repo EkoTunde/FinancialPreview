@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_primary_colored_top_corners"
-            android:fontFamily="@font/quicksand_bold"
+            android:fontFamily="@font/quicksand_semi_bold"
             android:padding="8dp"
             android:text="@string/quick_view"
             android:textColor="@color/colorWhite"

@@ -42,8 +42,9 @@ fun TextView.applyMoneyFormat(currency: String, amount: Double) {
 }
 
 fun TextView.applyMoneyFormatInK(currency: String, amount: Double) {
-    val newAmount = BigDecimal(amount).div(BigDecimal("1000.00")).setScale(2, RoundingMode.DOWN)
-    val result = "$currency ${newAmount}k"
+    val newAmount = BigDecimal(amount).div(BigDecimal("1000.00")).setScale(1, RoundingMode.DOWN)
+    val fixed = if (newAmount.hasUselessDecimals()) newAmount.toString().removeZeros() else newAmount.toString()
+    val result = "$currency ${fixed}k"
     text = result
 }
 

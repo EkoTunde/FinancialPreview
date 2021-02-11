@@ -224,37 +224,6 @@
     <string name="accounts">Cuentas</string>
     <string name="records">Registros</string>
 
-    <string-array name="currencies">
-        <item>@string/ars</item>
-        <item>@string/usd</item>
-    </string-array>
-
-    <string-array name="months_abr">
-        <item>@string/month_jan</item>
-        <item>@string/month_feb</item>
-        <item>@string/month_mar</item>
-        <item>@string/month_apr</item>
-        <item>@string/month_may</item>
-        <item>@string/month_jun</item>
-        <item>@string/month_jul</item>
-        <item>@string/month_aug</item>
-        <item>@string/month_sep</item>
-        <item>@string/month_oct</item>
-        <item>@string/month_nov</item>
-        <item>@string/month_dec</item>
-    </string-array>
-
-    <plurals name="amountOfSettleGroupPercent">
-        <item quantity="zero">No aplica ningún interés sobre el total</item>
-        <item quantity="other">Aplica un %f sobre el total</item>
-    </plurals>
-
-    <plurals name="amountOfMovementsInSettleGroup">
-        <item quantity="zero">Ningún moviemiento seleccionado</item>
-        <item quantity="one">Incluye %d movimiento</item>
-        <item quantity="other">Incluye %d movimientos</item>
-    </plurals>
-
     <string name="account_type_general">General</string>
     <string name="account_type_cash">Efectivo</string>
     <string name="account_type_saving">Caja de ahorro</string>
@@ -264,16 +233,6 @@
     <string name="account_type_safe">Caja fuerte</string>
     <string name="pending_budgets">Presupuestos pendientes</string>
     <string name="settle_groups">Grupos de liquidación</string>
-
-    <string-array name="account_types">
-        <item>@string/account_type_cash</item>
-        <item>@string/account_type_saving</item>
-        <item>@string/account_type_general</item>
-        <item>@string/account_type_checking</item>
-        <item>@string/account_type_other</item>
-        <item>@string/account_type_digital</item>
-        <item>@string/account_type_safe</item>
-    </string-array>
 
     // Pending Movements Fragment
     <string name="movement_card_transition_name">movement_card_%1$s</string>
@@ -330,5 +289,76 @@
     <string name="add_settle_group">Agregar grupo</string>
     <string name="title_edit_settle_group">Editar grupo</string>
     <string name="every_field_is_required">Todos los campos son obligatorios</string>
+    <string name="a_week_chip">7días</string>
+    <string name="a_month_chip">30días</string>
+    <string name="three_month_chip">3meses</string>
+    <string name="half_year_chip">6meses</string>
+    <string name="a_year_chip">1año</string>
+    <string name="records_from_last">Movimientos de los últimos</string>
+    <string name="filters">Filtros</string>
+
+    // Order by filter list
+    <string name="order_by_amount_asc">Importe ascendente</string>
+    <string name="order_by_amount_desc">Importe descendente</string>
+    <string name="order_by_date_asc">Fecha ascendente</string>
+    <string name="order_by_date_desc">Fecha descendente</string>
+    <string name="order_by_name_az">Nombre A-Z</string>
+    <string name="order_by_name_za">Nombre Z-A</string>
+    <string name="amount_min_value">-10000</string>
+    <string name="amount_max_value">10000</string>
+    <string name="max">Máximo</string>
+    <string name="min">Mínimo</string>
+    <string name="restore">Restaurar</string>
+
+
+    <string-array name="currencies">
+        <item>@string/ars</item>
+        <item>@string/usd</item>
+    </string-array>
+
+    <string-array name="months_abr">
+        <item>@string/month_jan</item>
+        <item>@string/month_feb</item>
+        <item>@string/month_mar</item>
+        <item>@string/month_apr</item>
+        <item>@string/month_may</item>
+        <item>@string/month_jun</item>
+        <item>@string/month_jul</item>
+        <item>@string/month_aug</item>
+        <item>@string/month_sep</item>
+        <item>@string/month_oct</item>
+        <item>@string/month_nov</item>
+        <item>@string/month_dec</item>
+    </string-array>
+
+    <plurals name="amountOfSettleGroupPercent">
+        <item quantity="zero">No aplica ningún interés sobre el total</item>
+        <item quantity="other">Aplica un %f sobre el total</item>
+    </plurals>
+
+    <plurals name="amountOfMovementsInSettleGroup">
+        <item quantity="zero">Ningún moviemiento seleccionado</item>
+        <item quantity="one">Incluye %d movimiento</item>
+        <item quantity="other">Incluye %d movimientos</item>
+    </plurals>
+
+    <string-array name="account_types">
+        <item>@string/account_type_cash</item>
+        <item>@string/account_type_saving</item>
+        <item>@string/account_type_general</item>
+        <item>@string/account_type_checking</item>
+        <item>@string/account_type_other</item>
+        <item>@string/account_type_digital</item>
+        <item>@string/account_type_safe</item>
+    </string-array>
+
+    <string-array name="order_by_filter_list_for_records">
+        <item>@string/order_by_amount_asc</item>
+        <item>@string/order_by_amount_desc</item>
+        <item>@string/order_by_date_asc</item>
+        <item>@string/order_by_date_desc</item>
+        <item>@string/order_by_name_az</item>
+        <item>@string/order_by_name_za</item>
+    </string-array>
 
 </resources>

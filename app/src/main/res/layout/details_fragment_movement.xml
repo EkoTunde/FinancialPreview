@@ -112,7 +112,8 @@
                         android:visibility="gone"
                         app:civ_circle_background_color="@color/colorPrimary"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/name" />
+                        app:layout_constraintTop_toBottomOf="@+id/name"
+                        tools:visibility="visible" />
 
                     <ImageView
                         android:id="@+id/category_icon"
@@ -125,7 +126,8 @@
                         app:layout_constraintStart_toStartOf="@+id/category_color"
                         app:layout_constraintTop_toTopOf="@+id/category_color"
                         app:srcCompat="@drawable/category_apartment"
-                        app:tint="@color/colorWhite" />
+                        app:tint="@color/colorWhite"
+                        tools:visibility="visible" />
 
                     <TextView
                         android:id="@+id/category_name"
@@ -138,7 +140,8 @@
                         app:layout_constraintEnd_toEndOf="@+id/name"
                         app:layout_constraintStart_toStartOf="@+id/guideline2"
                         app:layout_constraintTop_toTopOf="@+id/category_color"
-                        tools:text="Compras" />
+                        tools:text="Compras"
+                        tools:visibility="visible" />
 
                     <ImageView
                         android:id="@+id/account_color"
