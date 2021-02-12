@@ -53,5 +53,8 @@ data class Record(
     @ColumnInfo(name = "recordDescription")
     var description: String?,
 
+    @ColumnInfo(name = "recordBudgetId")
+    var budgetId: String?,
+
     ) : Parcelable
 

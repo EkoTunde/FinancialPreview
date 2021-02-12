@@ -3,12 +3,12 @@ package com.ekosoftware.financialpreview.presentation
 import android.util.Log
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.Resource
+import com.ekosoftware.financialpreview.data.model.SimpleDisplayableData
 import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.data.model.movement.MovementUI
 import com.ekosoftware.financialpreview.data.model.record.RecordUI
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
-import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
-import com.ekosoftware.financialpreview.domain.local.DetailsRepository
+import com.ekosoftware.financialpreview.repository.DetailsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -123,10 +123,8 @@ class DetailsViewModel @Inject constructor(
 
     fun getRecordUI(id: String): LiveData<RecordUI> = _recordUI ?: liveData<RecordUI>(viewModelScope.coroutineContext + Dispatchers.IO) {
         Log.d("TAG", "getRecordUI: $id")
-        emitSource(detailsRepository.getRecord(id))
-    }.also {
-        _recordUI = it
-    }
+        emitSource(detailsRepository.getRecordUI(id))
+    }.also { _recordUI = it }
 
     val recordUI = movementId.distinctUntilChanged().switchMap { id ->
         liveData<Resource<MovementUI>>(viewModelScope.coroutineContext + Dispatchers.IO) {

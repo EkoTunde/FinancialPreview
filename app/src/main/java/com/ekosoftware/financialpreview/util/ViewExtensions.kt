@@ -8,6 +8,7 @@ import android.text.TextPaint
 import android.text.style.RelativeSizeSpan
 import android.text.style.SuperscriptSpan
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import java.math.BigDecimal
@@ -129,3 +130,7 @@ fun <T : View> Array<T>.show(dur: Long) = this.forEach {
     it.animate()
         .alpha(1.0f).duration = dur
 }*/
+
+fun View.visible(visible: Boolean) = if (visible) show() else hide()
+
+fun ViewGroup.visible(visible: Boolean) = if (visible) show() else hide()

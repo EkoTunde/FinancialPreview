@@ -1,4 +1,4 @@
-package com.ekosoftware.financialpreview.domain.local
+package com.ekosoftware.financialpreview.repository
 
 import androidx.lifecycle.LiveData
 import com.ekosoftware.financialpreview.data.local.daos.*

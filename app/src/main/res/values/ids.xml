@@ -19,7 +19,4 @@
     <!-- Create a record from a budget -->
     <item name="fab_create_record_from_budget" type="id" />
 
-    <!-- Create a movement from a budget -->
-    <item name="fab_create_movement_from_budget" type="id" />
-
 </resources>

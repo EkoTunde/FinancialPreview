@@ -120,7 +120,7 @@ object DummyData {
             leftAmount = -44300000,
             startingAmount = -60000000,
             frequency = Frequency(
-                from = 202101,
+                from = 202102,
                 to = 999999,
                 installments = null,
                 monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
@@ -137,7 +137,7 @@ object DummyData {
             name = "Sueldo Envión",
             description = "",
             frequency = Frequency(
-                from = 202101,
+                from = 202102,
                 to = 999999,
                 installments = null,
                 monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
@@ -154,7 +154,7 @@ object DummyData {
             name = "Sueldo PAINA",
             description = "",
             frequency = Frequency(
-                from = 202101,
+                from = 202102,
                 to = 999999,
                 installments = null,
                 monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
@@ -171,8 +171,8 @@ object DummyData {
             name = "Silla Gamer",
             description = "",
             frequency = Frequency(
-                from = 202101,
-                to = 202207,
+                from = 202102,
+                to = 202206,
                 installments = 18,
                 monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
             ),
@@ -188,8 +188,8 @@ object DummyData {
             name = "Pedidos Ya con Geor (McDonalds)",
             description = "",
             frequency = Frequency(
-                from = 202101,
-                to = 202101,
+                from = 202102,
+                to = 202102,
                 installments = null,
                 monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
             ),
@@ -205,7 +205,7 @@ object DummyData {
             name = "Seguro mala praxis",
             description = "",
             frequency = Frequency(
-                from = 202101,
+                from = 202102,
                 to = 999999,
                 installments = null,
                 monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
@@ -222,8 +222,8 @@ object DummyData {
             name = "Oftalmóloga",
             description = "",
             frequency = Frequency(
-                from = 202101,
-                to = 202101,
+                from = 202102,
+                to = 202102,
                 installments = null,
                 monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
             ),
@@ -254,7 +254,7 @@ object DummyData {
         Record(
             id = "record oftal #1",
             date = Date(Calendar.getInstance().apply {
-                set(2021, 2, 9)
+                set(2021, 2-1, 9)
             }.timeInMillis),
             name = "aOftalmóloga (pago parcial)",
             currencyCode = "ARS",
@@ -268,8 +268,8 @@ object DummyData {
                 name = "Oftalmóloga",
                 description = "",
                 frequency = Frequency(
-                    from = 202101,
-                    to = 202101,
+                    from = 202102,
+                    to = 202102,
                     installments = null,
                     monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
                 ),
@@ -282,12 +282,13 @@ object DummyData {
             categoryId = "",
             debtorName = "",
             lenderName = "",
-            description = ""
+            description = "",
+            budgetId = null
         ),
         Record(
             id = "record oftal #2",
             date = Date(Calendar.getInstance().apply {
-                set(2021, 1, 25)
+                set(2021, 1-1, 25)
             }.timeInMillis),
             name = "bOftalmóloga (pago parcial)",
             currencyCode = "ARS",
@@ -301,8 +302,8 @@ object DummyData {
                 name = "Oftalmóloga",
                 description = "",
                 frequency = Frequency(
-                    from = 202101,
-                    to = 202101,
+                    from = 202102,
+                    to = 202102,
                     installments = null,
                     monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
                 ),
@@ -315,12 +316,13 @@ object DummyData {
             categoryId = "",
             debtorName = "",
             lenderName = "",
-            description = ""
+            description = "",
+            budgetId = null
         ),
         Record(
             id = "record oftal #3",
             date = Date(Calendar.getInstance().apply {
-                set(2021, 1, 1)
+                set(2021, 1-1, 1)
             }.timeInMillis),
             name = "cOftalmóloga (pago parcial)",
             currencyCode = "ARS",
@@ -334,8 +336,8 @@ object DummyData {
                 name = "Oftalmóloga",
                 description = "",
                 frequency = Frequency(
-                    from = 202101,
-                    to = 202101,
+                    from = 202102,
+                    to = 202102,
                     installments = null,
                     monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
                 ),
@@ -348,12 +350,13 @@ object DummyData {
             categoryId = "",
             debtorName = "",
             lenderName = "",
-            description = ""
+            description = "",
+            budgetId = null
         ),
         Record(
             id = "record oftal #4",
             date = Date(Calendar.getInstance().apply {
-                set(2020, 12, 8)
+                set(2020, 12-1, 8)
             }.timeInMillis),
             name = "dOftalmóloga (pago parcial)",
             currencyCode = "ARS",
@@ -367,8 +370,8 @@ object DummyData {
                 name = "Oftalmóloga",
                 description = "",
                 frequency = Frequency(
-                    from = 202101,
-                    to = 202101,
+                    from = 202102,
+                    to = 202102,
                     installments = null,
                     monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
                 ),
@@ -381,12 +384,13 @@ object DummyData {
             categoryId = "",
             debtorName = "",
             lenderName = "",
-            description = ""
+            description = "",
+            budgetId = null
         ),
         Record(
             id = "record oftal #5",
             date = Date(Calendar.getInstance().apply {
-                set(2020, 11, 9)
+                set(2020, 11-1, 9)
             }.timeInMillis),
             name = "eOftalmóloga (pago parcial)",
             currencyCode = "ARS",
@@ -400,8 +404,8 @@ object DummyData {
                 name = "Oftalmóloga",
                 description = "",
                 frequency = Frequency(
-                    from = 202101,
-                    to = 202101,
+                    from = 202102,
+                    to = 202102,
                     installments = null,
                     monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
                 ),
@@ -414,12 +418,13 @@ object DummyData {
             categoryId = "",
             debtorName = "",
             lenderName = "",
-            description = ""
+            description = "",
+            budgetId = null
         ),
         Record(
             id = "record oftal #6",
             date = Date(Calendar.getInstance().apply {
-                set(2020, 1, 1)
+                set(2020, 1-1, 1)
             }.timeInMillis),
             name = "fOftalmóloga (pago parcial)",
             currencyCode = "ARS",
@@ -433,8 +438,8 @@ object DummyData {
                 name = "Oftalmóloga",
                 description = "",
                 frequency = Frequency(
-                    from = 202101,
-                    to = 202101,
+                    from = 202102,
+                    to = 202102,
                     installments = null,
                     monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
                 ),
@@ -447,12 +452,13 @@ object DummyData {
             categoryId = "",
             debtorName = "",
             lenderName = "",
-            description = ""
+            description = "",
+            budgetId = null
         ),
         Record(
             id = "record oftal #7",
             date = Date(Calendar.getInstance().apply {
-                set(2020, 12, 11)
+                set(2020, 12-1, 11)
             }.timeInMillis),
             name = "gOftalmóloga (pago parcial)",
             currencyCode = "ARS",
@@ -466,8 +472,8 @@ object DummyData {
                 name = "Oftalmóloga",
                 description = "",
                 frequency = Frequency(
-                    from = 202101,
-                    to = 202101,
+                    from = 202102,
+                    to = 202102,
                     installments = null,
                     monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
                 ),
@@ -480,12 +486,13 @@ object DummyData {
             categoryId = "",
             debtorName = "",
             lenderName = "",
-            description = ""
+            description = "",
+            budgetId = null
         ),
         Record(
             id = "record oftal #8",
             date = Date(Calendar.getInstance().apply {
-                set(2020, 12, 12)
+                set(2020, 12-1, 12)
             }.timeInMillis),
             name = "hOftalmóloga (pago parcial)",
             currencyCode = "ARS",
@@ -499,8 +506,8 @@ object DummyData {
                 name = "Oftalmóloga",
                 description = "",
                 frequency = Frequency(
-                    from = 202101,
-                    to = 202101,
+                    from = 202102,
+                    to = 202102,
                     installments = null,
                     monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
                 ),
@@ -513,12 +520,13 @@ object DummyData {
             categoryId = "",
             debtorName = "",
             lenderName = "",
-            description = ""
+            description = "",
+            budgetId = null
         ),
         Record(
             id = "record oftal #9",
             date = Date(Calendar.getInstance().apply {
-                set(2020, 12, 13)
+                set(2020, 12-1, 13)
             }.timeInMillis),
             name = "iOftalmóloga (pago parcial)",
             currencyCode = "ARS",
@@ -532,8 +540,8 @@ object DummyData {
                 name = "Oftalmóloga",
                 description = "",
                 frequency = Frequency(
-                    from = 202101,
-                    to = 202101,
+                    from = 202102,
+                    to = 202102,
                     installments = null,
                     monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
                 ),
@@ -546,7 +554,8 @@ object DummyData {
             categoryId = "",
             debtorName = "",
             lenderName = "",
-            description = ""
+            description = "",
+            budgetId = null
         )
     )
 

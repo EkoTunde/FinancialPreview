@@ -5,14 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Strings
+import com.ekosoftware.financialpreview.data.model.SimpleDisplayableData
+import com.ekosoftware.financialpreview.data.model.SimpleQueryData
+import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.data.model.movement.Frequency
 import com.ekosoftware.financialpreview.data.model.movement.MonthSummary
 import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.data.model.movement.MovementUI
+import com.ekosoftware.financialpreview.data.model.record.Record
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
 import com.ekosoftware.financialpreview.presentation.SelectionViewModel
-import com.ekosoftware.financialpreview.presentation.SimpleDisplayableData
-import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 import org.joda.time.Days
 import org.joda.time.LocalDateTime
 import java.math.BigDecimal
@@ -73,9 +75,10 @@ fun Int.parseToAbbreviatedString(): String = Strings.get(
  * @throws IllegalArgumentException if params are 0.
  */
 fun Int.plusMonths(months: Int): Int {
-    //println("getyear() = ${getYear()} + months / 12 = ${months / 12}")
 
+    //Returns same month, there is nothing to add
     if (months == 0) return this
+
     // Gets the given year and adds the years
     // given by the times a year fits in given months
     // to add
@@ -219,7 +222,7 @@ fun currentYearMonth(): Int {
     val c = Calendar.getInstance()
     val year = c.get(Calendar.YEAR)
     val month = c.get(Calendar.MONTH) + 1
-    return "$year$month".toInt()
+    return "$year${month.toString().padStart(2,'0')}".toInt()
 }
 
 
@@ -340,8 +343,25 @@ fun MovementUI.installmentsCalc(): String {
         current = current.plusMonths(1)
         counter++
     }
+    if (counter < 0) return ""
+    return " " + Strings.get(R.string.installments_placeholder, this.totalInstallments!! - counter, this.totalInstallments!!)
+}
+
+/**
+ * Takes a [Movement] *this* and returns a [String]
+ * containing the number of quota from total installments,
+ * as in *e.g.: " 8/12" for 8th quota from 12 in total*.
+ */
+fun Movement.installmentsCalc(): String {
+    if (this.frequency == null || this.frequency?.installments == null) return ""
+    var current = this.frequency!!.from!!
+    var counter = 0
+    while (current < this.frequency!!.to!!) {
+        current = current.plusMonths(1)
+        counter++
+    }
     return if (counter < 0) return ""
-    else " " + Strings.get(R.string.installments_placeholder, this.totalInstallments!! - counter, this.totalInstallments!!)
+    else " " + Strings.get(R.string.installments_placeholder, this.frequency!!.installments!! - counter, this.frequency!!.installments!!)
 }
 
 
@@ -487,4 +507,33 @@ fun getDaysAgo(days: Int): Date {
     val today = LocalDateTime()
     val aWeekAgo = today.minusDays(days)
     return aWeekAgo.toDate()
+}
+
+fun newId() = UUID.randomUUID().toString()
+
+fun Movement.duplicate(): Movement {
+    return this.apply {
+        id = newId()
+    }
+}
+
+fun Budget.duplicate(): Budget {
+    return this.apply {
+        id = newId()
+    }
+}
+
+fun SimpleQueryData.displayable(): SimpleDisplayableData {
+    return SimpleDisplayableData(
+        this.id,
+        this.name,
+        this.description ?: Strings.get(
+            if (typeId != null) typeId!! else
+                R.string.amount_holder,
+            currencyCode!!,
+            amount!!
+        ),
+        this.color,
+        this.iconResId
+    )
 }

@@ -1,20 +1,16 @@
 package com.ekosoftware.financialpreview.ui.settle
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.ekosoftware.financialpreview.databinding.FragmentSettleBinding
+import androidx.fragment.app.Fragment
+import com.ekosoftware.financialpreview.databinding.FragmentEarlySettleBinding
 
+class EarlySettleFragment : Fragment() {
 
-class SettleFragment : Fragment() {
-    private var _binding: FragmentSettleBinding? = null
+    private var _binding: FragmentEarlySettleBinding? = null
     private val binding get() = _binding!!
-
-    companion object {
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,12 +19,8 @@ class SettleFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSettleBinding.inflate(inflater, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentEarlySettleBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -18,7 +18,6 @@ import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
 import com.ekosoftware.financialpreview.databinding.DetailsFragmentSettleGroupBinding
 import com.ekosoftware.financialpreview.presentation.DetailsViewModel
-import com.ekosoftware.financialpreview.presentation.SimpleDisplayableData
 import com.ekosoftware.financialpreview.ui.details.adapter.MiniMovementsListAdapter
 import com.ekosoftware.financialpreview.util.removeZeros
 import com.ekosoftware.financialpreview.util.themeColor

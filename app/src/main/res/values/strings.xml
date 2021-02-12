@@ -309,6 +309,16 @@
     <string name="max">Máximo</string>
     <string name="min">Mínimo</string>
     <string name="restore">Restaurar</string>
+    <string name="there_is_not_enough_budget">El presupuesto seleccionado no es suficiente</string>
+    <string name="settle_movement">Liquidar movimiento</string>
+    <string name="_continue">Continuar</string>
+    <string name="left_amount_placeholder">de %1$s restante</string>
+    <string name="example_left_amount_placeholder">de 4536.98 restante</string>
+    <string name="settle_amount_cant_be_more_than_left_amount">La liquidación no puede superar al importe restante</string>
+    <string name="incorrect_negative_amount">El monto no puede superar el importe restante</string>
+    <string name="incorrect_positive_amount">El monto no puede superar el importe restante</string>
+    <string name="insert_a_valid_amount">Por favor, insertá un importe válido</string>
+    <string name="an_account_is_necessary">Es necesario especificar una cuenta</string>
 
 
     <string-array name="currencies">

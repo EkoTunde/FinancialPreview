@@ -72,26 +72,16 @@ class DetailsBudgetFragment : Fragment() {
                 .setLabel(getString(R.string.edit))
                 .create()
         )
-        binding.speedDial.addActionItem(
-            SpeedDialActionItem.Builder(R.id.fab_add_to_group, R.drawable.ic_add)
-                .setFabBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorWhite, requireContext().theme))
-                .setFabImageTintColor(ResourcesCompat.getColor(resources, R.color.colorBlack, requireContext().theme))
-                .setLabel(getString(R.string.add_to_group))
-                .create()
-        )
+
         binding.speedDial.setOnActionSelectedListener { actionItem ->
             when (actionItem.id) {
-                R.id.fab_settle -> {
+                R.id.fab_create_record_from_budget -> {
                     binding.speedDial.close() // To close the Speed Dial with animation
                     return@setOnActionSelectedListener true // false will close it without animation
                 }
                 R.id.fab_edit -> {
                     val action = MainNavGraphDirections.actionGlobalEditBudgetFragment(args.budgetId)
                     findNavController().navigate(action)
-                    binding.speedDial.close() // To close the Speed Dial with animation
-                    return@setOnActionSelectedListener true // false will close it without animation
-                }
-                R.id.fab_add_to_group -> {
                     binding.speedDial.close() // To close the Speed Dial with animation
                     return@setOnActionSelectedListener true // false will close it without animation
                 }

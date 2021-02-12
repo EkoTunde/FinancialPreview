@@ -1,7 +1,6 @@
-package com.ekosoftware.financialpreview.domain.local
+package com.ekosoftware.financialpreview.repository
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import com.ekosoftware.financialpreview.data.local.daos.*
 import com.ekosoftware.financialpreview.data.model.Category
@@ -22,6 +21,7 @@ class EntryRepository @Inject constructor(
     private val currencyDao: CurrencyDao,
     private val movementDao: MovementDao,
     private val recordDao: RecordDao,
+    private val settleDao: SettleDao,
     private val settleGroupDao: SettleGroupDao,
 ) {
 
@@ -130,4 +130,8 @@ class EntryRepository @Inject constructor(
     fun getCurrencyCode(id: String): LiveData<String> = currencyDao.getCurrencyCode(id)
 
     fun getAccountCurrencyCode(accountId: String): LiveData<String> = accountDao.getCurrencyCodeForAccountId(accountId)
+
+    suspend fun takeOutMovementLeftAmountFromBudget(budgetId: String, amount: Long) = settleDao.takeOutMovementLeftAmountFromBudget(budgetId, amount)
+
+    suspend fun addMovementLeftAmountFromBudget(budgetId: String, amount: Long) = settleDao.addMovementLeftAmountFromBudget(budgetId, amount)
 }

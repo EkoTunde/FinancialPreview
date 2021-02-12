@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,7 +14,6 @@ import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.databinding.FragmentPendingBinding
 import com.ekosoftware.financialpreview.presentation.NavigationViewModel
-import com.ekosoftware.financialpreview.presentation.ShareViewModel
 import com.ekosoftware.financialpreview.ui.pending.tabs.adapters.PendingPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialElevationScale

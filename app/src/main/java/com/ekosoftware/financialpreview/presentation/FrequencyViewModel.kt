@@ -41,7 +41,7 @@ class FrequencyViewModel @Inject constructor(
             )
             FrequencyType.INSTALLMENTS_BASED_FREQUENCY -> Frequency(
                 from.currentTextToInt(),
-                from.currentTextToInt()!!.plusMonths((installments ?: 2) - 1) ?: 99999,
+                from.currentTextToInt()?.plusMonths((installments ?: 2) - 1) ?: 99999,
                 installments ?: 2
             )
         }

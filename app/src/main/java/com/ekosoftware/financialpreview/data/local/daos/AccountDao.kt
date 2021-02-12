@@ -3,10 +3,10 @@ package com.ekosoftware.financialpreview.data.local.daos
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.ekosoftware.financialpreview.core.BaseDao
+import com.ekosoftware.financialpreview.data.model.SimpleQueryData
 import com.ekosoftware.financialpreview.data.model.account.Account
 import com.ekosoftware.financialpreview.data.model.account.AccountType
 import com.ekosoftware.financialpreview.data.model.account.AccountWithMovements
-import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 import kotlinx.coroutines.flow.Flow
 
 @Dao

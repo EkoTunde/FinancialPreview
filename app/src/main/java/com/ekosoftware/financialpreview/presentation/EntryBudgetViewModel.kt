@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.BaseEntryViewModel
 import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.data.model.movement.Frequency
-import com.ekosoftware.financialpreview.domain.local.EntryRepository
+import com.ekosoftware.financialpreview.repository.EntryRepository
 import com.ekosoftware.financialpreview.util.forDatabaseAmount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

@@ -1,9 +1,9 @@
 package com.ekosoftware.financialpreview.core
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
-import com.ekosoftware.financialpreview.data.model.movement.Movement
-import com.ekosoftware.financialpreview.data.model.record.Record
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Update
 
 interface BaseDao<T> {
     /**

@@ -181,9 +181,7 @@ class EntryMovementFragment : Fragment() {
     private fun startAmountToString(amount: Double): String {
         return if (BigDecimal(amount).hasUselessDecimals()) {
             amount.toString().substring(0, amount.toString().indexOf("."))
-        } else {
-            amount.toString()
-        }
+        } else amount.toString()
     }
 
     /**
@@ -267,7 +265,6 @@ class EntryMovementFragment : Fragment() {
     private fun done() {
         if (isRequiredInfoCompleted()) {
             val startAmount = binding.startingAmount.editText!!.text.toString().toDouble()
-            //val id = if (args.movementUI != null) args.movementUI!!.id else Constants.nan
             entryMovementViewModel.save(
                 args.movementId,
                 if (args.movementId == Constants.nan) startAmount else binding.leftAmount.editText?.text.toString().toDouble() ?: 0.0,

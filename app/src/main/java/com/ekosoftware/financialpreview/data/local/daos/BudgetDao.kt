@@ -4,10 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import com.ekosoftware.financialpreview.core.BaseDao
+import com.ekosoftware.financialpreview.data.model.SimpleQueryData
 import com.ekosoftware.financialpreview.data.model.budget.Budget
-import com.ekosoftware.financialpreview.data.model.movement.MovementUI
-import com.ekosoftware.financialpreview.data.model.record.Record
-import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 
 @Dao
 interface BudgetDao : BaseDao<Budget> {

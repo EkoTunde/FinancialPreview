@@ -1,9 +1,9 @@
-package com.ekosoftware.financialpreview.domain.local
+package com.ekosoftware.financialpreview.repository
 
 import androidx.lifecycle.LiveData
 import com.ekosoftware.financialpreview.data.local.daos.*
+import com.ekosoftware.financialpreview.data.model.SimpleQueryData
 import com.ekosoftware.financialpreview.presentation.SelectionViewModel
-import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 import javax.inject.Inject
 
 class SelectionRepository @Inject constructor(
@@ -23,7 +23,10 @@ class SelectionRepository @Inject constructor(
             SelectionViewModel.CURRENCIES -> currencyDao.getCurrenciesAsSimpleData(queryText)
             SelectionViewModel.MOVEMENTS -> movementDao.getMovementsAsSimpleData(queryText)
             SelectionViewModel.SETTLE_GROUPS -> settleGroupDao.getSettleGroupsAsSimpleData(queryText)
-            SelectionViewModel.SETTLE_GROUPS_TO_ADD_TO_MOVEMENTS -> settleGroupDao.getSettleGroupsAsSimpleDataForMovementSelection(queryText, genericId ?: "")
+            SelectionViewModel.SETTLE_GROUPS_TO_ADD_TO_MOVEMENTS -> settleGroupDao.getSettleGroupsAsSimpleDataForMovementSelection(
+                queryText,
+                genericId ?: ""
+            )
             else -> throw IllegalArgumentException("Error at: ${this.javaClass}. Given type $type isn't a value parameter.")
         }
     }

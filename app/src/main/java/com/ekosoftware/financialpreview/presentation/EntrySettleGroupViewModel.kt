@@ -1,14 +1,13 @@
 package com.ekosoftware.financialpreview.presentation
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Constants
 import com.ekosoftware.financialpreview.core.BaseEntryViewModel
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
-import com.ekosoftware.financialpreview.domain.local.EntryRepository
+import com.ekosoftware.financialpreview.repository.EntryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

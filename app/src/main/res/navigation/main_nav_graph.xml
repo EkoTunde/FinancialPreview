@@ -239,8 +239,8 @@
             android:defaultValue="@null" />
     </fragment>
     <fragment
-        android:id="@+id/settleFragment"
-        android:name="com.ekosoftware.financialpreview.ui.settle.SettleFragment"
+        android:id="@+id/movementSettleFragment"
+        android:name="com.ekosoftware.financialpreview.ui.settle.MovementSettleFragment"
         android:label="fragment_settle"
         tools:layout="@layout/fragment_settle">
         <argument
@@ -249,12 +249,14 @@
         <argument
             android:name="id"
             app:argType="string"
-            app:nullable="true"
             android:defaultValue="NaN" />
+        <argument
+            android:name="currentYearMonth"
+            app:argType="integer" />
     </fragment>
     <action
         android:id="@+id/action_global_settleFragment"
-        app:destination="@id/settleFragment"
+        app:destination="@id/movementSettleFragment"
         app:enterAnim="@anim/enter_anim_dialog"
         app:popExitAnim="@anim/exit_anim_dialog" />
     <dialog
@@ -275,4 +277,20 @@
             android:defaultValue="NaN" />
     </fragment>
     <action android:id="@+id/action_global_entryCurrencyFragment" app:destination="@id/entryCurrencyFragment" />
+    <fragment
+        android:id="@+id/earlySettleFragment"
+        android:name="com.ekosoftware.financialpreview.ui.settle.EarlySettleFragment"
+        android:label="EarlySettleFragment" >
+        <argument
+            android:name="type"
+            app:argType="integer" />
+        <argument
+            android:name="genericId"
+            app:argType="string"
+            android:defaultValue="NaN" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_earlySettleFragment"
+        app:destination="@id/earlySettleFragment"
+        app:popUpTo="@id/main_nav_graph" />
 </navigation>

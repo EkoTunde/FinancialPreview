@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import com.ekosoftware.financialpreview.core.BaseViewModel
 import com.ekosoftware.financialpreview.core.Resource
-import com.ekosoftware.financialpreview.domain.local.CategoriesRepository
-import dagger.assisted.Assisted
+import com.ekosoftware.financialpreview.data.model.SimpleQueryData
+import com.ekosoftware.financialpreview.repository.CategoriesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

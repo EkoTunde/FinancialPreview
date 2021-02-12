@@ -1,7 +1,6 @@
 package com.ekosoftware.financialpreview.ui.records
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -19,6 +18,7 @@ import com.ekosoftware.financialpreview.MainActivity
 import com.ekosoftware.financialpreview.MainNavGraphDirections
 import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Constants
+import com.ekosoftware.financialpreview.app.Constants.nan
 import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.core.BaseListAdapter
 import com.ekosoftware.financialpreview.core.BaseListFragment
@@ -65,7 +65,7 @@ class RecordsFragment : BaseListFragment<RecordUIShort, ItemRecordBinding>() {
     override fun onCreateToolbar(appBarLayout: AppBarLayout, toolbar: Toolbar) {
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        toolbar.inflateMenu(R.menu.search_and_filter_menu)
+        toolbar.inflateMenu(R.menu.records_menu)
         (requireActivity() as MainActivity).setSupportActionBar(toolbar)
         toolbar.setupWithNavController(navController, appBarConfiguration)
         toolbar.title = Strings.get(R.string.records)
@@ -73,7 +73,7 @@ class RecordsFragment : BaseListFragment<RecordUIShort, ItemRecordBinding>() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-        inflater.inflate(R.menu.search_and_filter_menu, menu)
+        inflater.inflate(R.menu.records_menu, menu)
         val searchView: SearchView = menu.findItem(R.id.menu_item_search).actionView as SearchView
         searchView.setOnQueryTextListener(queryListener)
         super.onCreateOptionsMenu(menu, inflater)
@@ -82,6 +82,11 @@ class RecordsFragment : BaseListFragment<RecordUIShort, ItemRecordBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_item_filter -> toggleBottomSheetState()
+            R.id.menu_item_edit -> {
+                val action = RecordsFragmentDirections.actionGlobalEditAccountFragment(args.accountId)
+                findNavController().navigate(action)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -105,10 +110,6 @@ class RecordsFragment : BaseListFragment<RecordUIShort, ItemRecordBinding>() {
     override fun onRetry(binding: BaseListFragmentBinding) {
         super.onRetry(binding)
         setData()
-    }
-
-    private fun setFilter(phrase: String) {
-        recordsViewModel.setFilterOptions(RecordsFilterOptions())
     }
 
     private fun setData() = recordsViewModel.records(args.accountId).fetchDataNoResource {
@@ -136,7 +137,7 @@ class RecordsFragment : BaseListFragment<RecordUIShort, ItemRecordBinding>() {
     }
 
     override fun onFabPressed() {
-        val action = MainNavGraphDirections.actionGlobalSettleFragment(Constants.SETTLE_TYPE_SIMPLE_RECORD)
+        val action = MainNavGraphDirections.actionGlobalSettleFragment(Constants.SETTLE_TYPE_SIMPLE_RECORD,nan, 0)
         findNavController().navigate(action)
     }
 

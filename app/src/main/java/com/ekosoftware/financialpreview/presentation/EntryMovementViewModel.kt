@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.BaseEntryViewModel
 import com.ekosoftware.financialpreview.data.model.movement.Frequency
 import com.ekosoftware.financialpreview.data.model.movement.Movement
-import com.ekosoftware.financialpreview.domain.local.EntryRepository
+import com.ekosoftware.financialpreview.repository.EntryRepository
 import com.ekosoftware.financialpreview.util.forDatabaseAmount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +43,10 @@ class EntryMovementViewModel @Inject constructor(
         }.also {
             _movement = it
         }
+    }
+
+    fun setMovement(movement: Movement) {
+        savedStateHandle[ENTRY_MOVEMENT_ID_KEY] = movement
     }
 
     private val accountId: MutableLiveData<String?> = savedStateHandle.getLiveData(ENTRY_ACCOUNT_ID_KEY, null)
@@ -153,6 +157,23 @@ class EntryMovementViewModel @Inject constructor(
             ),
             id
         )
+
+        // Remove any previous amount in previous budget if there is any
+        val savedMovement: Movement? = savedStateHandle[ENTRY_MOVEMENT_ID_KEY]
+        savedMovement?.let {
+            savedMovement.budgetId?.let {
+                viewModelScope.launch {
+                    entryRepository.takeOutMovementLeftAmountFromBudget(it, savedMovement.startingAmount)
+                }
+            }
+        }
+
+        // Add amount in budget if there is any
+        budgetId.value?.let {
+            viewModelScope.launch {
+                entryRepository.addMovementLeftAmountFromBudget(it, startingAmount.forDatabaseAmount())
+            }
+        }
     }
 
     fun delete(id: String) {

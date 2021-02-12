@@ -1,10 +1,10 @@
 package com.ekosoftware.financialpreview.presentation
 
-
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.BaseViewModel
 import com.ekosoftware.financialpreview.core.Resource
-import com.ekosoftware.financialpreview.domain.local.SelectionRepository
+import com.ekosoftware.financialpreview.data.model.SimpleDisplayableData
+import com.ekosoftware.financialpreview.repository.SelectionRepository
 import com.ekosoftware.financialpreview.util.forDisplay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

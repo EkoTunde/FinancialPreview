@@ -37,6 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun currencyDao(): CurrencyDao
     abstract fun movementDao(): MovementDao
     abstract fun recordDao(): RecordDao
+    abstract fun settleDao(): SettleDao
     abstract fun settleGroupDao(): SettleGroupDao
     abstract fun someDao(): SomeDao
 }

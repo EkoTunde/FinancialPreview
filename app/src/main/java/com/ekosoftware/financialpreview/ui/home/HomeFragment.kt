@@ -2,20 +2,16 @@ package com.ekosoftware.financialpreview.ui.home
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import com.ekosoftware.financialpreview.MainActivity
 import com.ekosoftware.financialpreview.R
-import com.ekosoftware.financialpreview.app.Constants
 import com.ekosoftware.financialpreview.app.Constants.SETTLE_TYPE_LOAN_DEBT
 import com.ekosoftware.financialpreview.app.Constants.SETTLE_TYPE_SIMPLE_RECORD
 import com.ekosoftware.financialpreview.app.Constants.SETTLE_TYPE_TRANSFER
+import com.ekosoftware.financialpreview.app.Constants.nan
 import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.HomeData
@@ -34,7 +30,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
-import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.item_home_05_quick_view.view.*
 
 class HomeFragment : Fragment() {
@@ -108,10 +103,10 @@ class HomeFragment : Fragment() {
     private fun setUpActions() {
         hashMapOf(
             binding.actions.btnSettle to HomeFragmentDirections.actionHomePageFragmentToSettleOptionsDialog(),
-            binding.actions.btnAddPending to HomeFragmentDirections.actionGlobalEditMovementFragment(Constants.nan),
-            binding.actions.btnAddRecord to HomeFragmentDirections.actionGlobalSettleFragment(SETTLE_TYPE_SIMPLE_RECORD, null),
-            binding.actions.btnTransfer to HomeFragmentDirections.actionGlobalSettleFragment(SETTLE_TYPE_TRANSFER, null),
-            binding.actions.btnLoan to HomeFragmentDirections.actionGlobalSettleFragment(SETTLE_TYPE_LOAN_DEBT, null),
+            binding.actions.btnAddPending to HomeFragmentDirections.actionGlobalEditMovementFragment(nan),
+            binding.actions.btnAddRecord to HomeFragmentDirections.actionGlobalSettleFragment(SETTLE_TYPE_SIMPLE_RECORD, nan,0),
+            binding.actions.btnTransfer to HomeFragmentDirections.actionGlobalSettleFragment(SETTLE_TYPE_TRANSFER, nan,0),
+            binding.actions.btnLoan to HomeFragmentDirections.actionGlobalSettleFragment(SETTLE_TYPE_LOAN_DEBT, nan,0),
         ).forEach { (btn, action) ->
             btn.setOnClickListener { findNavController().navigate(action) }
         }

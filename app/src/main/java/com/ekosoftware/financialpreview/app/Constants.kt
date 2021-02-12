@@ -68,8 +68,10 @@ object Constants {
     const val SETTLE_TYPE_ADJUSTMENT = 4
     const val SETTLE_TYPE_TRANSFER = 5
     const val SETTLE_TYPE_LOAN_DEBT = 6
+    const val SETTLE_TYPE_BUDGET_RECORD = 7
 
     const val nan = "NaN"
     const val noMonth = "000"
     const val kRepr = "1000.0"
+    const val error= "Error"
 }

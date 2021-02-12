@@ -19,10 +19,10 @@ import com.ekosoftware.financialpreview.R
 import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.core.BaseListAdapter
 import com.ekosoftware.financialpreview.core.BaseListFragment
+import com.ekosoftware.financialpreview.data.model.SimpleDisplayableData
 import com.ekosoftware.financialpreview.databinding.BaseListFragmentBinding
 import com.ekosoftware.financialpreview.databinding.ItemSelectionExtendedBinding
 import com.ekosoftware.financialpreview.presentation.SelectionViewModel
-import com.ekosoftware.financialpreview.presentation.SimpleDisplayableData
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint

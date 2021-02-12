@@ -124,7 +124,7 @@ class MainActivity : AppCompatActivity() {
             NavigationViewModel.OPTION_ADD_BUDGET -> MainNavGraphDirections.actionGlobalEditBudgetFragment()
             NavigationViewModel.OPTION_ADD_GROUP -> MainNavGraphDirections.actionGlobalEditSettleGroupFragment()
             NavigationViewModel.OPTION_ADD_ACCOUNT -> MainNavGraphDirections.actionGlobalEditAccountFragment()
-            else -> MainNavGraphDirections.actionGlobalSettleFragment(0, "")
+            else -> MainNavGraphDirections.actionGlobalSettleFragment(0, "", 0)
         }
         findNavController(R.id.nav_host_fragment).navigate(action)
     }

@@ -71,6 +71,10 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideSettleDao(db: AppDatabase) = db.settleDao()
+
+    @Singleton
+    @Provides
     fun provideSettleGroupDao(db: AppDatabase) = db.settleGroupDao()
 
     @Singleton

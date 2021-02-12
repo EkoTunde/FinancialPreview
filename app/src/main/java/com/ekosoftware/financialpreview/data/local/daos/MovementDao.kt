@@ -3,14 +3,25 @@ package com.ekosoftware.financialpreview.data.local.daos
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.ekosoftware.financialpreview.core.BaseDao
+import com.ekosoftware.financialpreview.data.model.SimpleQueryData
 import com.ekosoftware.financialpreview.data.model.movement.Movement
 import com.ekosoftware.financialpreview.data.model.movement.MonthSummary
 import com.ekosoftware.financialpreview.data.model.movement.MovementUI
-import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovementDao : BaseDao<Movement> {
+
+    @Transaction
+    suspend fun addMovement(movement: Movement) {
+        movement.budgetId?.let {
+            updateBudget(movement.startingAmount, it)
+        }
+        insert(movement)
+    }
+
+    @Query("""UPDATE budgets SET budgetLeftAmount = (budgetLeftAmount - :amount) WHERE budgetId = :budgetId""")
+    suspend fun updateBudget(amount: Long, budgetId: String)
 
     /**
      * Emits live results of performing a sum to
@@ -527,6 +538,7 @@ interface MovementDao : BaseDao<Movement> {
     @Query("DELETE FROM movements WHERE movementId = :movementId")
     suspend fun deleteWithId(movementId: String): Int
 
+    @Transaction
     @Query(
         """
         SELECT 

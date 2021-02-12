@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.ekosoftware.financialpreview.core.BaseDao
 import com.ekosoftware.financialpreview.data.model.Category
-import com.ekosoftware.financialpreview.data.model.record.Record
-import com.ekosoftware.financialpreview.presentation.SimpleQueryData
+import com.ekosoftware.financialpreview.data.model.SimpleQueryData
 
 @Dao
 interface CategoryDao : BaseDao<Category> {

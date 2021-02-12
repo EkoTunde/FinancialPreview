@@ -4,9 +4,8 @@ import android.os.Parcelable
 import android.util.Log
 import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.BaseViewModel
-import com.ekosoftware.financialpreview.core.Resource
 import com.ekosoftware.financialpreview.data.model.record.RecordUIShort
-import com.ekosoftware.financialpreview.domain.local.AccountsAndRecordsRepository
+import com.ekosoftware.financialpreview.repository.AccountsAndRecordsRepository
 import com.ekosoftware.financialpreview.util.getDaysAgo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.android.parcel.Parcelize
@@ -35,7 +34,7 @@ class AccountsAndRecordsViewModel @Inject constructor(
 
         const val ORDER_BY_AMOUNT_ASC = "amountAsc"
         private const val ORDER_BY_AMOUNT_DESC = "amountDesc"
-        private const val ORDER_BY_DATE_ASC = "dateAsc"
+        const val ORDER_BY_DATE_ASC = "dateAsc"
         private const val ORDER_BY_DATE_DESC = "dateDesc"
         private const val ORDER_BY_NAME_ASC = "nameAsc"
         private const val ORDER_BY_NAME_DESC = "nameDesc"
@@ -165,5 +164,5 @@ data class RecordsFilterOptions(
     var topDate: Date = getDaysAgo(7),
     var amountMax: Long = Long.MAX_VALUE,
     var amountMin: Long = Long.MIN_VALUE,
-    var orderBy: String = AccountsAndRecordsViewModel.ORDER_BY_AMOUNT_ASC
+    var orderBy: String = AccountsAndRecordsViewModel.ORDER_BY_DATE_ASC
 ) : Parcelable

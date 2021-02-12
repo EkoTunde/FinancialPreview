@@ -1,16 +1,16 @@
-package com.ekosoftware.financialpreview.domain.local
+package com.ekosoftware.financialpreview.repository
 
 import androidx.lifecycle.LiveData
 import com.ekosoftware.financialpreview.data.local.daos.BudgetDao
 import com.ekosoftware.financialpreview.data.local.daos.MovementDao
 import com.ekosoftware.financialpreview.data.local.daos.RecordDao
 import com.ekosoftware.financialpreview.data.local.daos.SettleGroupDao
+import com.ekosoftware.financialpreview.data.model.SimpleQueryData
 import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.data.model.movement.MovementUI
 import com.ekosoftware.financialpreview.data.model.record.RecordUI
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCrossRef
-import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 import javax.inject.Inject
 
 class DetailsRepository @Inject constructor(
@@ -33,6 +33,6 @@ class DetailsRepository @Inject constructor(
         settleGroupDao.insertSettleGroupMovementsCrossRef(SettleGroupMovementsCrossRef(settleGroupId, movementId))
     }
 
-    fun getRecord(id: String): LiveData<RecordUI> = recordDao.getRecordsUI(id)
+    fun getRecordUI(id: String): LiveData<RecordUI> = recordDao.getRecordsUI(id)
 
 }

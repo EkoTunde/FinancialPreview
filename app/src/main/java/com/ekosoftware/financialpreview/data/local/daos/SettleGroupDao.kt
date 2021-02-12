@@ -3,13 +3,11 @@ package com.ekosoftware.financialpreview.data.local.daos
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.ekosoftware.financialpreview.core.BaseDao
-import com.ekosoftware.financialpreview.data.model.movement.Movement
+import com.ekosoftware.financialpreview.data.model.SimpleQueryData
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroup
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCrossRef
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovements
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovementsCount
-import com.ekosoftware.financialpreview.presentation.SimpleQueryData
-import kotlinx.coroutines.flow.Flow
 import java.util.*
 
 

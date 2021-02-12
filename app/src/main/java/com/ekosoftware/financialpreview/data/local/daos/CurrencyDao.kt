@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import com.ekosoftware.financialpreview.core.BaseDao
+import com.ekosoftware.financialpreview.data.model.SimpleQueryData
 import com.ekosoftware.financialpreview.data.model.currency.Currency
-import com.ekosoftware.financialpreview.presentation.SimpleQueryData
 
 @Dao
 interface CurrencyDao : BaseDao<Currency> {

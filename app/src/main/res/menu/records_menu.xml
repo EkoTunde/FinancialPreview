@@ -15,4 +15,10 @@
         android:title="@string/filter"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/menu_item_edit"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/edit"
+        app:showAsAction="ifRoom" />
+
 </menu>

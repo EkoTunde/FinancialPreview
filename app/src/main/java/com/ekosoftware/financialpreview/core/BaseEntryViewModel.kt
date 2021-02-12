@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ekosoftware.financialpreview.app.Constants
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupMovementsCrossRef
-import com.ekosoftware.financialpreview.domain.local.EntryRepository
+import com.ekosoftware.financialpreview.repository.EntryRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

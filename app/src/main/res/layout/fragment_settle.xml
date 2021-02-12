@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.settle.SettleFragment"
-    android:background="@color/colorWhite">
+    android:background="@color/colorWhite"
+    tools:context=".ui.settle.MovementSettleFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -17,8 +17,9 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            app:popupTheme="@style/Theme.AppCompat.Light"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+            app:navigationIcon="@drawable/ic_clear"
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
             app:titleTextColor="@color/colorWhite" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -44,9 +45,11 @@
             android:text="@string/example_movement_data_summary"
             android:textAlignment="center"
             android:textSize="18sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="visible" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -68,11 +71,12 @@
                 android:layout_margin="4dp"
                 android:fontFamily="@font/quicksand_regular"
                 android:gravity="center_vertical"
+                android:paddingTop="16dp"
                 android:text="@string/example_currency"
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/et_amount"
+                android:id="@+id/amount_to_settle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -80,16 +84,26 @@
                 android:fontFamily="@font/quicksand_regular"
                 android:hint="@string/_0"
                 android:importantForAutofill="no"
-                android:inputType="numberDecimal"
+                android:inputType="numberSigned|numberDecimal"
                 android:textSize="48sp" />
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/left_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:fontFamily="@font/quicksand_regular"
+            android:gravity="center_vertical"
+            tools:text="@string/example_left_amount_placeholder"
+            android:textSize="18sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_reset_amount"
@@ -120,12 +134,15 @@
         </LinearLayout>
 
         <TableLayout
+            android:id="@+id/transfer_account_table_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:stretchColumns="0,2">
+            android:stretchColumns="0,2"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <TableRow
                 android:layout_width="match_parent"
@@ -169,9 +186,11 @@
             android:layout_marginHorizontal="16dp"
             android:text="@string/account"
             android:textAlignment="center"
+            android:visibility="gone"
             app:icon="@drawable/ic_account_balance"
             app:iconGravity="textStart"
-            app:iconTint="?attr/colorControlNormal" />
+            app:iconTint="?attr/colorControlNormal"
+            tools:visibility="visible" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/description"
@@ -180,11 +199,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:hint="@string/description"
+            android:visibility="gone"
             app:boxCornerRadiusTopEnd="4dp"
             app:boxCornerRadiusTopStart="4dp"
             app:endIconMode="clear_text"
             app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
-            app:startIconDrawable="@drawable/ic_description">
+            app:startIconDrawable="@drawable/ic_description"
+            tools:visibility="visible">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -194,14 +215,42 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <CheckBox
-            android:id="@+id/checkBox"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/category"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
+            android:hint="@string/category"
+            android:labelFor="@id/category_et"
+            android:visibility="gone"
+            app:boxCornerRadiusTopEnd="4dp"
+            app:boxCornerRadiusTopStart="4dp"
+            app:endIconMode="dropdown_menu"
+            app:errorEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
+            app:startIconDrawable="@drawable/ic_category"
+            tools:visibility="visible">
+
+            <AutoCompleteTextView
+                android:id="@+id/category_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_regular"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <CheckBox
+            android:id="@+id/check_box_generate_proportionate_movement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:checked="true"
-            android:text="@string/generate_opposite_movement" />
+            android:text="@string/generate_opposite_movement"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/debtor_lender_name"
@@ -210,11 +259,13 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:hint="@string/debtors_name"
+            android:visibility="gone"
             app:boxCornerRadiusTopEnd="4dp"
             app:boxCornerRadiusTopStart="4dp"
             app:endIconMode="clear_text"
             app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
-            app:startIconDrawable="@drawable/ic_label">
+            app:startIconDrawable="@drawable/ic_label"
+            tools:visibility="visible">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -225,9 +276,12 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <RadioGroup
+            android:id="@+id/loan_debt_radio_group"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="16dp">
+            android:layout_marginHorizontal="16dp"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <RadioButton
                 android:id="@+id/rb_i_lent"
@@ -242,6 +296,32 @@
                 android:layout_height="wrap_content"
                 android:text="@string/was_lent" />
         </RadioGroup>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/budget"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:hint="@string/budget"
+            android:labelFor="@id/budget_et"
+            android:visibility="gone"
+            app:boxCornerRadiusTopEnd="4dp"
+            app:boxCornerRadiusTopStart="4dp"
+            app:endIconMode="dropdown_menu"
+            app:hintTextAppearance="@style/TextAppearance.FormDialog.TextInputLayout.Hint"
+            app:startIconDrawable="@drawable/ic_progress_clock"
+            tools:visibility="visible">
+
+            <AutoCompleteTextView
+                android:id="@+id/budget_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/quicksand_regular"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
     </LinearLayout>
 

@@ -9,7 +9,7 @@ import com.ekosoftware.financialpreview.data.model.HomeData
 import com.ekosoftware.financialpreview.data.model.budget.Budget
 import com.ekosoftware.financialpreview.data.model.movement.MovementUI
 import com.ekosoftware.financialpreview.data.model.settle.SettleGroupWithMovementsCount
-import com.ekosoftware.financialpreview.domain.local.MainRepository
+import com.ekosoftware.financialpreview.repository.MainRepository
 import com.ekosoftware.financialpreview.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.android.parcel.Parcelize
@@ -44,7 +44,7 @@ class HomeViewModel @Inject constructor(
     data class HomeScreenConfiguration(
         var searchPhrase: String = "",
         var currencyCode: String = "ARS"/*localeCurrencyCode()*/,
-        var currentYearMonth: Int = 202101/*currentYearMonth()*/,
+        var currentYearMonth: Int = 202102/*currentYearMonth()*/,
         var lastUpdate: Long = 0
     ) : Parcelable
 
