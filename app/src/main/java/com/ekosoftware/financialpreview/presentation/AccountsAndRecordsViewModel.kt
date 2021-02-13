@@ -6,7 +6,7 @@ import androidx.lifecycle.*
 import com.ekosoftware.financialpreview.core.BaseViewModel
 import com.ekosoftware.financialpreview.data.model.record.RecordUIShort
 import com.ekosoftware.financialpreview.repository.AccountsAndRecordsRepository
-import com.ekosoftware.financialpreview.util.getDaysAgo
+import com.ekosoftware.financialpreview.util.getDateDaysAgo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.Dispatchers
@@ -119,8 +119,8 @@ class AccountsAndRecordsViewModel @Inject constructor(
         val old: RecordsFilterOptions? = savedStateHandle[SELECTED_FILTER_OPTIONS_KEY]
         setFilterOptions(
             old?.apply {
-                topDate = getDaysAgo(days)
-            } ?: RecordsFilterOptions(topDate = getDaysAgo(days))
+                topDate = getDateDaysAgo(days)
+            } ?: RecordsFilterOptions(topDate = getDateDaysAgo(days))
         )
     }
 
@@ -161,7 +161,7 @@ class AccountsAndRecordsViewModel @Inject constructor(
 @Parcelize
 data class RecordsFilterOptions(
     var searchString: String = "",
-    var topDate: Date = getDaysAgo(7),
+    var topDate: Date = getDateDaysAgo(7),
     var amountMax: Long = Long.MAX_VALUE,
     var amountMin: Long = Long.MIN_VALUE,
     var orderBy: String = AccountsAndRecordsViewModel.ORDER_BY_DATE_ASC
