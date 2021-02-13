@@ -15,21 +15,25 @@ import com.ekosoftware.financialpreview.util.*
 import com.google.android.material.snackbar.Snackbar
 import java.math.BigDecimal
 
-class MovementSettleFragment : BaseSettleFragment<MovementUI>() {
+class SettleMovementFragment : BaseSettleFragment<MovementUI>() {
 
-    private val args: MovementSettleFragmentArgs by navArgs()
+    private val args: SettleMovementFragmentArgs by navArgs()
 
     private val selectionViewModel: SelectionViewModel by activityViewModels()
+
+    private var isValidAmount = false
 
     override val type: Int get() = args.type
 
     override fun fetchData(): LiveData<MovementUI> = settleViewModel.getMovementUI(args.id)
 
     override fun setData(obj: MovementUI) {
+        settleViewModel.movementUIRetrievedOk()
         with(binding) {
             (obj.name + obj.installmentsCalc()).also { movementDataSummary.text = it }
             currency.text = obj.currencyCode
-            amountToSettle.setText(obj.leftAmount.forDisplayAmount(obj.currencyCode))
+            //amountToSettle.setText(obj.leftAmount.forDisplayAmount(obj.currencyCode))
+            settleViewModel.setSettleAmount(obj.leftAmount.forCommunicationAmount())
             leftAmount.text = Strings.get(R.string.left_amount_placeholder, obj.leftAmount.forDisplayAmount(obj.currencyCode))
             btnAccount.text = obj.accountName
             btnAccount.setOnClickListener {
@@ -39,23 +43,40 @@ class MovementSettleFragment : BaseSettleFragment<MovementUI>() {
             amountToSettle.doAfterTextChanged { editable ->
                 try {
                     editable?.toString()?.takeIf { it.isNotEmpty() }?.let { text ->
-                        if (obj.leftAmount.forCommunicationAmount() < 0L && BigDecimal(text) < BigDecimal(obj.leftAmount.forDisplayAmount(obj.currencyCode))) amountToSettle.error =
-                            Strings.get(R.string.incorrect_negative_amount)
-                        if (obj.leftAmount.forCommunicationAmount() >= 0L && BigDecimal(text) > BigDecimal(obj.leftAmount.forDisplayAmount(obj.currencyCode))) amountToSettle.error =
-                            Strings.get(R.string.incorrect_positive_amount)
-                        if (obj.leftAmount.forCommunicationAmount() >= 0L && BigDecimal(text) > BigDecimal(obj.leftAmount.forDisplayAmount(obj.currencyCode))) amountToSettle.error =
-                            Strings.get(R.string.incorrect_positive_amount)
+                        if (obj.leftAmount.forCommunicationAmount() < 0L && BigDecimal(text) < BigDecimal(obj.leftAmount.forDisplayAmount(obj.currencyCode))) {
+                            amountToSettle.error = Strings.get(R.string.incorrect_negative_amount)
+                            isValidAmount = false
+                        } else if (obj.leftAmount.forCommunicationAmount() >= 0L && BigDecimal(text) > BigDecimal(
+                                obj.leftAmount.forDisplayAmount(
+                                    obj.currencyCode
+                                )
+                            )
+                        ) {
+                            amountToSettle.error = Strings.get(R.string.incorrect_positive_amount)
+                            isValidAmount = false
+                        } else if (obj.leftAmount.forCommunicationAmount() >= 0L && BigDecimal(text) > BigDecimal(
+                                obj.leftAmount.forDisplayAmount(
+                                    obj.currencyCode
+                                )
+                            )
+                        ) {
+                            amountToSettle.error = Strings.get(R.string.incorrect_positive_amount)
+                            isValidAmount = false
+                        } else {
+                            isValidAmount = true
+                            //settleViewModel.setSettleAmount(text.toDouble())
+                        }
                     }
                 } catch (e: Exception) {
                 }
             }
             obj.accountId?.let { settleViewModel.setAccountId(it) }
             settleViewModel.setCurrency(obj.currencyCode)
-            binding.btnResetAmount.setOnClickListener {
+            btnResetAmount.setOnClickListener {
                 amountToSettle.setText(obj.leftAmount.forDisplayAmount(obj.currencyCode))
             }
-            binding.btnOpenCalculator.setOnClickListener {
-                val currentText = when (val txt = binding.amountToSettle.text.toString()) {
+            btnOpenCalculator.setOnClickListener {
+                val currentText = when (val txt = amountToSettle.text.toString()) {
                     "", "-", "-0", "0" -> "0"
                     else -> if (BigDecimal(txt).toDouble() == BigDecimal("0.0").toDouble()) "0" else txt
                 }
@@ -66,15 +87,11 @@ class MovementSettleFragment : BaseSettleFragment<MovementUI>() {
     }
 
     override fun onSave() {
-        hideKeyboard()
-        if (isRequiredInfoFilled()) {
-            settleViewModel.settleMovement(binding.movementDataSummary.text, binding.amountToSettle.text)
-            findNavController().navigate(MainNavGraphDirections.actionGlobalPendingPageFragment())
-        }
-
+        settleViewModel.settleMovement(binding.movementDataSummary.text, binding.amountToSettle.text)
+        findNavController().navigate(MainNavGraphDirections.actionGlobalPendingPageFragment())
     }
 
-    private fun isRequiredInfoFilled(): Boolean {
+    override fun isRequiredInfoFulfilled(): Boolean {
         binding.amountToSettle.text.toString().let {
             toast(BigDecimal(it).toDouble().toString(), Toast.LENGTH_LONG)
             if (it.isEmpty() || it == "-" || it.isBlank() || it == "-0" || it == "0" || BigDecimal(it).toDouble() == BigDecimal("0.0").toDouble()) {
@@ -87,7 +104,7 @@ class MovementSettleFragment : BaseSettleFragment<MovementUI>() {
             Snackbar.make(binding.root, R.string.an_account_is_necessary, Snackbar.LENGTH_LONG).show()
             return false
         }
-        return true
+        return isValidAmount
     }
 
     override fun setSelectionResultsListener() {

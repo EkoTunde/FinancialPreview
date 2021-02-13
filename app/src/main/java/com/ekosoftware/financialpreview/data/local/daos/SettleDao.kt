@@ -11,8 +11,6 @@ import com.ekosoftware.financialpreview.util.newId
 import com.ekosoftware.financialpreview.util.plusMonths
 import java.util.*
 
-private const val TAG = "SETTLE_TAG"
-
 @Dao
 interface SettleDao {
 
@@ -35,11 +33,7 @@ interface SettleDao {
         when {
             // Partial settling of a movement with pending transactions in upcoming months
             record.amount != movement.leftAmount && fromTo != movement.frequency!!.to!! -> {
-                Log.d(TAG, "settleMovement: option 1")
-                updateMovement(movement.apply {
-                    Log.d(TAG, "settleMovement: ${frequency?.from} - ${frequency?.from?.plusMonths(1)}")
-                    this@apply.frequency?.from = frequency?.from?.plusMonths(1)
-                })
+                updateMovement(movement.apply { this@apply.frequency?.from = frequency?.from?.plusMonths(1) })
                 addMovement(movement.duplicate().apply {
                     frequency?.from = fromTo
                     frequency?.to = fromTo
@@ -100,6 +94,7 @@ interface SettleDao {
     @Transaction
     suspend fun settleBudgetRecord(record: Record, budget: Budget, fromTo: Int) {
         addRecord(record)
+        updateAccount(record.accountId, record.amount)
         when {
             // Partial settling of a budget with pending transactions in upcoming months
             record.amount != budget.leftAmount && fromTo != budget.frequency!!.to!! -> {
@@ -122,8 +117,7 @@ interface SettleDao {
                 frequency?.from = frequency?.from?.plusMonths(1)
             })
 
-
-            // Total amount for last month was settled
+            // Total amount for one-time/last-month was settled
             record.amount == budget.leftAmount && fromTo == budget.frequency!!.to!! -> deleteBudget(budget)
             else -> throw IllegalStateException("Budget $budget and Record $record at $fromTo yearMonth don't fit in any condition at ${this.javaClass.name}")
         }

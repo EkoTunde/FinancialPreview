@@ -2,7 +2,6 @@ package com.ekosoftware.financialpreview.ui.settle
 
 import android.os.Bundle
 import android.view.*
-import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
@@ -16,6 +15,7 @@ import com.ekosoftware.financialpreview.app.Strings
 import com.ekosoftware.financialpreview.databinding.FragmentSettleBinding
 import com.ekosoftware.financialpreview.presentation.CalculatorViewModel
 import com.ekosoftware.financialpreview.presentation.SettleViewModel
+import com.ekosoftware.financialpreview.util.hideKeyboard
 import com.ekosoftware.financialpreview.util.visible
 
 /*
@@ -50,6 +50,7 @@ abstract class BaseSettleFragment<T>() : Fragment() {
         binding.toolbar.inflateMenu(R.menu.settle_menu)
         binding.toolbar.title = when (type) {
             Constants.SETTLE_TYPE_MOVEMENT -> Strings.get(R.string.settle_movement)
+            Constants.SETTLE_TYPE_BUDGET_RECORD -> Strings.get(R.string.new_record)
             else -> "hola"
         }
     }
@@ -63,7 +64,8 @@ abstract class BaseSettleFragment<T>() : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_item_save -> {
-                onSave()
+                hideKeyboard()
+                if (isRequiredInfoFulfilled()) onSave()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -111,7 +113,7 @@ abstract class BaseSettleFragment<T>() : Fragment() {
         checkBoxGenerateProportionateMovement.visible(loanDebt)
         debtorLenderName.visible(loanDebt)
         loanDebtRadioGroup.visible(loanDebt)
-        this.budget.visible(budget)
+        //this.budget.visible(budget)
 
     }
 
@@ -120,6 +122,8 @@ abstract class BaseSettleFragment<T>() : Fragment() {
     open fun setData(obj: T) {}
 
     open fun onSave() {}
+
+    open fun isRequiredInfoFulfilled(): Boolean = false
 
     open fun setSelectionResultsListener() {}
 

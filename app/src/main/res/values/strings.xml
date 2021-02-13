@@ -319,6 +319,10 @@
     <string name="incorrect_positive_amount">El monto no puede superar el importe restante</string>
     <string name="insert_a_valid_amount">Por favor, insertá un importe válido</string>
     <string name="an_account_is_necessary">Es necesario especificar una cuenta</string>
+    <string name="left_amount_budget_placeholder">de %1$s disponibles para %2$s</string>
+    <string name="select_account">Seleccionar cuenta</string>
+    <string name="a_category_is_necessary">Es necesario seleccionar una categoría</string>
+    <string name="new_record">Nuevo registro</string>
 
 
     <string-array name="currencies">

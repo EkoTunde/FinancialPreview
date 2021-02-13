@@ -172,7 +172,7 @@ object DummyData {
             description = "",
             frequency = Frequency(
                 from = 202102,
-                to = 202206,
+                to = 202207,
                 installments = 18,
                 monthsChecked = "Jan-Feb-Mar-Apr-May-Jun-Jul-Aug-Sep-Oct-Nov-Dec"
             ),
